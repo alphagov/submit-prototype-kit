@@ -25,7 +25,13 @@
         {% raw %}{{{% endraw %} macro.details("{{ page.details }}", "") {% raw %}}}{% endraw %}
         {% endif %}
 
+        {% for field in page.fields %}
+          {% raw %}{{ macro.input("{% endraw %}{{ field.name }}", "{{ field.label }}" {% raw %}) }}{% endraw %}
+        {% endfor %}
+
+        {% if page.next %}
         {% raw %}{{{% endraw %} macro.next_button() {% raw %}}}{% endraw %}
+        {% endif %}
       </form>
     </div>
   </div>
