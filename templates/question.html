@@ -26,7 +26,7 @@
         {% endif %}
 
         {% for field in page.fields %}
-          {% raw %}{{ macro.input("{% endraw %}{{ field.name }}", "{{ field.label }}" {% raw %}) }}{% endraw %}
+          {% raw %}{{ macro.input("{% endraw %}{{ field.field }}", "{{ field.label }}" {% raw %}) }}{% endraw %}
         {% endfor %}
 
         {% if page.next %}
