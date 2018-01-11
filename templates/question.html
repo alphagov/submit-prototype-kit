@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ page.heading }}{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <a class="link-back" href="applicant-type">Back</a>
+
+      <h1 class="heading-large">{{ page.heading }}</h1>
+
+      {% if page.guidance %}
+      {{ macro.markdown(page.guidance) }}
+      {% endif %}
+
+      {% if page.warning %}
+      {% raw %}{{{% endraw %} macro.warning("{{ page.warning }}", "") {% raw %}}}{% endraw %}
+      {% endif %}
+
+      <form class="form" action="{{ page.next }}" method="post">
+
+        {% if page.details %}
+        {% raw %}{{{% endraw %} macro.details("{{ page.details }}", "") {% raw %}}}{% endraw %}
+        {% endif %}
+
+        {% raw %}{{{% endraw %} macro.next_button() {% raw %}}}{% endraw %}
+      </form>
+    </div>
+  </div>
+</main>
+{% endblock %}

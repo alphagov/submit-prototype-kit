@@ -1,0 +1,42 @@
+{
+  "name": "simple",
+  "heading": "Simple example",
+  "description": "A simple example form",
+  "reference": "",
+  "phase": "alpha",
+  "organisations": [
+    {
+      "name": "Government Digital Service",
+      "organisation": "government-organisation:OT1056",
+      "website": "https://www.gov.uk/government/organisations/government-digital-service"
+    }
+  ],
+  "pages": [
+    {
+      "pagetype": "start-page",
+      "heading": "Simple",
+      "guidance": "<p>Use this service to:</p>\n<ul class='list list-bullet'>\n<li>do something</li>\n<li>update your name, address or other details</li>\n<li>you need to do this in order to do something else</li>\n</ul>\n<p>Registering takes around 5 minutes.</p>",
+      "detail": "<p>You can also <a href='#'>register by post.</a></p><p>The online service is also available in <a href='#'>Welsh (Cymraeg).</a></p><p>You can’t register for this service if you’re in the UK illegally.</p>"
+    },
+    {
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": [
+        {
+          "field": "name",
+          "inputtype": "text"
+        }
+      ]
+    },
+    {
+      "pagetype": "question",
+      "heading": "What is your email address?",
+      "fields": [
+        {
+          "field": "email",
+          "inputtype": "text"
+        }
+      ]
+    }
+  ]
+}

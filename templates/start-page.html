@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ page.heading }}{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="heading-xlarge">{{ form.heading }}</h1>
+
+      {{ macro.markdown(page.guidance) }}
+
+      <p><a class="button button-start" href="{{ page.next }}" role="button">Start now</a></p>
+
+      <h2 class="heading-medium">Before you start</h2>
+
+      {{ macro.markdown(page.detail) }}
+    </div>
+  </div>
+
+</main>
+{% endblock %}

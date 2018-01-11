@@ -9,3 +9,4 @@ node_modules/*
 .tmuxp.*
 package-lock.json
 govuk_prototype_kit*
+prototype

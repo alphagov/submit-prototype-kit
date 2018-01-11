@@ -1,0 +1,137 @@
+{% macro input(name, label) %}
+    <div class="form-group">
+      <label class="form-label" for="{{ name }}">{{label}}</label>
+      <input class="form-control form-control-2-3" id="{{ name }}" name="{{ name }}">
+    </div>
+{% endmacro %}
+
+{% macro textarea(name) %}
+    <textarea class="form-control form-control-2-3" id="{{ name }}" name="{{ name }}" rows="5">{{name}}{{releaseVersion}}{{ data['address'] }}</textarea>
+{% endmacro %}
+
+{% macro radio_single ( groupName, name, label, target="" ) %}
+  <div class="multiple-choice" data-target={{target}}>
+    <input id="{{ name }}" type="radio" name="{{ groupName }}" value="{{ label }}" {{ checked(groupName, label) }}>
+    <label for="{{ name }}">{{ label }}</label>
+  </div>
+{% endmacro %}
+
+{% macro checkbox_single ( groupName, name, label, target="" ) %}
+  <div class="multiple-choice" data-target={{target}}>
+    <input id="{{ name }}" type="checkbox" name="{{ groupName }}" value="{{ label }}" {{ checked(groupName, label) }}>
+    <label for="{{ name }}">{{ label | safe }}</label>
+  </div>
+{% endmacro %}
+
+{% macro conditional_child_input(name, label, target) %}
+  <div class="panel panel-border-narrow js-hidden" id="{{target}}">
+    {{input( name, label )}}
+  </div>
+{% endmacro %}
+
+{% macro inset ( content ) %}
+  <div class="panel panel-border-wide">
+    <p>
+      {{content | safe}}
+    </p>
+  </div>
+{% endmacro %}
+
+{% macro date ( name, label, exampleText ) %}
+  <div class="form-group">
+    <fieldset>
+      <legend>
+        <span class="form-label-bold">
+          {{label}}
+        </span>
+        <span class="form-hint">{{exampleText}}</span>
+      </legend>
+      <div class="form-date">
+        <div class="form-group form-group-day">
+          <label class="form-label" for="{{name}}-day">Day</label>
+          <input class="form-control" id="{{name}}-day" name="{{name}}-day" type="number" pattern="[0-9]*" min="0" max="31">
+        </div>
+        <div class="form-group form-group-month">
+          <label class="form-label" for="{{name}}-month">Month</label>
+          <input class="form-control" id="{{name}}-month" name="{{name}}-month" type="number" pattern="[0-9]*" min="0" max="12">
+        </div>
+        <div class="form-group form-group-year">
+          <label class="form-label" for="{{name}}-year">Year</label>
+          <input class="form-control" id="{{name}}-year" name="{{name}}-year" type="number" pattern="[0-9]*" min="0" max="2016">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+{% endmacro %}
+
+{% macro details ( summary, content ) %}
+  <div class="form-group">
+    <details>
+      <summary><span class="summary">{{summary}}</span></summary>
+      <div class="panel panel-border-narrow">
+        <p>{{content}}</p>
+      </div>
+    </details>
+  </div>
+{% endmacro %}
+
+{% macro radio_button( name, label, id ) %}
+  <div class="multiple-choice">
+    <input id="{{ id }}" type="radio" name="{{ name }}" value="{{ label }}">
+    <label for="{{ id }}">{{ label }}</label>
+  </div>
+{% endmacro %}
+
+{% macro boolean( id_yes, id_no, name) %}
+  <div class="multiple-choice">
+    <input id="{{ id_yes }}" type="radio" name="{{ name }}" value="Yes">
+    <label for="{{ id_yes }}">Yes</label>
+  </div>
+        
+  <div class="multiple-choice">
+    <input id="{{ id_no }}" type="radio" name="{{ name }}" value="No">
+    <label for="{{ id_no }}">No</label>
+  </div>
+{% endmacro %}
+
+{% macro boolean_with_details_on_yes(id_yes, id_no, name, follow_up_question, follow_up_question_id  ) %}
+  <div class="multiple-choice" data-target="{{ follow_up_question_id }}">
+    <input id="{{ id_yes }}" type="radio" name="{{ name }}" value="Yes">
+    <label for="{{ id_yes }}">Yes</label>
+  </div>
+  <div class="multiple-choice">
+    <input id="{{ id_no }}" type="radio" name="{{ name }}" value="No">
+    <label for="{{ id_no }}">No</label>
+  </div>
+
+  <div class="panel panel-border-narrow js-hidden" id="{{ follow_up_question_id }}">
+
+    <h2 class="heading-medium">
+      {{ follow_up_question }}
+    </h2>
+
+    <fieldset>
+
+      <legend class="visually-hidden">
+        {{ follow_up_question }}
+      </legend>
+
+      <div class="form-group form-group-compound">
+        <textarea class="form-control form-control-2-3" id="{{ id }}" rows='5'></textarea>
+      </div>
+
+    </fieldset>
+
+  </div>
+{% endmacro %}
+
+{% macro save_button(buttonText='Save and continue') %}
+  <button class="button" type="submit">{{ buttonText }}</button>
+{% endmacro %}
+
+
+{% macro next_button(buttonText='Continue') %}
+  <div class="form-group">
+    <input class="button" type="submit" value="{{ buttonText }}">
+  </div>
+{% endmacro %}
