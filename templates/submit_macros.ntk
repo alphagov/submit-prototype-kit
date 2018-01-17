@@ -1,7 +1,11 @@
 {% macro text_param( text ) %}{{ text | dump | safe }}{% endmacro %}
 
 {% macro markdown_text( text ) %}{% markdown %}{{ text }}{% endmarkdown %}{% endmacro %}
-{% macro markdown_html( text ) %}{{ markdown_text(text).val | safe | replace("<ul>", "<ul class=\"list list-bullet\">") }}{% endmacro %}
+{% macro markdown_html( text ) %}{{ 
+  markdown_text(text).val | safe |
+  replace("<ul>", "<ul class=\"list list-bullet\">") |
+  replace("<h3 ", "<h3 class=\"heading-small\" ")
+}}{% endmacro %}
 {% macro markdown_param( text ) %}{{ text_param(markdown_html(text).val) }}{% endmacro %}
 
 
@@ -64,7 +68,6 @@
 
 {% macro field( field ) %}
 
-{# TEXT FIELD #}
 {% if field.inputtype == 'text' %}
   {%raw%}{{{%endraw%} frontend.govukInput({
   {% if field.label %}
@@ -75,9 +78,23 @@
     "id": {{ text_param(field.field) }},
     "name": {{ text_param(field.field) }}
   }) {%raw%}}}{%endraw%}
+
+{% elif field.inputtype == 'radio' %}
+  {%raw%}{{{%endraw%} frontend.govukRadios({
+  "name": {{ text_param(field.field) }},
+  "items" : [
+  {% set comma = joiner() %}
+  {% for list in field.whitelists %}
+    {% for item in list.items -%}
+     {{ comma() }} {
+      "text": {{ text_param(item.label) }},
+      "value": {{ text_param(item.value) }}
+     }
+    {%- endfor %}
+  {% endfor %}
+  ]
+  }) {%raw%}}}{%endraw%}
+
 {% endif %}
 
 {% endmacro %}
-
-
-

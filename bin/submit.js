@@ -90,7 +90,7 @@ function pageName(form, i) {
       return undefined
     }
     page = form.pages[i]
-    return page.name || "page" + i
+    return page.page || "page" + i
 }
 
 

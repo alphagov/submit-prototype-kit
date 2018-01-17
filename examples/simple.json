@@ -13,6 +13,7 @@
   ],
   "pages": [
     {
+      "page": "index",
       "pagetype": "start-page",
       "heading": "Simple",
       "guidance": "Use this service to:\n* do something\n* update your name, address or other details\n\nRegistering takes around 5 minutes.",
@@ -37,6 +38,31 @@
         {
           "field": "email",
           "inputtype": "text"
+        }
+      ]
+    },
+    {
+      "pagetype": "question",
+      "page": "adult",
+      "heading": "Are you aged 18 or older?",
+      "fields": [
+        {
+          "field": "adult",
+          "inputtype": "radio",
+          "whitelists": [
+            {
+              "items": [
+                {
+                  "label": "Yes",
+                  "value": "yes"
+                },
+                {
+                  "label": "No",
+                  "value": "no"
+                }
+              ]
+            }
+          ]
         }
       ]
     },

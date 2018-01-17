@@ -10,7 +10,8 @@ VIEWS_DIR=prototype/app/views
 
 EXAMPLES=\
 	$(VIEWS_DIR)/simplest\
-	$(VIEWS_DIR)/simple
+	$(VIEWS_DIR)/simple\
+	$(VIEWS_DIR)/apply-for-a-medal
 
 SRC_TEMPLATES=\
 	templates/*.ntk\
