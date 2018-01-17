@@ -82,17 +82,13 @@
 {% elif field.inputtype == 'radio' %}
   {%raw%}{{{%endraw%} frontend.govukRadios({
   "name": {{ text_param(field.field) }},
-  "items" : [
-  {% set comma = joiner() %}
-  {% for list in field.whitelists %}
-    {% for item in list.items -%}
-     {{ comma() }} {
-      "text": {{ text_param(item.label) }},
-      "value": {{ text_param(item.value) }}
-     }
-    {%- endfor %}
-  {% endfor %}
-  ]
+  "items" : [{% set comma = joiner() -%}
+  {% for item in field.list.items -%}
+   {{ comma() }} {
+    "text": {{ text_param(item.label) }},
+    "value": {{ text_param(item.value) }}
+   }
+  {%- endfor %}]
   }) {%raw%}}}{%endraw%}
 
 {% endif %}

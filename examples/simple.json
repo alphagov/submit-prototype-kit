@@ -49,20 +49,18 @@
         {
           "field": "adult",
           "inputtype": "radio",
-          "whitelists": [
-            {
-              "items": [
-                {
-                  "label": "Yes",
-                  "value": "yes"
-                },
-                {
-                  "label": "No",
-                  "value": "no"
-                }
-              ]
-            }
-          ]
+          "list": {
+            "items": [
+              {
+                "label": "Yes",
+                "value": "yes"
+              },
+              {
+                "label": "No",
+                "value": "no"
+              }
+            ]
+          }
         }
       ]
     },
