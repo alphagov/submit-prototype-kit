@@ -15,12 +15,14 @@
     {
       "pagetype": "start-page",
       "heading": "Simple",
-      "guidance": "<p>Use this service to:</p>\n<ul class='list list-bullet'>\n<li>do something</li>\n<li>update your name, address or other details</li>\n<li>you need to do this in order to do something else</li>\n</ul>\n<p>Registering takes around 5 minutes.</p>",
-      "detail": "<p>You can also <a href='#'>register by post.</a></p><p>The online service is also available in <a href='#'>Welsh (Cymraeg).</a></p><p>You can’t register for this service if you’re in the UK illegally.</p>"
+      "guidance": "Use this service to:\n* do something\n* update your name, address or other details\n\nRegistering takes around 5 minutes.",
+      "detail": "You can also register [by post]()\n\nThe online service is also available in [Welsh (Cymraeg)]().\n\nYou can’t register for this service if you’re in the UK illegally."
     },
     {
       "pagetype": "question",
       "heading": "What is your name?",
+      "guidance": "This is some guidance markdown.",
+      "warning": "This is some warning text.",
       "fields": [
         {
           "field": "name",
@@ -37,6 +39,12 @@
           "inputtype": "text"
         }
       ]
+    },
+    {
+      "pagetype": "application-complete",
+      "heading": "Application complete",
+      "guidance": "We have sent a confirmation email to **{{data.email}}**.",
+      "detail": "Your application will be processed within 28 days."
     }
   ]
 }

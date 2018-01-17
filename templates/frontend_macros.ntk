@@ -1,0 +1,41 @@
+{% macro govukBackLink(params={}) %}
+<a class="link-back" href="{{ params.href }}">{{ params.text }}</a>
+{% endmacro %}
+
+
+{% macro govukLegalText(params={}) %}
+<div class="notice">
+  <p>
+  <i class="icon icon-important"><span class="visually-hidden">{{ params.iconFallbackText }}</span></i>
+  <strong class="bold-small">{{ params.legalText }}</strong>
+  </p>
+</div>
+{% endmacro %}
+
+
+{% macro govukDetails(params={}) %}
+<details>
+  <summary><span class="summary">{{ params.summaryText }}</span></summary>
+  <div class="panel panel-border-narrow">
+    <div class="govuk-c-details__text">
+    {{ params.html | safe if params.html else params.text }}
+  </div>
+</details>
+{% endmacro %}
+
+
+{% macro govukButton(params={}) %}
+{% if "--start" in params.classes %}
+<a role="button" class="button button-start {{ params.classes }}" href="{{ params.href }}">{{ params.text }}</a>
+{% else %}
+<input class="button {{ params.classes }}" type="submit" value="{{ params.text }}">
+{% endif %}
+{% endmacro %}
+
+
+{% macro govukInput(params={}) %}
+  <div class="form-group">
+    {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label }}</label>{% endif %}
+    <input class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}">
+  </div>
+{% endmacro %}

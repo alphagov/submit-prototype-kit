@@ -1,0 +1,20 @@
+{
+  "name": "simplest",
+  "heading": "Simplest example",
+  "pages": [
+    {
+      "pagetype": "start-page",
+      "heading": "Simplest"
+    },
+    {
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": [
+        {
+          "field": "name",
+          "inputtype": "text"
+        }
+      ]
+    }
+  ]
+}

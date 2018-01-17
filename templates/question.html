@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "submit_layout.html" %}
 
 {% block title %}{{ page.heading }}{% endblock %}
 
@@ -7,31 +7,20 @@
   <div class="grid-row">
     <div class="column-two-thirds">
 
-      <a class="link-back" href="applicant-type">Back</a>
+      {{ submit.back_link(page) }}
 
       <h1 class="heading-large">{{ page.heading }}</h1>
 
-      {% if page.guidance %}
-      {{ macro.markdown(page.guidance) }}
-      {% endif %}
-
-      {% if page.warning %}
-      {% raw %}{{{% endraw %} macro.warning("{{ page.warning }}", "") {% raw %}}}{% endraw %}
-      {% endif %}
-
       <form class="form" action="{{ page.next }}" method="post">
 
-        {% if page.details %}
-        {% raw %}{{{% endraw %} macro.details("{{ page.details }}", "") {% raw %}}}{% endraw %}
-        {% endif %}
+        {{ submit.guidance(page.guidance) }}
+        {{ submit.warning(page.warning) }}
 
-        {% for field in page.fields %}
-          {% raw %}{{ macro.input("{% endraw %}{{ field.field }}", "{{ field.label }}" {% raw %}) }}{% endraw %}
-        {% endfor %}
+        {% for field in page.fields %}{{ submit.field(field) }}{% endfor %}
 
-        {% if page.next %}
-        {% raw %}{{{% endraw %} macro.next_button() {% raw %}}}{% endraw %}
-        {% endif %}
+        {{ submit.details(page.details) }}
+
+        {{ submit.nextButton(page) }}
       </form>
     </div>
   </div>

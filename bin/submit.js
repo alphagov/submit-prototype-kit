@@ -5,6 +5,8 @@
 var fs = require('fs')
 var path = require('path')
 var nunjucks = require('nunjucks')
+var markdown = require('nunjucks-markdown');
+var marked = require('marked');
 var mkdirp = require('mkdirp')
 var chalk = require('chalk')
 var glob = require("glob")
@@ -49,6 +51,8 @@ opts.outputDir = argv.out || './prototype/app/views/'
 
 var templates = nunjucks.configure(path.resolve(process.cwd(), opts.templatesDir), {})
 
+markdown.register(templates, marked);
+
 function renderPage(page, form) {
 
   var templateFile = path.resolve(opts.templatesDir, page.pagetype + '.html')
@@ -82,7 +86,7 @@ function renderForm(form) {
 
 
 function pageName(form, i) {
-    if (i >= form.pages.length) {
+    if ((i < 0) || (i >= form.pages.length)) {
       return undefined
     }
     page = form.pages[i]
@@ -95,9 +99,9 @@ function loadForm(path) {
   var form = JSON.parse(fs.readFileSync(path, 'utf8'))
 
   for (var i = 0; i < form.pages.length; i++) {
-    page = form.pages[i]
-    page.name = pageName(form, i)
-    page.next = pageName(form, i+1)
+    form.pages[i].name = pageName(form, i)
+    form.pages[i].back = pageName(form, i-1)
+    form.pages[i].next = pageName(form, i+1)
   }
 
   return form

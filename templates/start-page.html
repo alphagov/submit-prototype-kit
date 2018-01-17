@@ -1,23 +1,21 @@
-{% extends "layout.html" %}
+{% extends "submit_layout.html" %}
 
 {% block title %}{{ page.heading }}{% endblock %}
 
 {% block content %}
 <main id="content" role="main">
-
   <div class="grid-row">
     <div class="column-two-thirds">
       <h1 class="heading-xlarge">{{ form.heading }}</h1>
 
-      {{ macro.markdown(page.guidance) }}
+      {{ submit.guidance(page.guidance) }}
+      {{ submit.startButton(page) }}
 
-      <p><a class="button button-start" href="{{ page.next }}" role="button">Start now</a></p>
-
+      {% if page.detail %}
       <h2 class="heading-medium">Before you start</h2>
-
-      {{ macro.markdown(page.detail) }}
+      {{ submit.guidance(page.detail) }}
+      {% endif %}
     </div>
   </div>
-
 </main>
 {% endblock %}

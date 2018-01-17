@@ -1,0 +1,83 @@
+{% macro text_param( text ) %}{{ text | dump | safe }}{% endmacro %}
+
+{% macro markdown_text( text ) %}{% markdown %}{{ text }}{% endmarkdown %}{% endmacro %}
+{% macro markdown_html( text ) %}{{ markdown_text(text).val | safe | replace("<ul>", "<ul class=\"list list-bullet\">") }}{% endmacro %}
+{% macro markdown_param( text ) %}{{ text_param(markdown_html(text).val) }}{% endmacro %}
+
+
+{% macro back_link( page, text="Back" ) %}
+{% if page.back %}
+{%raw%}{{{%endraw%} frontend.govukBackLink({
+  "text": {{ text_param(text) }},
+  "href": {{ text_param(page.back) }}
+}) {%raw%}}}{%endraw%}
+{% endif %}
+{% endmacro %}
+
+
+{% macro guidance( text ) %}
+{% if text %}
+<div class='guidance'>{{ markdown_html(text) }}</div>
+{% endif %}
+{% endmacro %}
+
+
+{% macro warning( text ) %}
+{% if text %}
+{%raw%}{{{%endraw%} frontend.govukLegalText({
+  "legalText": {{ text_param(text) }},
+  "iconFallbackText": "Warning"
+}) {%raw%}}}{%endraw%}
+{% endif %}
+{% endmacro %}
+
+
+{% macro details( text, summary='Help' ) %}
+{% if text %}
+{%raw%}{{{%endraw%} frontend.govukDetails({
+  "summaryText": {{ text_param(summary) }},
+  "html": {{ markdown_param(text) }}
+}) {%raw%}}}{%endraw%}
+{% endif %}
+{% endmacro %}
+
+
+{% macro startButton( page, text="Start now" ) %}
+{%raw%}{{{%endraw%} frontend.govukButton({
+  "text": {{ text_param(text) }},
+  "href": "{{ page.next }}",
+  "classes": "govuk-c-button--start"
+}) {%raw%}}}{%endraw%}
+{% endmacro %}
+
+
+{% macro nextButton( page, text="Continue" ) %}
+{% if page.next %}
+{%raw%}{{{%endraw%} frontend.govukButton({
+  "text": {{ text_param(text) }},
+  "href": "",
+  "classes": ""
+}) {%raw%}}}{%endraw%}
+{% endif %}
+{% endmacro %}
+
+
+{% macro field( field ) %}
+
+{# TEXT FIELD #}
+{% if field.inputtype == 'text' %}
+  {%raw%}{{{%endraw%} frontend.govukInput({
+  {% if field.label %}
+    "label": {
+        "text": {{ text_param(field.label) }}
+    },
+  {% endif %}
+    "id": {{ text_param(field.field) }},
+    "name": {{ text_param(field.field) }}
+  }) {%raw%}}}{%endraw%}
+{% endif %}
+
+{% endmacro %}
+
+
+

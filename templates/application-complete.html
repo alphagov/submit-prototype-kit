@@ -1,35 +1,29 @@
-{% extends "layout.html" %}
+{% extends "submit_layout.html" %}
 
-{% block page_title %} Confirmation page example {% endblock %}
+{% block title %}{{ page.heading }}{% endblock %}
+
 
 {% block content %}
-
 <main id="content" role="main">
 
   <div class="grid-row">
     <div class="column-two-thirds">
-
       <div class="govuk-box-highlight">
-        <h1 class="heading-xlarge">
-          Application complete
-        </h1>
+        <h1 class="heading-xlarge">{{ form.heading }}</h1>
         <p class="font-large">
           Your reference number is <br>
           <strong class="bold">HDJ2123F</strong>
         </p>
       </div>
 
-      <p>
-        We have sent a confirmation email to <span class="bold">{{data["user-email"]}}</span>.
-      </p>
+      {{ submit.guidance(page.guidance) }}
 
+      {% if page.detail %}
       <h2 class="heading-medium">What happens next</h2>
-      <p>Your application will be reviewed by the MOD Medals Office.
-
-
+      {{ submit.guidance(page.detail) }}
+      {% endif %}
     </div>
   </div>
-
 </main>
 
 {% endblock %}
