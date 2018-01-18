@@ -49,12 +49,10 @@
         {
           "field": "adult",
           "inputtype": "radio",
-          "list": {
-            "items": [
-              { "label": "Yes", "value": "yes" },
-              { "label": "No", "value": "no" }
-            ]
-          }
+          "items": [
+            { "label": "Yes", "value": "yes" },
+            { "label": "No", "value": "no" }
+          ]
         }
       ]
     },

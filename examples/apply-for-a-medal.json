@@ -23,16 +23,19 @@
       "heading": "Are you applying for medals awarded to you?",
       "fields": [
         {
-          "field": "application-person",
+          "field": "applicationPerson",
           "inputtype": "radio",
-          "list": {
-            "items": [
-              { "label": "Yes", "value": "yesMyself" },
-              { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
-              { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
-            ]
-          }
+          "items": [
+            { "label": "Yes", "value": "yesMyself" },
+            { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
+            { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
+          ]
         }
+      ],
+      "next": [
+        { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
+        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" },
+        { "page": "active-service" }
       ]
     },
     {
@@ -45,17 +48,15 @@
           "field": "relationship",
           "inputtype": "radio",
           "legend": "I am their:",
-          "list": {
-            "items": [
-              { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
-              { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
-              { "value": "relationshipChild", "label": "Child" },
-              { "value": "relationshipSibling", "label": "Brother or sister" },
-              { "value": "relationshipGrandChild", "label": "Grandchild" },
-              { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
-              { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
-            ]
-          }
+          "items": [
+            { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
+            { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
+            { "value": "relationshipChild", "label": "Child" },
+            { "value": "relationshipSibling", "label": "Brother or sister" },
+            { "value": "relationshipGrandChild", "label": "Grandchild" },
+            { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
+            { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
+          ]
         }
       ],
       "fieldrefs": [
@@ -63,12 +64,10 @@
           "field": "parentType",
           "inputtype": "radio",
           "legend": "Are you their mother or father?",
-          "list": {
-            "items": [
-              { "value": "parentMother", "label": "Mother" },
-              { "value": "parentFather", "label": "Father" }
-            ]
-          }
+          "items": [
+            { "value": "parentMother", "label": "Mother" },
+            { "value": "parentFather", "label": "Father" }
+          ]
         }
       ]
     },

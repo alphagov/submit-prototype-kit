@@ -85,7 +85,7 @@
   "name": {{ text_param(field.field) }},
   "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
   "items" : [{% set comma = joiner() -%}
-    {% for item in field.list.items -%}
+    {% for item in field.items -%}
       {{ comma() }}
       { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
         "text": {{ text_param(item.label) }}, "value": {{ text_param(item.value) }} }
