@@ -45,7 +45,7 @@
 <div class="form-group"
 <fieldset>
   <legend>
-     <h1 class="heading-medium">{{ params.legendHtml }}</h1></legend>
+     <h1 class="heading-medium">{{ params.legendHtml | safe }}</h1></legend>
   </legend>
 
 {% for item in params.items %}

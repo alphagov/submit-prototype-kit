@@ -7,6 +7,7 @@
   replace("<h3 ", "<h3 class=\"heading-small\" ")
 }}{% endmacro %}
 {% macro markdown_param( text ) %}{{ text_param(markdown_html(text).val) }}{% endmacro %}
+{% macro visually_hidden( text ) %}<span class='visually-hidden'>{{ text | safe }}</span>{% endmacro %}
 
 
 {% macro back_link( page, text="Back" ) %}
@@ -66,7 +67,7 @@
 {% endmacro %}
 
 
-{% macro field( field ) %}
+{% macro field( field, page ) %}
 
 {% if field.inputtype == 'text' %}
 {%raw%}{{{%endraw%} frontend.govukInput({
@@ -82,9 +83,7 @@
 {% elif field.inputtype == 'radio' %}
 {%raw%}{{{%endraw%} frontend.govukRadios({
   "name": {{ text_param(field.field) }},
-  {% if field.legend -%}
-  "legendHtml": {{ text_param(field.legend) }},
-  {% endif %}
+  "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
   "items" : [{% set comma = joiner() -%}
     {% for item in field.list.items -%}
       {{ comma() }}
@@ -97,7 +96,7 @@
 {% endmacro %}
 
 
-{% macro fieldref( fieldref ) %}
+{% macro fieldref( fieldref, page ) %}
 {%raw%}{%{%endraw%} set {{ fieldref.field }}Ref {%raw%}%}{%endraw%}
 {% call field(fieldref) %}
 {% endcall -%}
