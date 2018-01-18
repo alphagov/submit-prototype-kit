@@ -51,14 +51,8 @@
           "inputtype": "radio",
           "list": {
             "items": [
-              {
-                "label": "Yes",
-                "value": "yes"
-              },
-              {
-                "label": "No",
-                "value": "no"
-              }
+              { "label": "Yes", "value": "yes" },
+              { "label": "No", "value": "no" }
             ]
           }
         }

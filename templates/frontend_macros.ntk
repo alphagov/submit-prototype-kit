@@ -44,13 +44,9 @@
 {% macro govukRadios(params={}) %}
 <div class="form-group"
 <fieldset>
-
-{# TBD: GOV.UK frontend macro doesn't add field label in bold .. #}
-{% if params.label %}
-  <label class="form-label" for="{{ params.name }}">
-    <span class='question-lead'><p class='bold'>{{ params.label.text }}<p></span>
-  </label>
-{% endif %}
+  <legend>
+     <h1 class="heading-medium">{{ params.legendHtml }}</h1></legend>
+  </legend>
 
 {% for item in params.items %}
   <div class="multiple-choice" data-target="{{ item.fieldref }}">

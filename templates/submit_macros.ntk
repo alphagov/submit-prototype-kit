@@ -82,12 +82,8 @@
 {% elif field.inputtype == 'radio' %}
 {%raw%}{{{%endraw%} frontend.govukRadios({
   "name": {{ text_param(field.field) }},
-  {% if field.label %}
-    "label": {
-        "text": {{ text_param(field.label) }}
-    },
-  {% endif %}
-    "items" : [{% set comma = joiner() -%}
+  "legendHtml": {{ text_param(field.legend) }},
+  "items" : [{% set comma = joiner() -%}
     {% for item in field.list.items -%}
       {{ comma() }}
       { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
