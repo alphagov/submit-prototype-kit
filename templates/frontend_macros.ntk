@@ -35,7 +35,7 @@
 
 {% macro govukInput(params={}) %}
 <div class="form-group">
-  {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label }}</label>{% endif %}
+  {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label.text }}</label>{% endif %}
   <input class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}">
 </div>
 {% endmacro %}
@@ -44,10 +44,21 @@
 {% macro govukRadios(params={}) %}
 <div class="form-group"
 <fieldset>
+
+{# TBD: GOV.UK frontend macro doesn't add field label in bold .. #}
+{% if params.label %}
+  <label class="form-label" for="{{ params.name }}">
+    <span class='question-lead'><p class='bold'>{{ params.label.text }}<p></span>
+  </label>
+{% endif %}
+
 {% for item in params.items %}
   <div class="multiple-choice">
     <input id="{{ item.value }}" type="radio" name="{{ params.name }}" value="{{ item.value }}" >
     <label for="{{ item.value }}">{{ item.text }}</label>
+
+    {# TBD: GOV.UK frontend macro doesn't support embedded fields .. #}
+
   </div>
 {% endfor %}
 </fieldset>
