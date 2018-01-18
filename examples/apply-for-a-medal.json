@@ -1,0 +1,92 @@
+{
+  "name": "apply-for-a-medal",
+  "heading": "Apply for a military service medal",
+  "phase": "alpha",
+  "organisations": [
+    {
+      "name": "Ministry of Defence",
+      "organisation": "government-organisation:D17",
+      "website": "https://www.gov.uk/government/organisations/ministry-of-defence"
+    }
+  ],
+  "pages": [
+    {
+      "page": "index",
+      "pagetype": "start-page",
+      "heading": "Apply for a military service medal",
+      "guidance": "Current serving personnel should speak to their unit HR regarding all medals.\n\nUse this service to apply for medals awarded:\n\n*   during your military career\n*   to someone you have lasting power of attorney for during their military career\n*   to a deceased family member during their career\n\nThis service only provides medals awarded by:\n\n*   Army\n*   Home Guard\n*   Royal Air Force\n*   Royal Navy\n*   Royal Marines\n*   Reserve forces\n\nIf you’re applying on behalf of someone using lasting power of attorney you’ll need: \n\n*   details of the person’s military career\n*   evidence of lasting power of attorney\n\n### If you’re applying for someone else’s medal\n\nYou can apply on behalf of a veteran if you have [lasting power of attorney](/lasting-power-attorney-duties).\n\nIf the veteran has died, you must be the official next of kin. The general rules are:\n\n*   the person’s spouse or civil partner has first claim to the medal, and then the eldest child\n*   if there’s no spouse or child, the eldest grandchild is entitled to apply\n\nApplying takes around 5 minutes.",
+      "detail": "You can also register [by post]()"
+    },
+    {
+      "page": "applicant",
+      "pagetype": "question",
+      "heading": "Are you applying for medals awarded to you?",
+      "fields": [
+        {
+          "field": "application-person",
+          "inputtype": "radio",
+          "list": {
+            "items": [
+              {
+                "label": "Yes",
+                "value": "yesMyself"
+              },
+              {
+                "label": "No, I’m applying on behalf of someone else",
+                "value": "behalfOfRelative"
+              },
+              {
+                "label": "No, I’m applying for the medals of a deceased relative",
+                "value": "relativeOfDeceased"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page": "closest-relative",
+      "pagetype": "question",
+      "heading": "How are you related to the serviceperson?",
+      "guidance": "We need to know your relationship to the serviceperson to determine if you’re eligible to receive the medals.",
+      "fields": [
+        {
+          "field": "relationship",
+          "inputtype": "radio",
+          "label": "I am their:",
+          "list": {
+            "items": [
+              { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
+              { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
+              { "value": "relationshipChild", "label": "Child" },
+              { "value": "relationshipSibling", "label": "Brother or sister" },
+              { "value": "relationshipGrandChild", "label": "Grandchild" },
+              { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
+              { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
+            ]
+          }
+        }
+      ],
+      "fieldrefs": [
+        {
+          "field": "parentType",
+          "inputtype": "radio",
+          "label": "Are you their mother or father?",
+          "list": {
+            "items": [
+              { "value": "parentMother", "label": "Mother" },
+              { "value": "parentFather", "label": "Father" }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page": "confirmation",
+      "pagetype": "application-complete",
+      "heading": "Application complete",
+      "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
+      "detail": "Your application will be processed within 28 days."
+    }
+  ]
+}

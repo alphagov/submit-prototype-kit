@@ -98,10 +98,14 @@ function loadForm(path) {
   console.log(chalk.blue('Loading ' + path))
   var form = JSON.parse(fs.readFileSync(path, 'utf8'))
 
-  for (var i = 0; i < form.pages.length; i++) {
-    form.pages[i].name = pageName(form, i)
-    form.pages[i].back = pageName(form, i-1)
-    form.pages[i].next = pageName(form, i+1)
+  for (var p = 0; p < form.pages.length; p++) {
+
+    var page = form.pages[p]
+
+    // default next and previous pages
+    form.pages[p].name = pageName(form, p)
+    form.pages[p].back = pageName(form, p-1)
+    form.pages[p].next = pageName(form, p+1)
   }
 
   return form

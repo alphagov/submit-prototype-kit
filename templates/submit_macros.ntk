@@ -69,7 +69,7 @@
 {% macro field( field ) %}
 
 {% if field.inputtype == 'text' %}
-  {%raw%}{{{%endraw%} frontend.govukInput({
+{%raw%}{{{%endraw%} frontend.govukInput({
   {% if field.label %}
     "label": {
         "text": {{ text_param(field.label) }}
@@ -80,7 +80,7 @@
   }) {%raw%}}}{%endraw%}
 
 {% elif field.inputtype == 'radio' %}
-  {%raw%}{{{%endraw%} frontend.govukRadios({
+{%raw%}{{{%endraw%} frontend.govukRadios({
   "name": {{ text_param(field.field) }},
   {% if field.label %}
     "label": {
@@ -89,13 +89,19 @@
   {% endif %}
     "items" : [{% set comma = joiner() -%}
     {% for item in field.list.items -%}
-      {{ comma() }} {
-        "text": {{ text_param(item.label) }},
-        "value": {{ text_param(item.value) }}
-      }
+      {{ comma() }}
+      { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
+        "text": {{ text_param(item.label) }}, "value": {{ text_param(item.value) }} }
     {%- endfor %}]
-  }) {%raw%}}}{%endraw%}
-
+  })
+{%raw%}}}{%endraw%}
 {% endif %}
+{% endmacro %}
 
+
+{% macro fieldref( fieldref ) %}
+{%raw%}{%{%endraw%} set {{ fieldref.field }}Ref {%raw%}%}{%endraw%}
+{% call field(fieldref) %}
+{% endcall -%}
+{%raw%}{%{%endraw%} endset {%raw%}%}{%endraw%}
 {% endmacro %}

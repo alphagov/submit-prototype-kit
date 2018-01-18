@@ -53,13 +53,17 @@
 {% endif %}
 
 {% for item in params.items %}
-  <div class="multiple-choice">
-    <input id="{{ item.value }}" type="radio" name="{{ params.name }}" value="{{ item.value }}" >
+  <div class="multiple-choice" data-target="{{ item.fieldref }}">
+    <input id="{{ item.value }}" type="radio" name="{{ params.name }}" value="{{ item.value }}">
     <label for="{{ item.value }}">{{ item.text }}</label>
-
-    {# TBD: GOV.UK frontend macro doesn't support embedded fields .. #}
-
   </div>
+
+  {# TBD: GOV.UK frontend macro doesn't support embedded fields .. #}
+  {% if item.fieldhtml %}
+    <div class="panel panel-border-narrow js-hidden " id="{{ item.fieldref }}">
+    {{ item.fieldhtml | safe }}
+    </div>
+  {% endif %}
 {% endfor %}
 </fieldset>
 </div>

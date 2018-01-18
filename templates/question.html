@@ -16,6 +16,10 @@
         {{ submit.guidance(page.guidance) }}
         {{ submit.warning(page.warning) }}
 
+        {% for fieldref in page.fieldrefs %}
+          {{ submit.fieldref(fieldref) }}
+        {% endfor %}
+
         {% for field in page.fields %}{{ submit.field(field) }}{% endfor %}
 
         {{ submit.details(page.details) }}
