@@ -57,7 +57,7 @@
 
 
 {% macro nextButton( page, text="Continue" ) %}
-{% if page.next %}
+{% if page._next %}
 {%raw%}{{{%endraw%} frontend.govukButton({
   "text": {{ text_param(text) }},
   "href": "",

@@ -7,7 +7,7 @@ var router = express.Router()
 router.post('{{ page.name }}', function (req, res) {
   var data = req.session.data;
 
-  console.log(data);
+  console.log('{{ page.name }}', data);
 
   {% set comma = joiner('else ') -%}
 {% for next in page.next %}
