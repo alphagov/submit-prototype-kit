@@ -48,13 +48,16 @@ var argv = yargs
 var opts = {}
 opts.templatesDir = argv.templates || './templates'
 opts.outputDir = argv.out || './prototype/app'
-opts.viewsDir = path.resolve(opts.outputDir, 'views')
-opts.controllersDir = path.resolve(opts.outputDir, 'controllers')
 
 
 var templates = nunjucks.configure(path.resolve(process.cwd(), opts.templatesDir), {})
 
 markdown.register(templates, marked);
+
+
+function namePath(dir, name, suffix='') {
+  return path.resolve(dir, name.replace(/\W/, '-') + suffix)
+}
 
 
 function render(templateFile, outputFile, data) {
@@ -76,16 +79,19 @@ function render(templateFile, outputFile, data) {
 
 function renderForm(form) {
 
+  var controllersDir = path.resolve(opts.outputDir, 'controllers')
+  var viewsDir = namePath(path.resolve(opts.outputDir, 'views'), form.name)
+
   // controller
-  render(path.resolve(opts.templatesDir, 'routes.js'),
-    path.resolve(opts.controllersDir, form.name.replace(/\W/, '-') + '.js'),
-    { form: form, })
+  render(namePath(opts.templatesDir, 'routes', '.js'),
+         namePath(controllersDir, form.name, '.js'),
+        { form: form, })
 
   // page view
   for (let page of form.pages) {
-    render(path.resolve(opts.templatesDir, page.pagetype + '.html'),
-      path.resolve(opts.viewsDir, page.name.replace(/\W/, '-') + '.html'),
-      { form: form, page: page, })
+    render(namePath(opts.templatesDir, page.pagetype, '.html'),
+           namePath(viewsDir, page.name, '.html'),
+           { form: form, page: page, })
   }
 }
 
