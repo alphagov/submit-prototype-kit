@@ -6,7 +6,8 @@ KIT_ZIP=cache/$(KIT_NAME).zip
 KIT_URL='https://github.com/alphagov/$(KIT_NAME)/archive/v$(KIT_VERSION).zip'
 KIT_UNZIPPED=prototype/node_modules
 
-VIEWS_DIR=prototype/app/views
+APP_DIR=prototype/app
+VIEWS_DIR=$(APP_DIR)/views
 
 EXAMPLES=\
 	$(VIEWS_DIR)/simplest\
@@ -23,19 +24,26 @@ SRC_PROTOTYPE_MACROS=\
 PROTOTYPE_MACROS=\
 	$(subst templates/,$(VIEWS_DIR)/,$(SRC_PROTOTYPE_MACROS))
 
+SRC_PROTOTYPE_ROUTER=lib/routes.js
+PROTOTYPE_ROUTER=prototype/app/routes.js
+
 all:	$(EXAMPLES)
 
 $(VIEWS_DIR)/%:	prototype bin/submit.js $(SRC_TEMPLATES) examples/%.json
-	bin/submit.js -o $@ $(patsubst $(VIEWS_DIR)/%,examples/%.json,$(@))
+	bin/submit.js -o $(APP_DIR) $(patsubst $(VIEWS_DIR)/%,examples/%.json,$(@))
 
 start:
 	cd prototype; npm start
 
-prototype:	$(PROTOTYPE_MACROS)
+prototype:	$(PROTOTYPE_MACROS) $(PROTOTYPE_ROUTER)
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_MACROS) $(VIEWS_DIR)
+
+# copy in the macros used by the generated templates
+$(PROTOTYPE_ROUTER):	$(SRC_PROTOTYPE_ROUTER) $(KIT_UNZIPPED)
+	cp $(SRC_PROTOTYPE_ROUTER) $(PROTOTYPE_ROUTER)
 
 $(KIT_UNZIPPED):	$(KIT_ZIP)
 	unzip -o '$(KIT_ZIP)'

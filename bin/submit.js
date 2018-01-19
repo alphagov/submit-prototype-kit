@@ -47,23 +47,19 @@ var argv = yargs
 
 var opts = {}
 opts.templatesDir = argv.templates || './templates'
-opts.outputDir = argv.out || './prototype/app/views/'
+opts.outputDir = argv.out || './prototype/app'
+opts.viewsDir = path.resolve(opts.outputDir, 'views')
+opts.controllersDir = path.resolve(opts.outputDir, 'controllers')
+
 
 var templates = nunjucks.configure(path.resolve(process.cwd(), opts.templatesDir), {})
 
 markdown.register(templates, marked);
 
-function renderPage(page, form) {
 
-  var templateFile = path.resolve(opts.templatesDir, page.pagetype + '.html')
-  var outputFile = path.resolve(opts.outputDir, page.name.replace(/\W/, '-') + '.html')
-
-  data = {
-    form: form,
-    page: page,
-    templateFile: templateFile,
-    outputFile: outputFile
-  }
+function render(templateFile, outputFile, data) {
+  data.templateFile = templateFile
+  data.outputFile = outputFile
 
   templates.render(templateFile, data, function(err, output) {
 
@@ -79,8 +75,17 @@ function renderPage(page, form) {
 
 
 function renderForm(form) {
+
+  // controller
+  render(path.resolve(opts.templatesDir, 'routes.js'),
+    path.resolve(opts.controllersDir, form.name.replace(/\W/, '-') + '.js'),
+    { form: form, })
+
+  // page view
   for (let page of form.pages) {
-    renderPage(page, form, opts.outputDir)
+    render(path.resolve(opts.templatesDir, page.pagetype + '.html'),
+      path.resolve(opts.viewsDir, page.name.replace(/\W/, '-') + '.html'),
+      { form: form, page: page, })
   }
 }
 
@@ -104,8 +109,8 @@ function loadForm(path) {
 
     // default next and previous pages
     form.pages[p].name = pageName(form, p)
-    form.pages[p].back = pageName(form, p-1)
-    form.pages[p].next = pageName(form, p+1)
+    form.pages[p]._prev = pageName(form, p-1)
+    form.pages[p]._next = pageName(form, p+1)
   }
 
   return form

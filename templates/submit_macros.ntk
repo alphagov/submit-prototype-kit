@@ -11,10 +11,10 @@
 
 
 {% macro back_link( page, text="Back" ) %}
-{% if page.back %}
+{% if page._prev %}
 {%raw%}{{{%endraw%} frontend.govukBackLink({
   "text": {{ text_param(text) }},
-  "href": {{ text_param(page.back) }}
+  "href": {{ text_param(page._prev) }}
 }) {%raw%}}}{%endraw%}
 {% endif %}
 {% endmacro %}
@@ -50,7 +50,7 @@
 {% macro startButton( page, text="Start now" ) %}
 {%raw%}{{{%endraw%} frontend.govukButton({
   "text": {{ text_param(text) }},
-  "href": "{{ page.next }}",
+  "href": "{{ page._next }}",
   "classes": "govuk-c-button--start"
 }) {%raw%}}}{%endraw%}
 {% endmacro %}
