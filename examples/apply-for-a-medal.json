@@ -34,9 +34,29 @@
         }
       ],
       "next": [
+        { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
-        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" },
-        { "page": "active-service" }
+        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
+      ]
+    },
+
+    {
+      "page": "active-service",
+      "pagetype": "question",
+      "heading": "Are you retired from the armed forces?",
+      "fields": [
+        {
+          "field": "activeService",
+          "inputtype": "radio",
+          "items": [
+            { "label": "Yes", "value": "activeServiceRetired" },
+            { "label": "No, I’m currently serving", "value": "activeServiceServing" }
+          ]
+        }
+      ],
+      "next": [
+        { "page": "ineligible-still-serving", "if": "data['activeService'] == 'activeServiceServing'" },
+        { "page": "which-services", "if": "data['activeService'] == 'activeServiceRetired'"  }
       ]
     },
 
@@ -75,6 +95,13 @@
     },
 
     {
+      "page": "ineligible-still-serving",
+      "pagetype": "bounce",
+      "heading": "Apply through human resources in your unit",
+      "guidance": "You can only apply for a medal online if you’re a retired veteran\n\nIf you are a retired veteran, [continue your medal application](active-service)\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
+    },
+
+    {
       "page": "confirmation",
       "pagetype": "application-complete",
       "heading": "Application complete",
@@ -82,4 +109,5 @@
       "detail": "Your application will be processed within 28 days."
     }
   ]
+
 }

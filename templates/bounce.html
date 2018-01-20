@@ -1,0 +1,19 @@
+{% extends "submit_layout.html" %}
+
+{% block title %}{{ page.heading }}{% endblock %}
+
+{% block content %}
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+      <h1 class="heading-xlarge">{{ page.heading }}</h1>
+
+      {{ submit.guidance(page.guidance) }}
+
+      {% if page.detail %}
+      {{ submit.detail(page.detail) }}
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}
