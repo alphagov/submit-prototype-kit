@@ -1,38 +1,68 @@
-{% macro text_param( text ) %}{{ text | dump | safe }}{% endmacro %}
+{% macro text_param( text ) -%}
+  {{ text | dump | safe }}
+{%- endmacro %}
 
-{% macro markdown_text( text ) %}{% markdown %}{{ text }}{% endmarkdown %}{% endmacro %}
+{% macro markdown_text( text ) -%}
+  {% markdown %}{{ text }}{% endmarkdown %}
+{%- endmacro %}
+
 {% macro markdown_html( text ) %}{{ 
   markdown_text(text).val | safe |
   replace("<ul>", "<ul class=\"list list-bullet\">") |
   replace("<h3 ", "<h3 class=\"heading-small\" ")
 }}{% endmacro %}
-{% macro markdown_param( text ) %}{{ text_param(markdown_html(text).val) }}{% endmacro %}
-{% macro visually_hidden( text ) %}<span class='visually-hidden'>{{ text | safe }}</span>{% endmacro %}
+
+{% macro markdown_param( text ) %}
+  {{ text_param(markdown_html(text).val) }}
+{% endmacro %}
+
+{% macro visually_hidden( text ) -%}
+  <span class='visually-hidden'>{{ text | safe }}</span>
+{%- endmacro %}
+
+{% macro frontend_macro(name) %}
+{%raw%}{{{%endraw%}
+  frontend.{{ name }}({%raw%}{{%endraw%}
+{%- endmacro %}
+
+{% macro frontend_endmacro() -%}
+{%raw%}  }){%endraw%}
+{%raw%}}}{%endraw%}
+{%- endmacro %}
+
+
+{% macro fieldref( fieldref, page ) %}
+{%raw%}{%{%endraw%} set {{ fieldref.field }}Ref {%raw%}%}{%endraw%}
+{%- call field(fieldref) %}{% endcall %}
+{%raw%}{%{%endraw%} endset {%raw%}%}{%endraw%}
+{% endmacro %}
 
 
 {% macro back_link( page, text="Back" ) %}
 {% if page._prev %}
-{%raw%}{{{%endraw%} frontend.govukBackLink({
-  "text": {{ text_param(text) }},
-  "href": {{ text_param(page._prev) }}
-}) {%raw%}}}{%endraw%}
+{{ frontend_macro('govukBackLink') }}
+    "text": {{ text_param(text) }},
+    "href": {{ text_param(page._prev) }}
+{{ frontend_endmacro() }}
 {% endif %}
 {% endmacro %}
 
 
 {% macro guidance( text ) %}
 {% if text %}
-<div class='guidance'>{{ markdown_html(text) }}</div>
+<div class='guidance'>
+  {{ markdown_html(text) | indent(2) | replace(r/[\n ]*$/, '') | safe }}
+</div>
 {% endif %}
 {% endmacro %}
 
 
 {% macro warning( text ) %}
 {% if text %}
-{%raw%}{{{%endraw%} frontend.govukLegalText({
-  "legalText": {{ text_param(text) }},
-  "iconFallbackText": "Warning"
-}) {%raw%}}}{%endraw%}
+{{ frontend_macro('govukBackLegalText') }}
+    "legalText": {{ text_param(text) }},
+    "iconFallbackText": "Warning"
+{{ frontend_endmacro() }}
 {% endif %}
 {% endmacro %}
 
@@ -40,65 +70,60 @@
 {% macro details( text, summary='Help' ) %}
 {% if text %}
 {%raw%}{{{%endraw%} frontend.govukDetails({
-  "summaryText": {{ text_param(summary) }},
-  "html": {{ markdown_param(text) }}
-}) {%raw%}}}{%endraw%}
+    "summaryText": {{ text_param(summary) }},
+    "html": {{ markdown_param(text) }}
+{{ frontend_endmacro() }}
 {% endif %}
 {% endmacro %}
 
 
 {% macro startButton( page, text="Start now" ) %}
-{%raw%}{{{%endraw%} frontend.govukButton({
-  "text": {{ text_param(text) }},
-  "href": "{{ page._next }}",
-  "classes": "govuk-c-button--start"
-}) {%raw%}}}{%endraw%}
+{{ frontend_macro('govukButton') }}
+    "text": {{ text_param(text) }},
+    "href": "{{ page._next }}",
+    "classes": "govuk-c-button--start"
+{{ frontend_endmacro() }}
 {% endmacro %}
 
 
-{% macro nextButton( page, text="Continue" ) %}
+{%- macro nextButton( page, text="Continue" ) %}
 {% if page._next %}
-{%raw%}{{{%endraw%} frontend.govukButton({
-  "text": {{ text_param(text) }},
-  "href": "",
-  "classes": ""
-}) {%raw%}}}{%endraw%}
+{{ frontend_macro('govukButton') }}
+    "text": {{ text_param(text) }},
+    "href": "",
+    "classes": ""
+{{ frontend_endmacro() }}
 {% endif %}
 {% endmacro %}
 
 
-{% macro field( field, page ) %}
+{%- macro field( field, page ) -%}
 
-{% if field.inputtype == 'text' %}
-{%raw%}{{{%endraw%} frontend.govukInput({
-  {% if field.label %}
+{%- if field.inputtype == 'text' -%}
+
+{{ frontend_macro('govukInput') }}
+  {%- if field.label %}
     "label": {
         "text": {{ text_param(field.label) }}
     },
   {% endif %}
     "id": {{ text_param(field.field) }},
     "name": {{ text_param(field.field) }}
-  }) {%raw%}}}{%endraw%}
+{{ frontend_endmacro() }}
 
-{% elif field.inputtype == 'radio' %}
-{%raw%}{{{%endraw%} frontend.govukRadios({
-  "name": {{ text_param(field.field) }},
-  "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
-  "items" : [{% set comma = joiner() -%}
+{%- elif field.inputtype == 'radio' -%}
+
+{{ frontend_macro('govukRadios') }}
+    "name": {{ text_param(field.field) }},
+    "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
+    "items" : [{% set comma = joiner() -%}
     {% for item in field.items -%}
       {{ comma() }}
       { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
         "text": {{ text_param(item.label) }}, "value": {{ text_param(item.value) }} }
-    {%- endfor %}]
-  })
-{%raw%}}}{%endraw%}
-{% endif %}
-{% endmacro %}
+    {%- endfor %}
+    ]
+{{ frontend_endmacro() }}
 
-
-{% macro fieldref( fieldref, page ) %}
-{%raw%}{%{%endraw%} set {{ fieldref.field }}Ref {%raw%}%}{%endraw%}
-{% call field(fieldref) %}
-{% endcall -%}
-{%raw%}{%{%endraw%} endset {%raw%}%}{%endraw%}
-{% endmacro %}
+{%- endif -%}
+{%- endmacro -%}

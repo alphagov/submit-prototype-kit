@@ -8,10 +8,10 @@
     <div class="column-two-thirds">
       <h1 class="heading-xlarge">{{ page.heading }}</h1>
 
-      {{ submit.guidance(page.guidance) }}
+      {{ submit.guidance(page.guidance) | indent(6) }}
 
       {% if page.detail %}
-      {{ submit.detail(page.detail) }}
+      {{ submit.detail(page.detail) | indent(6) }}
       {% endif %}
     </div>
   </div>

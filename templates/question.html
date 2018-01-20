@@ -7,24 +7,30 @@
   <div class="grid-row">
     <div class="column-two-thirds">
 
-      {{ submit.back_link(page) }}
+      {{ submit.back_link(page) | indent(6) }}
 
       <h1 class="heading-large">{{ page.heading }}</h1>
 
       <form class="form" action="" method="post">
+        {% set f %}
+          {{ submit.guidance(page.guidance) }}
 
-        {{ submit.guidance(page.guidance) }}
-        {{ submit.warning(page.warning) }}
+          {{ submit.warning(page.warning) }}
 
-        {% for fieldref in page.fieldrefs %}
-          {{ submit.fieldref(fieldref, page) }}
-        {% endfor %}
+          {% for fieldref in page.fieldrefs %}
+            {{ submit.fieldref(fieldref, page) }}
+          {% endfor %}
 
-        {% for field in page.fields %}{{ submit.field(field, page) }}{% endfor %}
+          {% for field in page.fields -%}
+            {{ submit.field(field, page)  }}
+          {% endfor %}
 
-        {{ submit.details(page.details) }}
+          {{ submit.details(page.details) }}
 
-        {{ submit.nextButton(page) }}
+          {{ submit.nextButton(page) }}
+        {% endset %}
+
+        {{ f | safe | indent(8) }}
       </form>
     </div>
   </div>

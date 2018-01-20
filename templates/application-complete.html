@@ -16,11 +16,11 @@
         </p>
       </div>
 
-      {{ submit.guidance(page.guidance) }}
+      {{ submit.guidance(page.guidance) | indent(6) }}
 
       {% if page.detail %}
       <h2 class="heading-medium">What happens next</h2>
-      {{ submit.guidance(page.detail) }}
+      {{ submit.guidance(page.detail) | indent(6) }}
       {% endif %}
     </div>
   </div>

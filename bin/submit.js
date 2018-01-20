@@ -70,6 +70,9 @@ function render(templateFile, outputFile, data) {
       return console.error(chalk.red(err))
     }
 
+    // normalise whitespace
+    output = output.replace(/ +$/gm, '').replace(/\n\n+/g, '\n\n')
+
     console.log(chalk.blue('Writing: ' + outputFile))
     mkdirp.sync(path.dirname(outputFile))
     fs.writeFileSync(outputFile, output)

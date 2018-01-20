@@ -7,13 +7,12 @@
   <div class="grid-row">
     <div class="column-two-thirds">
       <h1 class="heading-xlarge">{{ form.heading }}</h1>
+      {{ submit.guidance(page.guidance) | indent(6) }}
+      {{ submit.startButton(page) | indent(6) }}
 
-      {{ submit.guidance(page.guidance) }}
-      {{ submit.startButton(page) }}
-
-      {% if page.detail %}
-      <h2 class="heading-medium">Before you start</h2>
-      {{ submit.guidance(page.detail) }}
+      {% if page.detail -%}
+        <h2 class="heading-medium">Before you start</h2>
+        {{ submit.guidance(page.detail) | indent(6) }}
       {% endif %}
     </div>
   </div>
