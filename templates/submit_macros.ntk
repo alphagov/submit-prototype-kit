@@ -1,5 +1,18 @@
-{% macro text_param( text ) -%}
-  {{ text | dump | safe }}
+{%- macro optional_text( text ) -%}
+  {# test if an array of objects or a string #}
+  {%- if (text|string) == (text|list) %}
+    {%- set comma = joiner('{% else %}') -%}
+    {% for o in text %}
+      {{ comma() }}
+      {%- if o['if'] -%}
+        {%raw%}{% if {%endraw%} ({{ o['if'] | safe}}) {%raw%}%}{%endraw%}
+      {%- endif %}
+          {{ o.text }}
+    {%- endfor %}
+      {%raw%}{% endif %}{%endraw%}
+  {% else -%}
+    {{ text }}
+  {%- endif %}
 {%- endmacro %}
 
 {% macro markdown_text( text ) -%}
@@ -12,13 +25,18 @@
   replace("<h3 ", "<h3 class=\"heading-small\" ")
 }}{% endmacro %}
 
-{% macro markdown_param( text ) %}
-  {{ text_param(markdown_html(text).val) }}
-{% endmacro %}
-
 {% macro visually_hidden( text ) -%}
   <span class='visually-hidden'>{{ text | safe }}</span>
 {%- endmacro %}
+
+
+{% macro text_param( text ) -%}
+  {{ text | dump | safe }}
+{%- endmacro %}
+
+{% macro markdown_param( text ) %}
+  {{ text_param(markdown_html(text).val) }}
+{% endmacro %}
 
 {% macro frontend_macro(name) %}
 {%raw%}{{{%endraw%}

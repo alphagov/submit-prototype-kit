@@ -102,6 +102,37 @@
     },
 
     {
+      "page": "which-services",
+      "pagetype": "question",
+      "heading": [
+          {
+            "text": "Which organisations did you serve with?",
+            "if": "data['applicationPerson'] == 'Yes'"
+          },
+          {
+            "text": "Which organisations did the serviceperson serve with?"
+          }
+      ],
+      "fields": [
+        {
+          "field": "applicationPerson",
+          "inputtype": "radio",
+          "items": [
+            { "label": "Yes", "value": "yesMyself" },
+            { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
+            { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
+          ]
+        }
+      ],
+      "next": [
+        { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
+        { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
+        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
+      ]
+    },
+
+
+    {
       "page": "confirmation",
       "pagetype": "application-complete",
       "heading": "Application complete",

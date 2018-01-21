@@ -9,7 +9,9 @@
 
       {{ submit.back_link(page) | indent(6) }}
 
-      <h1 class="heading-large">{{ page.heading }}</h1>
+      <h1 class="heading-large">
+        {{ submit.optional_text(page.heading) }}
+      </h1>
 
       <form class="form" action="" method="post">
         {% set f %}
