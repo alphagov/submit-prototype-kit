@@ -116,11 +116,14 @@
       "fields": [
         {
           "field": "applicationPerson",
-          "inputtype": "radio",
+          "inputtype": "checkboxes",
           "items": [
-            { "label": "Yes", "value": "yesMyself" },
-            { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
-            { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
+            { "label": "Army", "value": "army" },
+            { "label": "Home Guard", "value": "home-guard" },
+            { "label": "Royal Air Force", "value": "raf" },
+            { "label": "Royal Marines", "value": "marines" },
+            { "label": "Reserve forces", "value": "reserve-forces" },
+            { "label": "Other organisations", "value": "other-orgs", "hint": "For example, the Civil Defence Service, Royal Fleet Auxiliary or Merchant Navy" }
           ]
         }
       ],

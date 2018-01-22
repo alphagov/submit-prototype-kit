@@ -65,3 +65,22 @@
 </div>
 
 {% endmacro %}
+
+{% macro govukCheckboxes(params={}) %}
+<div class="form-group"
+<fieldset>
+  <legend>
+     <h1 class="heading-medium">{{ params.legendHtml | safe }}</h1></legend>
+  </legend>
+
+{% for item in params.items %}
+  <div class="multiple-choice" data-target="{{ item.fieldref }}">
+    <input id="{{ item.value }}" type="checkbox" name="{{ params.name }}" value="{{ item.value }}">
+    <label for="{{ item.value }}">{{ item.text }}
+    {%- if item.hint %} <span class="label-explanation">{{ item.hint }}</span>{%- endif -%}
+    </label>
+  </div>
+{% endfor %}
+</fieldset>
+</div>
+{% endmacro %}

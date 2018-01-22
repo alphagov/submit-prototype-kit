@@ -27,6 +27,9 @@ PROTOTYPE_MACROS=\
 SRC_PROTOTYPE_ROUTER=lib/routes.js
 PROTOTYPE_ROUTER=prototype/app/routes.js
 
+SRC_PROTOTYPE_SCSS=lib/submit.scss
+PROTOTYPE_SCSS=prototype/app/assets/sass/submit.scss
+
 all:	$(EXAMPLES)
 
 $(VIEWS_DIR)/%:	prototype bin/submit.js $(SRC_TEMPLATES) examples/%.json
@@ -35,15 +38,19 @@ $(VIEWS_DIR)/%:	prototype bin/submit.js $(SRC_TEMPLATES) examples/%.json
 start:
 	cd prototype; npm start
 
-prototype:	$(PROTOTYPE_MACROS) $(PROTOTYPE_ROUTER)
+prototype:	$(PROTOTYPE_MACROS) $(PROTOTYPE_ROUTER) $(PROTOTYPE_SCSS)
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_MACROS) $(VIEWS_DIR)
 
-# copy in the macros used by the generated templates
+# copy in the router
 $(PROTOTYPE_ROUTER):	$(SRC_PROTOTYPE_ROUTER) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_ROUTER) $(PROTOTYPE_ROUTER)
+
+# copy in compiled CSS
+$(PROTOTYPE_SCSS):	$(SRC_PROTOTYPE_SCSS) $(KIT_UNZIPPED)
+	cp $(SRC_PROTOTYPE_SCSS) $(PROTOTYPE_SCSS)
 
 $(KIT_UNZIPPED):	$(KIT_ZIP)
 	unzip -o '$(KIT_ZIP)'
