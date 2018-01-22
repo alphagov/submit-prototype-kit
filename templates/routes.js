@@ -2,7 +2,15 @@ var express = require('express')
 var router = express.Router()
 
 {% for page in form.pages %}
+
+{%- if (page.heading|string) == (page.heading|list) %}
+{% for o in page.heading %}
+// {{ o.text }}
+{% endfor %}
+{% else %}
 // {{ page.heading }}
+{% endif %}
+
 router.post('/{{ form.name }}/{{ page.name }}', function (req, res) {
   var data = req.session.data;
   console.log(req.url, data);
