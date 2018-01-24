@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+  GOV.UK prototype kit
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <h1 class="heading-xlarge">
+        {{ form.heading }}
+      </h1>
+
+      <h2 class="heading-large">
+        Pages
+      </h2>
+      {% for page in form.pages %}
+        <ul>
+          <li><a href="/forms/{{ form.name }}/pages/{{ page.page }}">{{ page.heading }}</a></li>
+        </ul>
+      {% endfor %}
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+
