@@ -22,17 +22,7 @@
       "page": "applicant",
       "pagetype": "question",
       "heading": "Are you applying for medals awarded to you?",
-      "fields": [
-        {
-          "field": "applicationPerson",
-          "inputtype": "radio",
-          "items": [
-            { "label": "Yes", "value": "yesMyself" },
-            { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
-            { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
-          ]
-        }
-      ],
+      "fields": ["applicationPerson"],
       "next": [
         { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
@@ -44,16 +34,7 @@
       "page": "active-service",
       "pagetype": "question",
       "heading": "Are you retired from the armed forces?",
-      "fields": [
-        {
-          "field": "activeService",
-          "inputtype": "radio",
-          "items": [
-            { "label": "Yes", "value": "activeServiceRetired" },
-            { "label": "No, I’m currently serving", "value": "activeServiceServing" }
-          ]
-        }
-      ],
+      "fields": ["activeService"],
       "next": [
         { "page": "ineligible-still-serving", "if": "data['activeService'] == 'activeServiceServing'" },
         { "page": "which-services", "if": "data['activeService'] == 'activeServiceRetired'"  }
@@ -65,23 +46,10 @@
       "pagetype": "question",
       "heading": "How are you related to the serviceperson?",
       "guidance": "We need to know your relationship to the serviceperson to determine if you’re eligible to receive the medals.",
-      "fields": [
-        {
-          "field": "relationship",
-          "inputtype": "radio",
-          "legend": "I am their:",
-          "items": [
-            { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
-            { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
-            { "value": "relationshipChild", "label": "Child" },
-            { "value": "relationshipSibling", "label": "Brother or sister" },
-            { "value": "relationshipGrandChild", "label": "Grandchild" },
-            { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
-            { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
-          ]
-        }
-      ],
-      "fieldrefs": ["parentType"]
+      "fields": ["relationship"],
+      "fieldrefs": ["parentType"],
+      "next": {
+      }
     },
 
     {
@@ -103,27 +71,13 @@
             "text": "Which organisations did the serviceperson serve with?"
           }
       ],
-      "fields": [
-        {
-          "field": "applicationPerson",
-          "inputtype": "checkboxes",
-          "items": [
-            { "label": "Army", "value": "army" },
-            { "label": "Home Guard", "value": "home-guard" },
-            { "label": "Royal Air Force", "value": "raf" },
-            { "label": "Royal Marines", "value": "marines" },
-            { "label": "Reserve forces", "value": "reserve-forces" },
-            { "label": "Other organisations", "value": "other-orgs", "hint": "For example, the Civil Defence Service, Royal Fleet Auxiliary or Merchant Navy" }
-          ]
-        }
-      ],
+      "fields": ["applicationPerson"],
       "next": [
         { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
         { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
       ]
     },
-
 
     {
       "page": "confirmation",
@@ -142,7 +96,46 @@
         { "value": "parentMother", "label": "Mother" },
         { "value": "parentFather", "label": "Father" }
       ]
+    },
+    "applicationPerson": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "yesMyself" },
+        { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
+        { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
+      ]
+    },
+    "activeService": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "activeServiceRetired" },
+        { "label": "No, I’m currently serving", "value": "activeServiceServing" }
+      ]
+    },
+    "relationship": {
+      "field": "relationship",
+      "inputtype": "radio",
+      "legend": "I am their:",
+      "items": [
+        { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
+        { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
+        { "value": "relationshipChild", "label": "Child" },
+        { "value": "relationshipSibling", "label": "Brother or sister" },
+        { "value": "relationshipGrandChild", "label": "Grandchild" },
+        { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
+        { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
+      ]
+    },
+    "applicationPerson": {
+      "inputtype": "checkboxes",
+      "items": [
+        { "label": "Army", "value": "army" },
+        { "label": "Home Guard", "value": "home-guard" },
+        { "label": "Royal Air Force", "value": "raf" },
+        { "label": "Royal Marines", "value": "marines" },
+        { "label": "Reserve forces", "value": "reserve-forces" },
+        { "label": "Other organisations", "value": "other-orgs", "hint": "For example, the Civil Defence Service, Royal Fleet Auxiliary or Merchant Navy" }
+      ]
     }
   }
-
 }

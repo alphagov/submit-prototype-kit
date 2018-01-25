@@ -24,37 +24,18 @@
       "heading": "What is your name?",
       "guidance": "This is some guidance markdown.",
       "warning": "This is some warning text.",
-      "fields": [
-        {
-          "field": "name",
-          "inputtype": "text"
-        }
-      ]
+      "fields": ["name"]
     },
     {
       "pagetype": "question",
       "heading": "What is your email address?",
-      "fields": [
-        {
-          "field": "email",
-          "inputtype": "text"
-        }
-      ]
+      "fields": ["email"]
     },
     {
       "pagetype": "question",
       "page": "adult",
       "heading": "Are you aged 18 or older?",
-      "fields": [
-        {
-          "field": "adult",
-          "inputtype": "radio",
-          "items": [
-            { "label": "Yes", "value": "yes" },
-            { "label": "No", "value": "no" }
-          ]
-        }
-      ]
+      "fields": ["adult"]
     },
     {
       "pagetype": "application-complete",
@@ -62,5 +43,21 @@
       "guidance": "We have sent a confirmation email to **{{data.email}}**.",
       "detail": "Your application will be processed within 28 days."
     }
-  ]
+  ],
+  "fields": {
+    "name": {
+      "inputtype": "text"
+    },
+    "email": {
+      "inputtype": "text"
+    },
+    "adult": {
+      "field": "adult",
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "yes" },
+        { "label": "No", "value": "no" }
+      ]
+    }
+  }
 }

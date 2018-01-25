@@ -77,7 +77,7 @@
 
 {% macro warning( text ) %}
 {% if text %}
-{{ frontend_macro('govukBackLegalText') }}
+{{ frontend_macro('govukLegalText') }}
     "legalText": {{ text_param(text) }},
     "iconFallbackText": "Warning"
 {{ frontend_endmacro() }}

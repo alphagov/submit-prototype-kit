@@ -26,8 +26,8 @@
             {{ submit.fieldref(form.fields[fieldref], page) }}
           {% endfor %}
 
-          {% for field in page.fields -%}
-            {{ submit.field(field, page)  }}
+          {% for fieldname in page.fields -%}
+            {{ submit.field(form.fields[fieldname], page)  }}
           {% endfor %}
 
           {{ submit.details(page.details) }}

@@ -3,18 +3,23 @@
   "heading": "Simplest example",
   "pages": [
     {
+      "page": "index",
       "pagetype": "start-page",
       "heading": "Simplest"
     },
     {
       "pagetype": "question",
       "heading": "What is your name?",
-      "fields": [
-        {
-          "field": "name",
-          "inputtype": "text"
-        }
-      ]
+      "fields": ["name"]
+    },
+    {
+      "pagetype": "application-complete",
+      "heading": "Application complete"
     }
-  ]
+  ],
+  "fields": {
+    "name": {
+        "inputtype": "text"
+      }
+  }
 }
