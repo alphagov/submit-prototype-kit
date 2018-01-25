@@ -15,7 +15,8 @@
       "pagetype": "start-page",
       "heading": "Apply for a military service medal",
       "guidance": "Current serving personnel should speak to their unit HR regarding all medals.\n\nUse this service to apply for medals awarded:\n\n*   during your military career\n*   to someone you have lasting power of attorney for during their military career\n*   to a deceased family member during their career\n\nThis service only provides medals awarded by:\n\n*   Army\n*   Home Guard\n*   Royal Air Force\n*   Royal Navy\n*   Royal Marines\n*   Reserve forces\n\nIf you’re applying on behalf of someone using lasting power of attorney you’ll need: \n\n*   details of the person’s military career\n*   evidence of lasting power of attorney\n\n### If you’re applying for someone else’s medal\n\nYou can apply on behalf of a veteran if you have [lasting power of attorney](/lasting-power-attorney-duties).\n\nIf the veteran has died, you must be the official next of kin. The general rules are:\n\n*   the person’s spouse or civil partner has first claim to the medal, and then the eldest child\n*   if there’s no spouse or child, the eldest grandchild is entitled to apply\n\nApplying takes around 5 minutes.",
-      "detail": "You can also register [by post]()"
+      "detail": "You can also register [by post]()",
+      "next": [ { "page": "applicant" } ]
     },
 
     {
@@ -71,7 +72,7 @@
             "text": "Which organisations did the serviceperson serve with?"
           }
       ],
-      "fields": ["applicationPerson"],
+      "fields": ["organisations"],
       "next": [
         { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
@@ -126,7 +127,7 @@
         { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
       ]
     },
-    "applicationPerson": {
+    "organisations": {
       "inputtype": "checkboxes",
       "items": [
         { "label": "Army", "value": "army" },
