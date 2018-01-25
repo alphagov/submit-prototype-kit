@@ -60,6 +60,9 @@ if (env === 'production' && useAuth === 'true') {
 // Set up App
 var appViews = [path.join(__dirname, '/app/views/'), path.join(__dirname, '/lib/')]
 
+// Make kit templates available to editor views
+appViews.push(path.resolve(__dirname, '../templates'))
+
 var nunjucksAppEnv = nunjucks.configure(appViews, {
   autoescape: true,
   express: app,

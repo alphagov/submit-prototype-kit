@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
+
+{% block page_title %}
+  GOV.UK prototype kit
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <h1 class="heading-xlarge">
+        {{ page.heading }}
+      </h1>
+
+      <form action="/forms/{{ formname }}/pages/{{ page }}" method="post">
+        {% if page.heading %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Guidance"
+            },
+            "name": "heading",
+            "id": "heading",
+            "value": page.heading
+          }) }}
+        {% endif %}
+
+        {% if page.pagetype %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page type"
+            },
+            "name": "pagetype",
+            "id": "pagetype",
+            "value": page.pagetype
+          }) }}
+        {% endif %}
+
+        {% if page.guidance %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Guidance"
+            },
+            "name": "guidance",
+            "id": "guidance",
+            "value": page.guidance
+          }) }}
+        {% endif %}
+
+        {% if page.detail %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Detail"
+            },
+            "name": "detail",
+            "id": "detail",
+            "value": page.detail
+          }) }}
+        {% endif %}
+
+        {% for field in page.fields %}
+
+        {% endfor %}
+
+        {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+      </form>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+

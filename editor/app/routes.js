@@ -16,9 +16,15 @@ router.get('/forms', function (req, res) {
   res.redirect('/');
 });
 
-router.get('/forms/:name', function (req, res) {
-  let name = req.params.name;
+router.get('/forms/:formname', function (req, res) {
+  res.render('form', { 'form': formsData.getForm(req.params.formname) })
+});
 
-  res.render('form', { 'form': formsData.getForm(name) })
+router.get('/forms/:formname/pages', function (req, res) {
+  res.render('page', { 'page': formsData.getForm(req.params.formname).pages[0] })
+});
+
+router.get('/forms/:name/pages/:page', function (req, res) {
+  res.render('page', { 'page': formsData.getForm(req.params.formname).page(req.params.pagename) })
 });
 module.exports = router

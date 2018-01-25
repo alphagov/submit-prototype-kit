@@ -26,23 +26,33 @@ class Field extends FormComponent {
 
 
 class Page extends FormComponent {
-  get page() { return (this.data.page === 'index') ? '' : this.data.page; }
-  get pagetype() { return this.data.pagetype; }
-  get heading() { return this.data.heading || undefined; }
-  get guidance() { return this.data.guidance || undefined; }
-  get detail() { return this.data.detail || undefined; }
-  get fields() {
-    let form = this.form;
+  constructor(data, form) {
+    super(data, form);
 
     if (this.data.hasOwnProperty('fields')) {
-      return this.data.fields.map(f => {
+      this._fields = this.data.fields.map(f => {
         let field = new Field(f, form);
 
         return field;
       });
     }
+  }
+  get page() { return (this.data.page === 'index') ? '' : this.data.page; }
+  get pagetype() { return this.data.pagetype; }
+  get heading() {
+    // monkey patch until we deal with visible-if values
+    let heading = this.data.heading;
 
-    return undefined;
+    if (!Array.isArray(heading)) {
+      return heading;
+    } else {
+      return undefined;
+    }
+  }
+  get guidance() { return this.data.guidance || undefined; }
+  get detail() { return this.data.detail || undefined; }
+  get fields() {
+    return this._fields || undefined;
   }
   get next() { return this.data.next || undefined; }
 }
@@ -57,20 +67,22 @@ class Organisation extends FormComponent {
 
 class Form {
   constructor(data, fileName) {
+    let form = this;
+
     this.data = data;
     this.fileName = fileName;
+
+    this._pages = this.data.pages.map(p => {
+      var page = new Page(p, form);
+      
+      return page;
+    });
   }
   get name() { return this.data.name; }
   get heading() { return this.data.heading; }
   get phase() { return this.data.phase; }
   get pages() {
-    let form = this;
-
-    return this.data.pages.map(p => {
-      var page = new Page(p, form);
-      
-      return page;
-    });
+    return this._pages;
   }
   get organisations() {
     let form = this;
@@ -80,6 +92,11 @@ class Form {
 
       return org;
     });
+  }
+  page(name) {
+    let matches = this._pages.filter(page => { page.page === name });
+
+    return (matches.length) ? matches[0] : undefined;
   }
   save() {
     let dataStr = JSON.serialize(this.data);
