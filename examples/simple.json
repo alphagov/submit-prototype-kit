@@ -20,6 +20,7 @@
       "detail": "You can also register [by post]()\n\nThe online service is also available in [Welsh (Cymraeg)]().\n\nYou can’t register for this service if you’re in the UK illegally."
     },
     {
+      "page": "name",
       "pagetype": "question",
       "heading": "What is your name?",
       "guidance": "This is some guidance markdown.",
@@ -28,6 +29,7 @@
     },
     {
       "pagetype": "question",
+      "page": "contact",
       "heading": "What is your email address?",
       "fields": ["email"]
     },
@@ -38,6 +40,7 @@
       "fields": ["adult"]
     },
     {
+      "page": "confirmation",
       "pagetype": "application-complete",
       "heading": "Application complete",
       "guidance": "We have sent a confirmation email to **{{data.email}}**.",
