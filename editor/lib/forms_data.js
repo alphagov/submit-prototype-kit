@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const childProcess = require('child_process');
 
 const dataDir = path.resolve(process.cwd(), '../examples');  
 const encoding = 'utf8';
@@ -151,10 +152,25 @@ class Form {
     return (matches.length) ? matches[0] : undefined;
   }
 
-  save() {
-    let dataStr = JSON.serialize(this.data);
+  save(cb) {
+    let dataStr = JSON.stringify(this.data, null, 2);
 
-    fs.writeFileSync(this.fileName, dataStr, { "encoding": encoding })
+    // update the JSON file for this form
+    try {
+      fs.writeFileSync(this.fileName, dataStr, { "encoding": encoding });
+    }
+    catch (error) {
+      return { "success": false, "error": error };
+    }
+
+    // rebuild the app from the new data
+    try {
+      childProcess.execSync('make', { "cwd": path.resolve(process.cwd(), '../') });
+    }
+    catch (error) {
+      return { "success": false, "error": error };
+    }
+    return { "success": true };
   }
 }
 

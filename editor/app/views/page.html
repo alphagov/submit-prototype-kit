@@ -15,8 +15,8 @@
         {{ page.heading }}
       </h1>
 
-      {% if update %}
-      <p class="update">Update completed successfully.</p>
+      {% if message %}
+      <p class="message">{{ message }}</p>
       {% endif %}
 
       <form action="{{ page.url.post}}" method="post">
