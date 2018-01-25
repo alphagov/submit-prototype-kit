@@ -3,3 +3,16 @@
   font-size: 16px;
   line-height: 1.25;
 }
+
+#debug-data {
+  background-color: #fff;
+  width: 100%;
+  border: 2px solid black;
+  padding: 1em;
+  margin-bottom: 2em;
+}
+
+#debug-data .button {
+  margin-top: 2em;
+  color: white;
+}

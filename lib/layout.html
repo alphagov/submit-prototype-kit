@@ -1,0 +1,67 @@
+{% extends "govuk_template.html" %}
+{% import "forms.html" as forms with context %}
+
+{% block head %}
+  {% include "includes/head.html" %}
+{% endblock %}
+
+{% block cookie_message %}
+  <p>{{cookieText | safe }}</p>
+{% endblock %}
+
+{% block proposition_header %}
+
+  <div class="header-proposition">
+    <div class="content">
+      <a href="#proposition-links" class="js-header-toggle menu">Menu</a>
+      <nav id="proposition-menu">
+        <a href="/" id="proposition-name">
+          {# Set serviceName in config.js. Use a block to override on a page. #}
+          {% block service_name %}
+            {% if serviceName %} {{ serviceName }} {% endif %}
+          {% endblock %}
+        </a>
+        <!--
+        <ul id="proposition-links">
+          <li><a href="url-to-page-1" class="active">Navigation item #1</a></li>
+          <li><a href="url-to-page-2">Navigation item #2</a></li>
+        </ul>
+        -->
+      </nav>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block header_class %} with-proposition {% endblock %}
+
+{% block footer_top %}
+  {% if data|length %}
+  <div id="debug-data">
+    <table>
+      <caption class="heading-small">Entered data</caption>
+      <thead>
+       <tr><th>Item</th><th>Value</th></li>
+     </thead>
+     <tbody>
+{% for name, item in data %}
+     <tr><td>{{ name }}</td><td>{{ item }}</td></tr>
+{% endfor %}
+    </tbody>
+    </table>
+
+    <p>
+    <!-- clearing data with a HTTP GET isn't a great idea -->
+    <a role="button" class="button" href="/prototype-admin/clear-data">Clear data</a>
+    </p>
+  </div>
+  {% endif %}
+{% endblock %}
+
+{% block body_end %}
+  {% block scripts %}
+    {% include "includes/scripts.html" %}
+    {% block page_scripts %}{% endblock %}
+  {% endblock %}
+  <!-- GOV.UK Prototype kit {{releaseVersion}} -->
+{% endblock %}
