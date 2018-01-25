@@ -15,11 +15,15 @@
         {{ page.heading }}
       </h1>
 
-      <form action="/forms/{{ formname }}/pages/{{ page }}" method="post">
+      {% if update %}
+      <p class="update">Update completed successfully.</p>
+      {% endif %}
+
+      <form action="{{ page.url.post}}" method="post">
         {% if page.heading %}
           {{ frontend.govukInput({
             "label": {
-              "text": "Guidance"
+              "text": "Heading"
             },
             "name": "heading",
             "id": "heading",

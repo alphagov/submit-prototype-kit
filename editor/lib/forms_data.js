@@ -12,6 +12,7 @@ class FormComponent {
     this.data = data;
     this.form = form;
   }
+
   save() {
     this.form.save();
   }
@@ -20,7 +21,9 @@ class FormComponent {
 
 class Field extends FormComponent {
   get field() { return this.data.field || undefined; }
+
   get inputtype() { return this.data.inputtype || undefined; }
+
   get items() { return this.data.items || undefined; }
 }
 
@@ -37,8 +40,15 @@ class Page extends FormComponent {
       });
     }
   }
-  get page() { return (this.data.page === 'index') ? '' : this.data.page; }
+
+  get page() { return this.data.page; }
+
+  set page(value) { this.data.page = value; }
+
   get pagetype() { return this.data.pagetype; }
+
+  set pagetype(value) { this.data.pagetype = value; }
+
   get heading() {
     // monkey patch until we deal with visible-if values
     let heading = this.data.heading;
@@ -49,18 +59,47 @@ class Page extends FormComponent {
       return undefined;
     }
   }
+
+  set heading(value) { this.data.heading = value; }
+
   get guidance() { return this.data.guidance || undefined; }
+
+  set guidance(value) { this.data.guidance = value; }
+
   get detail() { return this.data.detail || undefined; }
+
+  set detail(value) { this.data.detail = value; }
+
   get fields() {
     return this._fields || undefined;
   }
+
   get next() { return this.data.next || undefined; }
+
+  get url() {
+    let methods = {
+          post: `/forms/${this.form.name}/pages/${this.page}`
+        };
+    
+    // point gets for index pages to the parent root
+    let page = (this.page === 'index') ? '' : this.page;
+
+    methods.get = `/forms/${this.form.name}/pages/${page}`
+
+    return methods;
+  }
+
+  save() {
+
+  } 
 }
 
 
 class Organisation extends FormComponent {
   get name() { return this.data.name; }
+
   get organisation() { return this.data.organisation; }
+
   get website() { return this.data.website; }
 }
 
@@ -78,12 +117,17 @@ class Form {
       return page;
     });
   }
+
   get name() { return this.data.name; }
+
   get heading() { return this.data.heading; }
+
   get phase() { return this.data.phase; }
+
   get pages() {
     return this._pages;
   }
+
   get organisations() {
     let form = this;
 
@@ -93,11 +137,20 @@ class Form {
       return org;
     });
   }
+
+  get url() {
+    return {
+      get: `/forms/${this.name}`,
+      post: `/forms/${this.name}`
+    };
+  }
+
   page(name) {
-    let matches = this._pages.filter(page => { page.page === name });
+    let matches = this._pages.filter(page => { return page.page === name });
 
     return (matches.length) ? matches[0] : undefined;
   }
+
   save() {
     let dataStr = JSON.serialize(this.data);
 
@@ -123,11 +176,13 @@ const formsData = {
       forms.push(new Form(data, fileName));
     })
   },
+
   getForm: function(formName) {
     let matches = forms.filter(form => { return form.name === formName });
 
     return matches.length ? matches[0] : null;
   },
+
   getAll: function() {
     return forms;
   }

@@ -16,7 +16,7 @@
 
       {% for form in forms %}
         <ul>
-          <li><a href="/forms/{{ form.name }}">{{ form.heading }}</a></li>
+          <li><a href="{{ form.url.get }}">{{ form.heading }}</a></li>
         </ul>
       {% endfor %}
     </div>
