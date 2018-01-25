@@ -23,7 +23,7 @@
           {{ submit.warning(page.warning) }}
 
           {% for fieldref in page.fieldrefs %}
-            {{ submit.fieldref(fieldref, page) }}
+            {{ submit.fieldref(form.fields[fieldref], page) }}
           {% endfor %}
 
           {% for field in page.fields -%}

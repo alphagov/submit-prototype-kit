@@ -81,17 +81,7 @@
           ]
         }
       ],
-      "fieldrefs": [
-        {
-          "field": "parentType",
-          "inputtype": "radio",
-          "legend": "Are you their mother or father?",
-          "items": [
-            { "value": "parentMother", "label": "Mother" },
-            { "value": "parentFather", "label": "Father" }
-          ]
-        }
-      ]
+      "fieldrefs": ["parentType"]
     },
 
     {
@@ -142,6 +132,17 @@
       "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
       "detail": "Your application will be processed within 28 days."
     }
-  ]
+  ],
+
+  "fields": {
+    "parentType": {
+      "inputtype": "radio",
+      "legend": "Are you their mother or father?",
+      "items": [
+        { "value": "parentMother", "label": "Mother" },
+        { "value": "parentFather", "label": "Father" }
+      ]
+    }
+  }
 
 }

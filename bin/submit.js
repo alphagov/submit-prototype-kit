@@ -112,9 +112,16 @@ function loadForm(path) {
   console.log(chalk.blue('Loading ' + path))
   var form = JSON.parse(fs.readFileSync(path, 'utf8'))
 
+  // add field key to field object
+  for (fieldref in form.fields) {
+    form.fields[fieldref].field = fieldref
+  }
+
   for (var p = 0; p < form.pages.length; p++) {
 
     var page = form.pages[p]
+
+    // TBD: calculate fieldrefs
 
     // default next and previous pages
     form.pages[p].name = pageName(form, p)
