@@ -2,13 +2,8 @@
 {% raw %}{% import "frontend_macros.ntk" as frontend with context %}{% endraw %}
 {% import "submit_macros.ntk" as submit with context %}
 
-{% raw %}{% block title %}{% endraw %}{% block title %}{% endblock %}{% raw %}{% endblock %}{% endraw %}
-
-{% raw %}
-{% block proposition_header %}{% endblock %}
-{% block header_class %}{% endblock %}
-{% endraw %}
-
+{% raw %}{% block page_title %}{% endraw %}{{form.heading}} — {{page.heading}}{% raw %}{% endblock %}{% endraw %}
+{% raw %}{% block form_heading %}{% endraw %}{% block form_heading %}{{ form.heading }}{% endblock %}{% raw %}{% endblock %}{% endraw %}
 
 {% raw %}{% block content %}{% endraw %}
 {% block content %}{% endblock %}
