@@ -6,5 +6,17 @@
 {% raw %}{% block form_heading %}{% endraw %}{% block form_heading %}{{ form.heading }}{% endblock %}{% raw %}{% endblock %}{% endraw %}
 
 {% raw %}{% block content %}{% endraw %}
+<main id="content" role="main">
+<div class="grid-row">
+  <div class="column-full">
+    <div class="phase-banner">
+      <p>
+        <strong class="phase-tag">ALPHA</strong>
+        <span>This is a prototype.</span>
+      </p>
+    </div>
+  </div>
+</div>
 {% block content %}{% endblock %}
+</main>
 {% raw %}{% endblock %}{% endraw %}
