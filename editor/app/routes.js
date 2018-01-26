@@ -9,7 +9,10 @@ formsData.init();
 
 // GET routes
 router.get('/', function (req, res) {
-  res.render('index', { "forms": formsData.getAll() })
+  res.render('index', {
+    'forms': formsData.getAll(),
+    'currentFormPage': '/'
+  })
 })
 
 router.get('/forms', function (req, res) {
@@ -17,24 +20,31 @@ router.get('/forms', function (req, res) {
 });
 
 router.get('/forms/:formname', function (req, res) {
-  res.render('form', { 'form': formsData.getForm(req.params.formname) })
+  res.render('form', {
+    'form': formsData.getForm(req.params.formname),
+    'currentFormPage': '/'  
+  })
 });
 
 router.get('/forms/:formname/pages', function (req, res) {
+  let page = formsData.getForm(req.params.formname).pages[0];
   let data = {
-    'page': formsData.getForm(req.params.formname).pages[0],
+    'page': page,
     'formname': req.params.formname,
-    'message': req.query.message
+    'message': req.query.message,
+    'currentFormPage': `/${req.params.formname}`
   };
 
   res.render('page', data)
 });
 
 router.get('/forms/:formname/pages/:pagename', function (req, res) {
+  let page = formsData.getForm(req.params.formname).page(req.params.pagename);
   res.render('page', {
-    'page': formsData.getForm(req.params.formname).page(req.params.pagename),
+    'page': page,
     'formname': req.params.formname,
-    'message': req.query.message
+    'message': req.query.message,
+    'currentFormPage': `/${req.params.formname}/${page.page}`
   })
 });
 
