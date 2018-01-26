@@ -1,0 +1,24 @@
+@import "_conditionals";
+
+#global-header .header-wrapper,
+#global-header-bar,
+#content,
+#footer .footer-wrapper {
+  max-width: 100%;
+}
+
+@include media(desktop) {
+  #content,
+  #footer .footer-wrapper {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+.prototype-wrapper {
+  margin: 15px 0;
+}
+
+.prototype {
+  width: 100%;
+}

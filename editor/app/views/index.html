@@ -1,26 +1,32 @@
-{% extends "layout.html" %}
+  {% extends "layout.html" %}
 
-{% block page_title %}
-  GOV.UK prototype kit
-{% endblock %}
+  {% block page_title %}
+    GOV.UK prototype kit
+  {% endblock %}
 
-{% block content %}
+  {% block content %}
 
-<main id="content" role="main">
-  <div class="grid-row">
-    <div class="column-two-thirds">
+  <main id="content" role="main">
+    <div class="grid-row">
+      <div class="column-one-half" id="editor-wrapper">
 
-      <h1 class="heading-xlarge">
-        Editor
-      </h1>
+        <h1 class="heading-xlarge">
+          Editor
+        </h1>
 
-      {% for form in forms %}
-        <ul>
-          <li><a href="{{ form.url.get }}">{{ form.heading }}</a></li>
-        </ul>
-      {% endfor %}
+        {% for form in forms %}
+          <ul>
+            <li><a href="{{ form.url.get }}">{{ form.heading }}</a></li>
+          </ul>
+        {% endfor %}
+      </div>
+      <div class="column-one-half">
+        <div id="prototype-wrapper" class="prototype-wrapper">
+          <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000" height="800px" /></iframe>
+        </div>
+      </div>
     </div>
-  </div>
+
 </main>
 
 {% endblock %}
