@@ -36,6 +36,7 @@
 {% macro govukInput(params={}) %}
 <div class="form-group">
   {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label.text }}</label>{% endif %}
+  {% if params.hintHtml %}<span class="form-hint">{{ params.hintHtml | safe }}</span>{% endif %}
   <input class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}">
 </div>
 {% endmacro %}
@@ -80,6 +81,14 @@
     {%- if item.hint %} <span class="label-explanation">{{ item.hint }}</span>{%- endif -%}
     </label>
   </div>
+
+  {# TBD: GOV.UK frontend macro doesn't support embedded fields .. #}
+  {% if item.fieldhtml %}
+    <div class="panel panel-border-narrow js-hidden " id="{{ item.fieldref }}">
+    {{ item.fieldhtml | safe }}
+    </div>
+  {% endif %}
+
 {% endfor %}
 </fieldset>
 </div>

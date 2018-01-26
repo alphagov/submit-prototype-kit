@@ -73,6 +73,10 @@
           }
       ],
       "fields": ["organisations"],
+      "fieldrefs": [
+        "serviceNumber", "startDate", "endDate",
+        "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails"
+      ],
       "next": [
         { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
@@ -130,13 +134,64 @@
     "organisations": {
       "inputtype": "checkboxes",
       "items": [
-        { "label": "Army", "value": "army" },
-        { "label": "Home Guard", "value": "home-guard" },
-        { "label": "Royal Air Force", "value": "raf" },
-        { "label": "Royal Marines", "value": "marines" },
-        { "label": "Reserve forces", "value": "reserve-forces" },
-        { "label": "Other organisations", "value": "other-orgs", "hint": "For example, the Civil Defence Service, Royal Fleet Auxiliary or Merchant Navy" }
+        { "label": "Army", "value": "army", "fieldref": "ArmyDetails" },
+        { "label": "Home Guard", "value": "home-guard", "fieldref": "HomeGuardDetails" },
+        { "label": "Royal Air Force", "value": "raf", "fieldref": "RafDetails" },
+        { "label": "Royal Marines", "value": "marines", "fieldref": "RoyalMarinesDetails" },
+        { "label": "Royal Navy", "value": "navy", "fieldref": "RoyalNavyDetails" },
+        { "label": "Reserve forces", "value": "reserve-forces", "fieldref": "ReserveForcesDetails" },
+        {
+          "label": "Other organisations",
+          "value": "other-orgs",
+          "hint": "For example, the Civil Defence Service, Royal Fleet Auxiliary or Merchant Navy"
+        }
       ]
+    },
+    "ArmyDetails": {
+      "inputtype": "fieldset",
+      "legend": "Army service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "HomeGuardDetails": {
+      "inputtype": "fieldset",
+      "legend": "Home Guard service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RafDetails": {
+      "inputtype": "fieldset",
+      "legend": "RAF service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RoyalNavyDetails": {
+      "inputtype": "fieldset",
+      "legend": "Royal Navy service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RoyalMarinesDetails": {
+      "inputtype": "fieldset",
+      "legend": "Royal Navy service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "ReserveForcesDetails": {
+      "inputtype": "fieldset",
+      "legend": "Reserve Forces service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "serviceNumber": {
+      "inputtype": "text",
+      "label": "Service number",
+      "hint": "For example, ‘RA16 989 587’"
+    },
+    "startDate": {
+      "inputtype": "text",
+      "datatype": "date",
+      "label": "Start date",
+      "hint": "For example, ‘December 1997’, or ‘1997’."
+    },
+    "endDate": {
+      "inputtype": "text",
+      "datatype": "date",
+      "label": "End date"
     }
   }
 }

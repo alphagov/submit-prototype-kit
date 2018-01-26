@@ -126,12 +126,18 @@
     },
   {% endif %}
     "id": {{ text_param(field.field) }},
-    "name": {{ text_param(field.field) }}
+    "name": {{ text_param(field.field) }},
+    "hintHtml": {{ markdown_param(field.hint) }}
 {{ frontend_endmacro() }}
 
-{%- elif field.inputtype == 'radio' -%}
+{%- elif field.inputtype == 'radio' or field.inputtype == 'checkboxes' -%}
 
-{{ frontend_macro('govukRadios') }}
+{%- if field.inputtype == 'radio' -%}
+  {{ frontend_macro('govukRadios') }}
+{%- else -%}
+  {{ frontend_macro('govukCheckboxes') }}
+{%- endif -%}
+
     "name": {{ text_param(field.field) }},
     "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
     "items" : [{% set comma = joiner() -%}
@@ -143,21 +149,10 @@
     ]
 {{ frontend_endmacro() }}
 
-{%- elif field.inputtype == 'checkboxes' -%}
-
-{{ frontend_macro('govukCheckboxes') }}
-    "name": {{ text_param(field.field) }},
-    "legendHtml": {{ text_param(field.legend or visually_hidden(page.heading).val) }},
-    "items" : [{% set comma = joiner() -%}
-    {% for item in field.items -%}
-      {{ comma() }}
-      { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
-        {%- if item.hint %}"hint": {{ text_param(item.hint) }}, {% endif -%}
-        "text": {{ text_param(item.label) }}, "value": {{ text_param(item.value) }} }
+{%- elif field.inputtype == 'fieldset' %}
+    {% for fieldref in field.fields %}
+      {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
     {%- endfor %}
-    ]
-{{ frontend_endmacro() }}
-
 {%- else %}
 
     <!-- unknown inputtype "{{ field.inputtype }}" -->
