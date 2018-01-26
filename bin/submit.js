@@ -91,20 +91,12 @@ function renderForm(form) {
         { form: form, })
 
   // page view
-  for (let page of form.pages) {
+  for (let p in form.pages) {
+    page = form.pages[p]
     render(namePath(opts.templatesDir, page.pagetype, '.html'),
            namePath(viewsDir, page.name, '.html'),
            { form: form, page: page, })
   }
-}
-
-
-function pageName(form, i) {
-    if ((i < 0) || (i >= form.pages.length)) {
-      return undefined
-    }
-    page = form.pages[i]
-    return page.page || "page" + i
 }
 
 
@@ -117,16 +109,14 @@ function loadForm(path) {
     form.fields[fieldref].field = fieldref
   }
 
-  for (var p = 0; p < form.pages.length; p++) {
+  for (name in form.pages) {
+    form.pages[name].name = name
 
-    var page = form.pages[p]
+    if (typeof(form.pages[name].next) === 'string') {
+      form.pages[name].next = [{"page": form.pages[name].next}]
+    }
 
-    // TBD: calculate fieldrefs
-
-    // default next and previous pages
-    form.pages[p].name = pageName(form, p)
-    form.pages[p]._prev = pageName(form, p-1)
-    form.pages[p]._next = pageName(form, p+1)
+    // TBD: calculate page fieldrefs
   }
 
   return form

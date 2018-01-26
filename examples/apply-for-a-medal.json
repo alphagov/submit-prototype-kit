@@ -9,9 +9,8 @@
       "website": "https://www.gov.uk/government/organisations/ministry-of-defence"
     }
   ],
-  "pages": [
-    {
-      "page": "index",
+  "pages": {
+    "index": {
       "pagetype": "start-page",
       "heading": "Apply for a military service medal",
       "guidance": "Current serving personnel should speak to their unit HR regarding all medals.\n\nUse this service to apply for medals awarded:\n\n*   during your military career\n*   to someone you have lasting power of attorney for during their military career\n*   to a deceased family member during their career\n\nThis service only provides medals awarded by:\n\n*   Army\n*   Home Guard\n*   Royal Air Force\n*   Royal Navy\n*   Royal Marines\n*   Reserve forces\n\nIf you’re applying on behalf of someone using lasting power of attorney you’ll need: \n\n*   details of the person’s military career\n*   evidence of lasting power of attorney\n\n### If you’re applying for someone else’s medal\n\nYou can apply on behalf of a veteran if you have [lasting power of attorney](/lasting-power-attorney-duties).\n\nIf the veteran has died, you must be the official next of kin. The general rules are:\n\n*   the person’s spouse or civil partner has first claim to the medal, and then the eldest child\n*   if there’s no spouse or child, the eldest grandchild is entitled to apply\n\nApplying takes around 5 minutes.",
@@ -19,8 +18,7 @@
       "next": [ { "page": "applicant" } ]
     },
 
-    {
-      "page": "applicant",
+    "applicant": {
       "pagetype": "question",
       "heading": "Are you applying for medals awarded to you?",
       "fields": ["applicationPerson"],
@@ -31,8 +29,7 @@
       ]
     },
 
-    {
-      "page": "active-service",
+    "active-service": {
       "pagetype": "question",
       "heading": "Are you retired from the armed forces?",
       "fields": ["activeService"],
@@ -42,26 +39,22 @@
       ]
     },
 
-    {
-      "page": "closest-relative",
+    "closest-relative": {
       "pagetype": "question",
       "heading": "How are you related to the serviceperson?",
       "guidance": "We need to know your relationship to the serviceperson to determine if you’re eligible to receive the medals.",
       "fields": ["relationship"],
       "fieldrefs": ["parentType"],
-      "next": {
-      }
+      "next": {}
     },
 
-    {
-      "page": "ineligible-still-serving",
+    "ineligible-still-serving": {
       "pagetype": "bounce",
       "heading": "Apply through human resources in your unit",
       "guidance": "You can only apply for a medal online if you’re a retired veteran\n\nIf you are a retired veteran, [continue your medal application](active-service)\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     },
 
-    {
-      "page": "which-services",
+    "which-services": {
       "pagetype": "question",
       "heading": [
           {
@@ -84,14 +77,13 @@
       ]
     },
 
-    {
-      "page": "confirmation",
+    "confirmation": {
       "pagetype": "application-complete",
       "heading": "Application complete",
       "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
       "detail": "Your application will be processed within 28 days."
     }
-  ],
+  },
 
   "fields": {
     "parentType": {

@@ -98,20 +98,18 @@
 {% macro startButton( page, text="Start now" ) %}
 {{ frontend_macro('govukButton') }}
     "text": {{ text_param(text) }},
-    "href": "{{ page._next }}",
+    "href": "{{ page.next[0].page }}",
     "classes": "govuk-c-button--start"
 {{ frontend_endmacro() }}
 {% endmacro %}
 
 
 {%- macro nextButton( page, text="Continue" ) %}
-{% if page._next %}
 {{ frontend_macro('govukButton') }}
     "text": {{ text_param(text) }},
     "href": "",
     "classes": ""
 {{ frontend_endmacro() }}
-{% endif %}
 {% endmacro %}
 
 

@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-{% for page in form.pages %}
+{% for name, page in form.pages %}
 
 {%- if (page.heading|string) == (page.heading|list) %}
 {% for o in page.heading %}
@@ -17,10 +17,8 @@ router.post('/{{ form.name }}/{{ page.name }}', function (req, res) {
 
 {%- set comma = joiner('else') -%}
 {% for next in page.next %} {{ comma() }}{% if next['if'] %} if ({{ next['if'] | safe}}){% endif %} {%raw%}{{%endraw%}
-    res.redirect('{{ next.page }}')
-    return
+    return res.redirect('{{ next.page }}');
   }{% endfor %}
-  res.redirect('/{{ form.name }}/{{ page._next }}')
 })
 
 {% endfor %}

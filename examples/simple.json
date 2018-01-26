@@ -11,42 +11,41 @@
       "website": "https://www.gov.uk/government/organisations/government-digital-service"
     }
   ],
-  "pages": [
-    {
-      "page": "index",
+  "pages": {
+    "index": {
       "pagetype": "start-page",
       "heading": "Simple",
       "guidance": "Use this service to:\n* do something\n* update your name, address or other details\n\nRegistering takes around 5 minutes.",
-      "detail": "You can also register [by post]()\n\nThe online service is also available in [Welsh (Cymraeg)]().\n\nYou can’t register for this service if you’re in the UK illegally."
+      "detail": "You can also register [by post]()\n\nThe online service is also available in [Welsh (Cymraeg)]().\n\nYou can’t register for this service if you’re in the UK illegally.",
+      "next": "name"
     },
-    {
-      "page": "name",
+    "name": {
       "pagetype": "question",
       "heading": "What is your name?",
       "guidance": "This is some guidance markdown.",
       "warning": "This is some warning text.",
-      "fields": ["name"]
+      "fields": ["name"],
+      "next": "contact"
     },
-    {
+    "contact": {
       "pagetype": "question",
-      "page": "contact",
       "heading": "What is your email address?",
-      "fields": ["email"]
+      "fields": ["email"],
+      "next": "adult"
     },
-    {
+    "adult": {
       "pagetype": "question",
-      "page": "adult",
       "heading": "Are you aged 18 or older?",
-      "fields": ["adult"]
+      "fields": ["adult"],
+      "next": "confirmation"
     },
-    {
-      "page": "confirmation",
+    "confirmation": {
       "pagetype": "application-complete",
       "heading": "Application complete",
       "guidance": "We have sent a confirmation email to **{{data.email}}**.",
       "detail": "Your application will be processed within 28 days."
     }
-  ],
+  },
   "fields": {
     "name": {
       "inputtype": "text"
