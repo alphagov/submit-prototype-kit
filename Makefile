@@ -36,6 +36,17 @@ PROTOTYPE_SCSS=prototype/app/assets/sass/submit.scss
 SRC_PROTOTYPE_APPLICATION_SCSS=lib/application.scss
 PROTOTYPE_APPLICATION_SCSS=prototype/app/assets/sass/application.scss
 
+SRC_PROTOTYPE_INDEX=lib/index.html
+PROTOTYPE_INDEX=prototype/app/views/index.html
+
+PROTOTYPE=\
+	$(PROTOTYPE_MACROS)\
+	$(PROTOTYPE_ROUTER)\
+	$(PROTOTYPE_SCSS)\
+	$(PROTOTYPE_APPLICATION_SCSS)\
+	$(PROTOTYPE_LAYOUT)\
+	$(PROTOTYPE_INDEX)
+
 all:	$(EXAMPLES)
 
 $(VIEWS_DIR)/%:	prototype bin/submit.js $(SRC_TEMPLATES) examples/%.json
@@ -44,7 +55,7 @@ $(VIEWS_DIR)/%:	prototype bin/submit.js $(SRC_TEMPLATES) examples/%.json
 start:
 	cd prototype; npm start
 
-prototype:	$(PROTOTYPE_MACROS) $(PROTOTYPE_ROUTER) $(PROTOTYPE_SCSS) $(PROTOTYPE_APPLICATION_SCSS) $(PROTOTYPE_LAYOUT)
+prototype:	$(PROTOTYPE)
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
@@ -53,6 +64,10 @@ $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
 # copy in the router
 $(PROTOTYPE_ROUTER):	$(SRC_PROTOTYPE_ROUTER) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_ROUTER) $(PROTOTYPE_ROUTER)
+
+# copy in the index page
+$(PROTOTYPE_INDEX):	$(SRC_PROTOTYPE_INDEX) $(KIT_UNZIPPED)
+	cp $(SRC_PROTOTYPE_INDEX) $(PROTOTYPE_INDEX)
 
 # copy in compiled CSS
 $(PROTOTYPE_SCSS):	$(SRC_PROTOTYPE_SCSS) $(KIT_UNZIPPED)

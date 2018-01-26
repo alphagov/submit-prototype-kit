@@ -11,6 +11,7 @@ var mkdirp = require('mkdirp')
 var chalk = require('chalk')
 var glob = require("glob")
 var yargs = require('yargs')
+var jsonfile = require('jsonfile')
 
 
 // Check if node_modules folder exists
@@ -60,6 +61,13 @@ function namePath(dir, name, suffix='') {
 }
 
 
+function dump(outputFile, output, writer=fs) {
+  console.log(chalk.blue('Writing: ' + outputFile))
+  mkdirp.sync(path.dirname(outputFile))
+  writer.writeFileSync(outputFile, output)
+}
+
+
 function render(templateFile, outputFile, data) {
   data.templateFile = templateFile
   data.outputFile = outputFile
@@ -72,10 +80,7 @@ function render(templateFile, outputFile, data) {
 
     // normalise whitespace
     output = output.replace(/ +$/gm, '').replace(/\n\n+/g, '\n\n')
-
-    console.log(chalk.blue('Writing: ' + outputFile))
-    mkdirp.sync(path.dirname(outputFile))
-    fs.writeFileSync(outputFile, output)
+    dump(outputFile, output)
   })
 }
 
@@ -97,6 +102,9 @@ function renderForm(form) {
            namePath(viewsDir, page.name, '.html'),
            { form: form, page: page, })
   }
+
+  // save expanded form object as JSON
+  dump(namePath(viewsDir, 'index', '.json'), form, jsonfile)
 }
 
 

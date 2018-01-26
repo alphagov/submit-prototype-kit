@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block page_title %}Submit prototypes{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+
+
+  <div class='grid-row'>
+    <div class='column-two-thirds'>
+      <h1 class='heading-large'>Services</h1>
+      <ul>
+      {% for name, service in services %}
+        <li><a href="{{ service.href }}">{{ service.form.heading }}</a></li>
+      {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+</main>
+
+{% endblock %}
