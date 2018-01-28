@@ -63,7 +63,7 @@ router.post('/forms/:formname/pages/:pagename', function (req, res) {
   }
 
   // update the JSON data and rebuild the app
-  result = form.save();
+  result = formsData.save(form);
 
   if (result.success) {
     message = "Page updated successfully.";
