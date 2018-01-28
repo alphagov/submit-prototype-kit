@@ -77,18 +77,7 @@ class Page extends FormComponent {
 
   get next() { return this.data.next || undefined; }
 
-  get url() {
-    let methods = {
-          post: `/forms/${this.form.name}/pages/${this.page}`
-        };
-    
-    // point gets for index pages to the parent root
-    let page = (this.page === 'index') ? '' : this.page;
-
-    methods.get = `/forms/${this.form.name}/pages/${page}`
-
-    return methods;
-  }
+  get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
 
   save() {
 
@@ -139,12 +128,7 @@ class Form {
     });
   }
 
-  get url() {
-    return {
-      get: `/forms/${this.name}`,
-      post: `/forms/${this.name}`
-    };
-  }
+  get url() { return `/forms/${this.name}`; }
 
   page(name) {
     let matches = this._pages.filter(page => { return page.page === name });

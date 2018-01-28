@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block page_title %}
-  GOV.UK prototype kit
+  Pages in {{ form.heading }} - Editor
 {% endblock %}
 
 {% block content %}
@@ -19,15 +19,13 @@
       </h2>
       {% for page in form.pages %}
         <ul>
-          <li><a href="{{ page.url.get }}">{{ page.heading }}</a></li>
+          <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
         </ul>
       {% endfor %}
-
-      {% include 'includes/page_data.html' %}
     </div>
     <div class="column-one-half">
       <div id="prototype-wrapper" class="prototype-wrapper">
-        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000" height="800px" /></iframe>
+        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px" /></iframe>
       </div>
     </div>
   </div>
