@@ -89,5 +89,8 @@ $(KIT_ZIP):
 	@mkdir -p cache
 	curl -sL '$(KIT_URL)' > '$@'
 
+init:
+	npm install
+
 # Beware! This removes the generated prototype
 clean::;	rm -rf prototype

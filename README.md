@@ -6,7 +6,7 @@ This version uses a JSON version of the [Submit data model](https://github.com/a
 
 # Building the kit
 
-    $ npm install
+    $ make init
 
 # Building the prototype
 
