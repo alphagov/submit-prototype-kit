@@ -42,24 +42,30 @@ const formsData = {
     return forms;
   },
 
-  save: function(form) {
+  save: function(form, cb) {
     let JSONStr = form.getDataAsString();
+    let rebuildPages;
 
-    try {
-      fs.writeFileSync(this.fileName, JSONStr, { "encoding": encoding });
-    }
-    catch (error) {
-      return { "success": false, "error": error };
-    }
+    rebuildPages = function () {
+      childProcess.exec('make', { "cwd": path.resolve(process.cwd(), '../') }, (error, stdout, stderr) => {
+        // TODO: deal with errors from rebuilding the pages
+        if (error) {
+          console.log(`make process exited with ${error.code}`);
+          cb({ "success": true, "error": error });
+        }
+        cb({ "success": true });
+      });
+    };
 
-    // rebuild the app from the new data
-    try {
-      childProcess.execSync('make', { "cwd": path.resolve(process.cwd(), '../') });
-    }
-    catch (error) {
-      return { "success": false, "error": error };
-    }
-    return { "success": true };
+    // 
+    fs.writeFile(form.fileName, JSONStr, { "encoding": encoding }, (error) => {
+      if (error) {
+        rb({ "success": false, "error": error });
+      }
+
+      // rebuild the app from the new data
+      rebuildPages();
+    });
   }
 }
 

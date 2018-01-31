@@ -19,7 +19,7 @@
       <p class="message">{{ message }}</p>
       {% endif %}
 
-      <form action="{{ page.url.post}}" method="post">
+      <form action="{{ page.url }}" method="post">
         {% if page.heading %}
           {{ frontend.govukInput({
             "label": {

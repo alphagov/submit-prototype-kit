@@ -32,7 +32,7 @@ router.get('/forms/:formname/pages', function (req, res) {
     'page': page,
     'formname': req.params.formname,
     'message': req.query.message,
-    'currentFormPage': `/${req.params.formname}`
+    'currentFormPage': `${req.params.formname}`
   };
 
   res.render('page', data)
@@ -40,11 +40,14 @@ router.get('/forms/:formname/pages', function (req, res) {
 
 router.get('/forms/:formname/pages/:pagename', function (req, res) {
   let page = formsData.getForm(req.params.formname).page(req.params.pagename);
+  // if index page, rewrite prototype URL to remove page name
+  let pageName = (page.page == 'index') ? '' : page.page;
+
   res.render('page', {
     'page': page,
     'formname': req.params.formname,
     'message': req.query.message,
-    'currentFormPage': `/${req.params.formname}/${page.page}`
+    'currentFormPage': `${req.params.formname}/${pageName}`
   })
 });
 
@@ -62,14 +65,17 @@ router.post('/forms/:formname/pages/:pagename', function (req, res) {
     }  
   }
 
-  // update the JSON data and rebuild the app
-  result = formsData.save(form);
+  whenSaved = function (result) {
+    if (result.success) {
+      message = "Saving data... If the prototype doesn't load first time, try reloading the page";
+    } else {
+      message = `Error thrown from update: '${result.error}'`;
+    }
+    res.redirect(`${page.url}?message=${encodeURIComponent(message)}`);
+  };
 
-  if (result.success) {
-    message = "Page updated successfully.";
-  } else {
-    message = `Error thrown from update: '${result.error}'`;
-  }
-  res.redirect(`${page.url.get}?message=${encodeURIComponent(message)}`);
+  // update the JSON data and rebuild the app
+  formsData.save(form, whenSaved);
+
 });
 module.exports = router
