@@ -147,6 +147,17 @@
     ]
 {{ frontend_endmacro() }}
 
+{%- elif field.inputtype == 'textarea' -%}
+  {{ frontend_macro('govukTextarea') }}
+    "name": {{ text_param(field.field) }},
+  {%- if field.label %}
+    "label": {
+        "text": {{ text_param(field.label) }}
+    },
+    "id": {{ text_param(field.field) }}
+  {%- endif %}
+{{ frontend_endmacro() }}
+
 {%- elif field.inputtype == 'fieldset' -%}
     {% for fieldref in field.fields %}
   {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
