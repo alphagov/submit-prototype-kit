@@ -9,13 +9,11 @@
     },
 
     init: function() {
-      var currentFormPage = document.Editor.currentFormPage;
-
-      this.sendToIframe('url=' + encodeURIComponent(currentFormPage));  
+      // Any communication with the iframe on load goes here
     }
   };
 
-  // Assume document.Editor has been set
+  document.Editor = {};
   document.Editor.iFrameController = iFrameController;
 
   window.addEventListener('load', function () {
