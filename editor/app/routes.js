@@ -53,29 +53,42 @@ router.get('/forms/:formname/pages/:pagename', function (req, res) {
 
 // POST routes
 
-router.post('/forms/:formname/pages/:pagename', function (req, res) {
+let htmlResponse = function (res, req) {
   let form = formsData.getForm(req.params.formname)
   let page = form.page(req.params.pagename);
-  let result;
-  let message;
 
-  for (let prop in req.body) {
-    if (page[prop]) {
-      page[prop] = req.body[prop];
-    }  
-  }
+  let onSaved = function (error) {
+    if (error !== undefined) { message = "Form data saved"; }
 
-  whenSaved = function (result) {
-    if (result.success) {
-      message = "Saving data... If the prototype doesn't load first time, try reloading the page";
-    } else {
-      message = `Error thrown from update: '${result.error}'`;
-    }
     res.redirect(`${page.url}?message=${encodeURIComponent(message)}`);
   };
 
-  // update the JSON data and rebuild the app
-  formsData.save(form, whenSaved);
+  page.update(req.body);
+  formsData.save(form, onSaved);
+};
 
+let jsonResponse = function (res, req) {
+  let form = formsData.getForm(req.params.formname)
+  let page = form.page(req.params.pagename);
+
+  let onSaved = function (error) {
+    if (error !== undefined) {
+      message = `Error saving form data: ${error}`;
+    } else {
+      message = "Form data saved";
+    }
+    res.send(message);  
+  };
+
+  page.update(req.body);
+  formsData.save(form, onSaved);
+};
+
+router.post('/forms/:formname/pages/:pagename', function (req, res) {
+  if (req.get('Accept') === 'application/json') {
+    jsonResponse(res, req);
+  } else {
+    htmlResponse(res, req);
+  }
 });
 module.exports = router

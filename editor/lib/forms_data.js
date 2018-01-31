@@ -48,19 +48,21 @@ const formsData = {
 
     rebuildPages = function () {
       childProcess.exec('make', { "cwd": path.resolve(process.cwd(), '../') }, (error, stdout, stderr) => {
+        console.log(stdout);
+
         // TODO: deal with errors from rebuilding the pages
         if (error) {
           console.log(`make process exited with ${error.code}`);
-          cb({ "success": true, "error": error });
+          cb(error);
+        } else {
+          cb();
         }
-        cb({ "success": true });
       });
     };
 
-    // 
     fs.writeFile(form.fileName, JSONStr, { "encoding": encoding }, (error) => {
       if (error) {
-        rb({ "success": false, "error": error });
+        cb(error);
       }
 
       // rebuild the app from the new data

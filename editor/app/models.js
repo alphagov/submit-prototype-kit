@@ -8,10 +8,6 @@ class FormComponent {
     this._data = data;
     this.form = form;
   }
-
-  save() {
-    this.form.save();
-  }
 }
 
 
@@ -65,8 +61,10 @@ class Page extends FormComponent {
 
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
 
-  save() {
-
+  update(newData) {
+    for (let prop in newData) {
+      if (this[prop]) { this[prop] = newData[prop]; }
+    }
   } 
 }
 
