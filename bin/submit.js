@@ -124,6 +124,35 @@ function loadForm(path) {
       form.pages[name].next = [{"page": form.pages[name].next}]
     }
 
+    var page = form.pages[name]
+
+    // check fields exist
+    if (page.fields) {
+      for (field of form.pages[name].fields) {
+        if (!form.fields[field]) {
+          console.log(chalk.red("unknown field", field))
+        }
+      }
+    }
+
+    // check fieldrefs exist
+    if (page.fieldrefs) {
+      for (field of form.pages[name].fieldrefs) {
+        if (!form.fields[field]) {
+          console.log(chalk.red("unknown field", field))
+        }
+      }
+    }
+
+    // check next pages exist
+    if (page.next) {
+      for (next of page.next) {
+        if (!form.pages[next.page]) {
+          console.log(chalk.red("unknown page", next.page))
+        }
+      }
+    }
+
     // TBD: calculate page fieldrefs
   }
 
