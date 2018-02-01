@@ -154,8 +154,19 @@
     "label": {
         "text": {{ text_param(field.label) }}
     },
-    "id": {{ text_param(field.field) }}
   {%- endif %}
+    "id": {{ text_param(field.field) }}
+{{ frontend_endmacro() }}
+
+{%- elif field.inputtype == 'image' -%}
+  {{ frontend_macro('govukFileUpload') }}
+    "name": {{ text_param(field.field) }},
+  {%- if field.label %}
+    "label": {
+        "text": {{ text_param(field.label) }}
+    },
+  {%- endif %}
+    "id": {{ text_param(field.field) }}
 {{ frontend_endmacro() }}
 
 {%- elif field.inputtype == 'fieldset' -%}
