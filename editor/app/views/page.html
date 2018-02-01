@@ -11,25 +11,13 @@
   <div class="grid-row">
     <div class="column-one-half" id="editor-wrapper">
 
-      <h1 class="heading-xlarge">
-        {{ page.heading }}
-      </h1>
-
-      {% if message %}
-      <p class="message">{{ message }}</p>
-      {% endif %}
-
       <form action="{{ page.url }}" method="post" id="form">
-        {% if page.heading %}
-          {{ frontend.govukInput({
-            "label": {
-              "text": "Heading"
-            },
-            "name": "heading",
-            "id": "heading",
-            "value": page.heading
-          }) }}
-        {% endif %}
+        <h1 class="heading-xlarge heading-label">
+          <label class="form-label" for="heading">Heading</label>
+        </h1>
+        <div class="form-group">
+          <input class="form-control form-control-2-3" id="heading" name="heading" value="{{ page.heading}}">
+        </div>
 
         {% if page.pagetype %}
           {{ frontend.govukInput({
