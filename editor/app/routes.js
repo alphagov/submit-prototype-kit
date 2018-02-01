@@ -56,6 +56,7 @@ router.get('/forms/:formname/pages/:pagename', function (req, res) {
 let htmlResponse = function (res, req) {
   let form = formsData.getForm(req.params.formname)
   let page = form.page(req.params.pagename);
+  let message = "Form data saved";
 
   let onSaved = function (error) {
     if (error !== undefined) { message = "Form data saved"; }
@@ -70,12 +71,11 @@ let htmlResponse = function (res, req) {
 let jsonResponse = function (res, req) {
   let form = formsData.getForm(req.params.formname)
   let page = form.page(req.params.pagename);
+  let message = "Form data saved";
 
   let onSaved = function (error) {
     if (error !== undefined) {
       message = `Error saving form data: ${error}`;
-    } else {
-      message = "Form data saved";
     }
     res.send(message);  
   };
