@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const childProcess = require('child_process');
+const request = require('request');
 
 // set up constants for models
 var Form, Page, Organisation, Field;
@@ -12,6 +13,31 @@ const dataDir = path.resolve(process.cwd(), '../examples');
 const encoding = 'utf8';
 const dataFiles = [];
 const forms = [];
+
+
+const poll = function (onReady) {
+  let url = 'http://localhost:3000';
+  let opts = {
+    'url': url,
+    'method': 'HEAD'
+  };
+  let pollServer;
+  let onResponse;
+  
+  pollServer = function () {
+    request(opts, onResponse);
+  };
+
+  onResponse = function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      onReady();
+    } else {
+      pollServer();
+    }
+  };
+
+  pollServer();
+};
 
 
 const formsData = {
@@ -45,6 +71,11 @@ const formsData = {
   save: function(form, cb) {
     let JSONStr = form.getDataAsString();
     let rebuildPages;
+    let checkServerIsUp;
+
+    checkServerIsUp = function () {
+      poll(cb);
+    };
 
     rebuildPages = function () {
       childProcess.exec('make', { "cwd": path.resolve(process.cwd(), '../') }, (error, stdout, stderr) => {
@@ -55,7 +86,8 @@ const formsData = {
           console.log(`make process exited with ${error.code}`);
           cb(error);
         } else {
-          cb();
+          // wait until server has restarted until calling callback
+          checkServerIsUp();
         }
       });
     };
