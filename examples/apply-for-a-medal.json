@@ -23,9 +23,9 @@
       "heading": "Are you applying for medals awarded to you?",
       "fields": ["applicationPerson"],
       "next": [
-        { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
+        { "page": "active-service", "if": "data['applicationPerson'] == 'myself'" },
         { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
-        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
+        { "page": "relative-of-deceased", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
       ]
     },
 
@@ -34,18 +34,160 @@
       "heading": "Are you retired from the armed forces?",
       "fields": ["activeService"],
       "next": [
-        { "page": "ineligible-still-serving", "if": "data['activeService'] == 'activeServiceServing'" },
-        { "page": "which-services", "if": "data['activeService'] == 'activeServiceRetired'"  }
+        { "page": "which-services", "if": "data['activeService'] == 'activeServiceRetired'"  },
+        { "page": "ineligible-still-serving", "if": "data['activeService'] == 'activeServiceServing'" }
       ]
     },
 
-    "closest-relative": {
+    "which-services": {
       "pagetype": "question",
-      "heading": "How are you related to the serviceperson?",
-      "guidance": "We need to know your relationship to the serviceperson to determine if you’re eligible to receive the medals.",
+      "heading": "Which organisations did you serve with?",
+      "fields": ["organisations"],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "next": "your-name"
+    },
+
+    "serviceperson-name": {
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": ["servicepersonName"],
+      "next": "has-alternative-names"
+    },
+
+    "has-alternative-names": {
+      "pagetype": "question",
+      "heading": "Have you ever been known by a different name?",
+      "guidance": "For example, your maiden name",
+      "fields": ["hasAlternativeNames"],
+      "next": [
+        { "page": "alternative-names", "if": "data['hasAlternativeNames'] == 'yes'" },
+        { "page": "contact-preference" }
+      ]
+    },
+
+    "alternative-names": {
+      "pagetype": "question",
+      "heading": "Other names you held during service",
+      "fields": ["alternativeNames"],
+      "next": "contact-preference"
+    },
+
+
+
+
+    "active-service-third-party": {
+      "pagetype": "question",
+      "heading": "Is the service person retired from the armed forces?",
+      "fields": ["active3rdParty"],
+      "next": [
+        { "page": "lpa", "if": "data['active3rdParty'] == 'retired'" },
+        { "page": "ineligible-still-serving", "if": "data['active3rdParty'] == 'serving'"  }
+      ]
+    },
+
+    "has-lpa": {
+      "pagetype": "question",
+      "heading": "Do you have lasting power of attorney for the service person?",
+      "fields": ["hasLPA"],
+      "next": [
+        { "page": "lpa", "if": "data['hasLPA'] == 'yes'" },
+        { "page": "ineligible-no-lpa", "if": "data['hasLPA'] == 'no'"  }
+      ]
+    },
+
+    "lpa-upload": {
+      "pagetype": "question",
+      "heading": "Upload your evidence of Lasting Power of Attorney",
+      "fields": ["lpa-evidence"],
+      "next": "which-services-third-party"
+    },
+
+
+
+    "relative-of-deceased": {
+      "pagetype": "question",
+      "heading": "How are you related to the service person?",
+      "guidance": "We need to know your relationship to the service person to determine if you’re eligible to receive the medals.",
       "fields": ["relationship"],
-      "fieldrefs": ["parentType"],
-      "next": {}
+      "fieldrefs": ["eldestSibling", "eldestHalfSibling", "eldestGrandchild", "eldestNephewNiece", "eldestHalfNephewNiece"],
+      "next": [
+        { "page": "death-in-service", "if": "data['relationship'] == 'relationshipSpouse'" },
+        { "page": "closest-living" }
+      ]
+    },
+
+
+
+    "which-services-third-party": {
+      "pagetype": "question",
+      "heading": "Which organisations did the service person serve with?",
+      "fields": ["organisations"],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "next": "serviceperson-name-third-party"
+    },
+
+    "serviceperson-name-third-party": {
+      "pagetype": "question",
+      "heading": "What is the service person’s name?",
+      "fields": ["servicepersonName"],
+      "next": "has-alternative-names"
+    },
+
+    "has-alternative-names-third-party": {
+      "pagetype": "question",
+      "heading": "Has the service person ever been known by a different name?",
+      "guidance": "For example, their maiden name",
+      "fields": ["hasAlternativeNames"],
+      "next": [
+        { "page": "alternative-names-third-party", "if": "data['hasAlternativeNames'] == 'yes'" },
+        { "page": "contact-preference" }
+      ]
+    },
+
+    "alternative-names-third-party": {
+      "pagetype": "question",
+      "heading": "Other names the service person was known by",
+      "fields": ["alternativeNames"],
+      "next": "applicant-name"
+    },
+
+    "applicant-name": {
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": ["applicantName"],
+      "next": "contact-preference"
+    },
+
+
+
+
+    "contact-preference": {
+      "pagetype": "question",
+      "heading": "How do you want to be contacted about your application?",
+      "fields": ["contactPreference"],
+      "fieldrefs": [ "email", "phone", "mobile" ],
+      "next": "postal-address"
+    },
+
+    "postal-address": {
+      "pagetype": "question",
+      "heading": "Where do you want the medals posted?",
+      "guidance": "Medal applications usually take 6 to 8 weeks to process. If you move house during this time, or want to change the address the medals will be sent to please contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk).\n\nThere is no charge for the postage. Someone will need to sign for the delivery.",
+      "fields": ["postalAddress"],
+      "next": "check-your-answers"
+    },
+
+    "check-your-answers": {
+      "pagetype": "check-your-answers",
+      "heading": "Check your answers",
+      "next": "confirmation"
+    },
+
+    "confirmation": {
+      "pagetype": "application-complete",
+      "heading": "Application complete",
+      "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
+      "detail": "Your application will be processed within 28 days."
     },
 
     "ineligible-still-serving": {
@@ -54,50 +196,44 @@
       "guidance": "You can only apply for a medal online if you’re a retired veteran\n\nIf you are a retired veteran, [continue your medal application](active-service)\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     },
 
-    "which-services": {
-      "pagetype": "question",
-      "heading": [
-          {
-            "text": "Which organisations did you serve with?",
-            "if": "data['applicationPerson'] == 'Yes'"
-          },
-          {
-            "text": "Which organisations did the serviceperson serve with?"
-          }
-      ],
-      "fields": ["organisations"],
-      "fieldrefs": [
-        "serviceNumber", "startDate", "endDate",
-        "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails"
-      ],
-      "next": [
-        { "page": "active-service", "if": "data['applicationPerson'] == 'yesMyself'" },
-        { "page": "active-service-third-party", "if": "data['applicationPerson'] == 'behalfOfRelative'" },
-        { "page": "closest-relative", "if": "data['applicationPerson'] == 'relativeOfDeceased'" }
-      ]
+    "ineligible-no-evidence": {
+      "pagetype": "bounce",
+      "heading": "You must provide evidence of the service person’s death",
+      "guidance": "Medals can’t be given to family members without evidence the service person has died.\n\nContact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     },
 
-    "confirmation": {
-      "pagetype": "application-complete",
-      "heading": "Application complete",
-      "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
-      "detail": "Your application will be processed within 28 days."
+    "ineligible-no-lpa": {
+      "pagetype": "bounce",
+      "heading": "You can only apply for the medals on behalf of a service person if you have lasting power of attorney",
+      "guidance": "Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
+    },
+
+    "ineligible-not-closest-living-relative": {
+      "pagetype": "bounce",
+      "heading": "The application must be made by the service person’s closest living relative",
+      "guidance": "Medals can only be given to the closest living relative as defined by [intestacy rules](https://www.gov.uk/inherits-someone-dies-without-will).\n\n Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
+    },
+
+    "ineligible-not-eldest": {
+      "pagetype": "bounce",
+      "heading": "The application must be made by the service person’s closest living relative",
+      "guidance": "Medals can only be given to the closest living relative as defined by [intestacy rules](https://www.gov.uk/inherits-someone-dies-without-will).\n\n Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
+    },
+
+    "ineligible-not-next-of-kin": {
+      "pagetype": "bounce",
+      "heading": "The application must be made by the service person’s closest living relative",
+      "guidance": "Medals can only be given to the closest living relative as defined by [intestacy rules](https://www.gov.uk/inherits-someone-dies-without-will).\n\n Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     }
+
+
   },
 
   "fields": {
-    "parentType": {
-      "inputtype": "radio",
-      "legend": "Are you their mother or father?",
-      "items": [
-        { "value": "parentMother", "label": "Mother" },
-        { "value": "parentFather", "label": "Father" }
-      ]
-    },
     "applicationPerson": {
       "inputtype": "radio",
       "items": [
-        { "label": "Yes", "value": "yesMyself" },
+        { "label": "Yes", "value": "myself" },
         { "label": "No, I’m applying on behalf of someone else", "value": "behalfOfRelative" },
         { "label": "No, I’m applying for the medals of a deceased relative", "value": "relativeOfDeceased" }
       ]
@@ -109,18 +245,32 @@
         { "label": "No, I’m currently serving", "value": "activeServiceServing" }
       ]
     },
+    "eldestSibling": { "legend": "Are you the eldest living brother or sister?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
+    "eldestHalfSibling": { "legend": "Are you the eldest living half-brother or sister?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
+    "eldestGrandchild": { "legend": "Are you the eldest living grandchild?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
+    "eldestNephewNiece": { "legend": "Are you the eldest living nephew or niece?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
+    "eldestHalfNephewNiece": { "legend": "Are you the eldest living half-nephew or niece?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
     "relationship": {
       "field": "relationship",
       "inputtype": "radio",
       "legend": "I am their:",
       "items": [
         { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
-        { "value": "relationshipParent", "label": "Parent", "fieldref": "parentType" },
         { "value": "relationshipChild", "label": "Child" },
-        { "value": "relationshipSibling", "label": "Brother or sister" },
-        { "value": "relationshipGrandChild", "label": "Grandchild" },
-        { "value": "relationshipAuntUncle", "label": "Aunt or uncle" },
-        { "value": "relationshipNieceNephew", "label": "Niece or nephew" }
+        { "value": "relationshipFather", "label": "Father" },
+        { "value": "relationshipMother", "label": "Mother" },
+        { "value": "relationshipSibling", "label": "Brother or sister", "fieldref": "eldestSibling" },
+        { "value": "relationshipHalfSibling", "label": "Half brother or sister", "fieldref": "eldestHalfSibling" },
+        { "value": "relationshipGrandfather", "label": "Grandfather" },
+        { "value": "relationshipGrandmother", "label": "Grandmother" },
+        { "value": "relationshipGrandChild", "label": "Grandchild", "fieldref": "eldestGrandchild" },
+        { "value": "relationshipNephewNiece", "label": "Nephew or niece", "fieldref": "eldestNephewNiece" },
+        { "value": "relationshipNephewNiece", "label": "Half nephew or niece", "fieldref": "eldestHalfNephewNiece" }
       ]
     },
     "organisations": {
@@ -184,6 +334,78 @@
       "inputtype": "text",
       "datatype": "date",
       "label": "End date"
+    },
+    "active3rdParty": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "retired" },
+        { "label": "No, they’re currently serving", "value": "serving" }
+      ]
+    },
+    "serviceperson": {
+      "description": "Service person’s full name",
+      "inputtype": "text",
+      "datatype": "text",
+      "label": "Full name"
+    },
+    "applicantName": {
+      "description": "Applicant’s full name",
+      "inputtype": "text",
+      "datatype": "text",
+      "label": "Full name"
+    },
+    "hasAlternativeNames": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" },
+        { "value": "notsure", "label": "Not sure" }
+      ]
+    },
+    "alternativeNames": {
+      "description": "Service person’s alternative names",
+      "inputtype": "list",
+      "field": "name",
+      "label": "Full name",
+      "min-length": 1,
+      "max-length": 5
+    },
+    "email": {
+      "label": "Email address",
+      "inputtype": "text"
+    },
+    "phone": {
+      "label": "Phone number",
+      "inputtype": "text"
+    },
+    "mobile": {
+      "label": "Mobile phone number",
+      "inputtype": "text"
+    },
+    "contactPreference": {
+      "inputtype": "checkboxes",
+      "items": [
+        { "label": "Email", "value": "contact-email", "fieldref": "email" },
+        { "label": "Phone", "value": "contact-phone", "fieldref": "phone" },
+        { "label": "Text message", "value": "contact-text", "fieldref": "mobile" }
+      ]
+    },
+    "postalAddress": {
+      "inputtype": "textarea",
+      "label": "Full address"
+    },
+    "hasLPA": {
+      "inputtype": "radio",
+      "legend": "Do you have lasting power of attorney for the service person?",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "lpa": {
+      "inputtype": "image",
+      "legend": "Please upload an image file"
     }
   }
 }
