@@ -27,15 +27,7 @@ router.get('/forms/:formname', function (req, res) {
 });
 
 router.get('/forms/:formname/pages', function (req, res) {
-  let page = formsData.getForm(req.params.formname).pages[0];
-  let data = {
-    'page': page,
-    'formname': req.params.formname,
-    'message': req.query.message,
-    'currentFormPage': `${req.params.formname}`
-  };
-
-  res.render('page', data)
+  res.redirect(`/forms/${formname}`);
 });
 
 router.get('/forms/:formname/pages/:pagename', function (req, res) {

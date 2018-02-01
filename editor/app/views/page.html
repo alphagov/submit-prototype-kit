@@ -10,6 +10,10 @@
 <main id="content" role="main">
   <div class="grid-row">
     <div class="column-one-half" id="editor-wrapper">
+    {{ frontend.govukBackLink({
+      "href": "/forms/" + formname,
+      "text": "Back to pages in this form"
+    }) }}
 
       <form action="{{ page.url }}" method="post" id="form">
         <h1 class="heading-xlarge heading-label">
@@ -31,7 +35,7 @@
         {% endif %}
 
         {% if page.guidance %}
-          {{ frontend.govukInput({
+          {{ frontend.govukTextarea({
             "label": {
               "text": "Guidance"
             },

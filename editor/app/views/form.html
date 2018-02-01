@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
 
 {% block page_title %}
   Pages in {{ form.heading }} - Editor
@@ -9,6 +10,10 @@
 <main id="content" role="main">
   <div class="grid-row">
     <div class="column-one-half" id="editor-wrapper">
+      {{ frontend.govukBackLink({
+        "href": "/forms",
+        "text": "Back to forms"
+      }) }}
 
       <h1 class="heading-xlarge">
         {{ form.heading }}
