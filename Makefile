@@ -62,6 +62,7 @@ EDITOR_JS=$(EDITOR_JS_DIR)/editor.js
 SRC_EDITOR_JS=\
 	$(EDITOR_JS_DIR)/editor/head.js\
 	$(EDITOR_JS_DIR)/editor/utils.js\
+	$(EDITOR_JS_DIR)/editor/status.js\
 	$(EDITOR_JS_DIR)/editor/iframe-controller.js\
 	$(EDITOR_JS_DIR)/editor/onready.js
 
