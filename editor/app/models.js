@@ -142,7 +142,11 @@ class Form {
 
   get heading() { return this._data.heading; }
 
+  set heading(value) { this._data.heading = value; }
+
   get phase() { return this._data.phase; }
+
+  set phase(value) { this._data.phase = value; }
 
   get pages() {
     return this._pages;
@@ -181,6 +185,12 @@ class Form {
 
     return new Field(fieldData, this);
   }
+
+  update(newData) {
+    for (let prop in newData) {
+      if (this[prop]) { this[prop] = newData[prop]; }
+    }
+  } 
 }
 
 

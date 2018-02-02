@@ -20,13 +20,38 @@
       </h1>
 
       <h2 class="heading-large">
-        Pages
+        Pages in this form
       </h2>
+      <ul class="list-navigation">
       {% for page in form.pages %}
-        <ul>
-          <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
-        </ul>
+        <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
       {% endfor %}
+      </ul>
+
+      <form method="post" action="{{ form.url }}">
+      {% if form.heading %}
+        {{ frontend.govukInput({
+          "label": {
+            "text": "Heading"
+          },
+          "name": "heading",
+          "id": "heading",
+          "value": form.heading
+        }) }}
+      {% endif %}
+      {% if form.phase %}
+        {{ frontend.govukInput({
+          "label": {
+            "text": "Phase"
+          },
+          "name": "phase",
+          "id": "phase",
+          "value": form.phase
+        }) }}
+      {% endif %}
+
+      {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+      </form>
     </div>
     <div class="column-one-half">
       <div id="prototype-wrapper" class="prototype-wrapper">

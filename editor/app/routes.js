@@ -45,24 +45,21 @@ router.get('/forms/:formname/pages/:pagename', function (req, res) {
 
 // POST routes
 
-let htmlResponse = function (res, req) {
-  let form = formsData.getForm(req.params.formname)
-  let page = form.page(req.params.pagename);
+let htmlResponse = function (res, req, form, page) {
   let message = "Form data saved";
+  let redirectURL = (page !== undefined) ? page.url : form.url;
 
   let onSaved = function (error) {
     if (error !== undefined) { message = "Form data saved"; }
 
-    res.redirect(`${page.url}?message=${encodeURIComponent(message)}`);
+    res.redirect(`${redirectURL}?message=${encodeURIComponent(message)}`);
   };
 
-  page.update(req.body);
+  if (page !== undefined) { page.update(req.body) } else { form.update(req.body) }
   formsData.save(form, onSaved);
 };
 
-let jsonResponse = function (res, req) {
-  let form = formsData.getForm(req.params.formname)
-  let page = form.page(req.params.pagename);
+let jsonResponse = function (res, req, form, page) {
   let message = "Form data saved";
 
   let onSaved = function (error) {
@@ -72,15 +69,28 @@ let jsonResponse = function (res, req) {
     res.send(message);  
   };
 
-  page.update(req.body);
+  if (page !== undefined) { page.update(req.body) } else { form.update(req.body) }
   formsData.save(form, onSaved);
 };
 
-router.post('/forms/:formname/pages/:pagename', function (req, res) {
+router.post('/forms/:formname', function (req, res) {
+  let form = formsData.getForm(req.params.formname)
+
   if (req.get('Accept') === 'application/json') {
-    jsonResponse(res, req);
+    jsonResponse(res, req, form);
   } else {
-    htmlResponse(res, req);
+    htmlResponse(res, req, form);
+  }
+});
+
+router.post('/forms/:formname/pages/:pagename', function (req, res) {
+  let form = formsData.getForm(req.params.formname)
+  let page = form.page(req.params.pagename);
+
+  if (req.get('Accept') === 'application/json') {
+    jsonResponse(res, req, form, page);
+  } else {
+    htmlResponse(res, req, form, page);
   }
 });
 module.exports = router
