@@ -1,0 +1,13 @@
+{
+  "name": "apply-for-a-medal",
+  "scenarios": [
+    {
+      "description": "I'm ineligible if I'm still serving",
+      "data": {
+        "applicationPerson": "yesMyself",
+        "activeService": "activeServiceServing"
+      },
+      "result": "ineligible-still-serving"
+    }
+  ]
+}
