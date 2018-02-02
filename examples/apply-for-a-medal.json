@@ -103,16 +103,30 @@
     },
 
 
-
     "relative-of-deceased": {
       "pagetype": "question",
       "heading": "How are you related to the service person?",
       "guidance": "We need to know your relationship to the service person to determine if you’re eligible to receive the medals.",
       "fields": ["relationship"],
-      "fieldrefs": ["eldestSibling", "eldestHalfSibling", "eldestGrandchild", "eldestNephewNiece", "eldestHalfNephewNiece"],
+      "fieldrefs": ["eldestChild", "eldestSibling", "eldestHalfSibling", "eldestGrandchild", "eldestNibling", "eldestHalfNibling"],
       "next": [
-        { "page": "death-in-service", "if": "data['relationship'] == 'relationshipSpouse'" },
-        { "page": "relationship-child", "if": "data['relationship'] == 'relationshipChild'" }
+        { "page": "death-in-service", "if": "data['relationship'] == 'spouse'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'child' && eldestChild == 'no'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'sibling' && eldestSibling == 'no'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'halfSibling' && eldestHalfSibling == 'no'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'grandChild' && eldestGrandchild == 'no'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'nibling' && eldestNibling == 'no'" },
+        { "page": "ineligible-not-eldest", "if": "data['relationship'] == 'halfNibling' && eldestHalfNibling == 'no'" },
+        { "page": "relationship-child", "if": "data['relationship'] == 'child'" },
+        { "page": "relationship-mother", "if": "data['relationship'] == 'mother'" },
+        { "page": "relationship-father", "if": "data['relationship'] == 'father'" },
+        { "page": "relationship-sibling", "if": "data['relationship'] == 'sibling'" },
+        { "page": "relationship-half-sibling", "if": "data['relationship'] == 'halfSibling'" },
+        { "page": "relationship-grandparent", "if": "data['relationship'] == 'grandFather'" },
+        { "page": "relationship-grandparent", "if": "data['relationship'] == 'grandMother'" },
+        { "page": "relationship-grandchild", "if": "data['relationship'] == 'grandChild'" },
+        { "page": "relationship-nibling", "if": "data['relationship'] == 'nibling'" },
+        { "page": "relationship-half-nibling", "if": "data['relationship'] == 'halfNibling'" }
       ]
     },
 
@@ -121,9 +135,100 @@
       "heading": "Is the service person’s husband, wife or civil partner alive?",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['relationship'] == 'relationshipChild'" }
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
       ]
     },
+
+    "relationship-mother": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* children\n* father",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-father": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* children\n* mother",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-sibling": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-half-sibling": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-grandchild": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-grandparent": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* other grandmother or grandfather",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-nibling": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* grandmother or grandfather\n* other nieces or nephews",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+    "relationship-half-nibling": {
+      "pagetype": "question",
+      "heading": "Are any of these relatives of the service person alive?",
+      "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* grandmother or grandfather\n* nieces or nephews",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "ineligible-not-next-of-kin" }
+      ]
+    },
+
+
 
     "death-in-service": {
       "pagetype": "question",
@@ -150,6 +255,16 @@
       "heading": "",
       "fields": ["deathCertificate"],
       "next": "which-services-third-party"
+    },
+
+    "has-other-evidence": {
+      "pagetype": "question",
+      "heading": "Do you have any other proof the serviceperson has died?",
+      "fields": ["hasOtherEvidence"],
+      "next": [
+        { "page": "upload-other-evidence", "if": "data['hasOtherEvidence'] == 'yes'" },
+        { "page": "upload-other-evidence" }
+      ]
     },
 
     "upload-other-evidence": {
@@ -283,32 +398,34 @@
         { "label": "No, I’m currently serving", "value": "activeServiceServing" }
       ]
     },
+    "eldestChild": { "legend": "Are you the eldest living child?",
+      "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
     "eldestSibling": { "legend": "Are you the eldest living brother or sister?",
       "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
     "eldestHalfSibling": { "legend": "Are you the eldest living half-brother or sister?",
       "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
     "eldestGrandchild": { "legend": "Are you the eldest living grandchild?",
       "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
-    "eldestNephewNiece": { "legend": "Are you the eldest living nephew or niece?",
+    "eldestNibling": { "legend": "Are you the eldest living nephew or niece?",
       "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
-    "eldestHalfNephewNiece": { "legend": "Are you the eldest living half-nephew or niece?",
+    "eldestHalfNibling": { "legend": "Are you the eldest living half-nephew or niece?",
       "inputtype": "radio", "items": [ { "label": "Yes", "value": "yes" }, { "label": "No", "value": "no" } ] },
     "relationship": {
       "field": "relationship",
       "inputtype": "radio",
       "legend": "I am their:",
       "items": [
-        { "value": "relationshipSpouse", "label": "Husband, wife or civil partner" },
-        { "value": "relationshipChild", "label": "Child" },
-        { "value": "relationshipFather", "label": "Father" },
-        { "value": "relationshipMother", "label": "Mother" },
-        { "value": "relationshipSibling", "label": "Brother or sister", "fieldref": "eldestSibling" },
-        { "value": "relationshipHalfSibling", "label": "Half brother or sister", "fieldref": "eldestHalfSibling" },
-        { "value": "relationshipGrandfather", "label": "Grandfather" },
-        { "value": "relationshipGrandmother", "label": "Grandmother" },
-        { "value": "relationshipGrandChild", "label": "Grandchild", "fieldref": "eldestGrandchild" },
-        { "value": "relationshipNephewNiece", "label": "Nephew or niece", "fieldref": "eldestNephewNiece" },
-        { "value": "relationshipNephewNiece", "label": "Half nephew or niece", "fieldref": "eldestHalfNephewNiece" }
+        { "value": "spouse", "label": "Husband, wife or civil partner" },
+        { "value": "child", "label": "Child", "fieldref": "eldestChild" },
+        { "value": "father", "label": "Father" },
+        { "value": "mother", "label": "Mother" },
+        { "value": "sibling", "label": "Brother or sister", "fieldref": "eldestSibling" },
+        { "value": "halfSibling", "label": "Half brother or sister", "fieldref": "eldestHalfSibling" },
+        { "value": "grandfather", "label": "Grandfather" },
+        { "value": "grandmother", "label": "Grandmother" },
+        { "value": "grandChild", "label": "Grandchild", "fieldref": "eldestGrandchild" },
+        { "value": "nibling", "label": "Nephew or niece", "fieldref": "eldestNibling" },
+        { "value": "halfNibling", "label": "Half nephew or niece", "fieldref": "eldestHalfNibling" }
       ]
     },
     "otherClosestLivingRelative": {
