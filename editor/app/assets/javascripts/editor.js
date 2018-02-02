@@ -135,7 +135,10 @@
     },
 
     init: function() {
-      // Any communication with the iframe on load goes here
+      // set iframe to height of editor's column
+      var contentHeight = document.getElementById('content').getBoundingClientRect().height;
+
+      iframe.style.height = contentHeight + 'px';
     }
   };
 
