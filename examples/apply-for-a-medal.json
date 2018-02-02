@@ -44,7 +44,7 @@
       "heading": "Which organisations did you serve with?",
       "fields": ["organisations"],
       "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
-      "next": "your-name"
+      "next": "serviceperson-name"
     },
 
     "serviceperson-name": {
@@ -80,7 +80,7 @@
       "heading": "Is the service person retired from the armed forces?",
       "fields": ["active3rdParty"],
       "next": [
-        { "page": "lpa", "if": "data['active3rdParty'] == 'retired'" },
+        { "page": "has-lpa", "if": "data['active3rdParty'] == 'retired'" },
         { "page": "ineligible-still-serving", "if": "data['active3rdParty'] == 'serving'"  }
       ]
     },
@@ -90,15 +90,15 @@
       "heading": "Do you have lasting power of attorney for the service person?",
       "fields": ["hasLPA"],
       "next": [
-        { "page": "lpa", "if": "data['hasLPA'] == 'yes'" },
+        { "page": "upload-lpa", "if": "data['hasLPA'] == 'yes'" },
         { "page": "ineligible-no-lpa", "if": "data['hasLPA'] == 'no'"  }
       ]
     },
 
-    "lpa-upload": {
+    "upload-lpa": {
       "pagetype": "question",
       "heading": "Upload your evidence of Lasting Power of Attorney",
-      "fields": ["lpa-evidence"],
+      "fields": ["LPA"],
       "next": "which-services-third-party"
     },
 
@@ -112,10 +112,52 @@
       "fieldrefs": ["eldestSibling", "eldestHalfSibling", "eldestGrandchild", "eldestNephewNiece", "eldestHalfNephewNiece"],
       "next": [
         { "page": "death-in-service", "if": "data['relationship'] == 'relationshipSpouse'" },
-        { "page": "closest-living" }
+        { "page": "relationship-child", "if": "data['relationship'] == 'relationshipChild'" }
       ]
     },
 
+    "relationship-child": {
+      "pagetype": "question",
+      "heading": "Is the service person’s husband, wife or civil partner alive?",
+      "fields": ["otherClosestLivingRelative"],
+      "next": [
+        { "page": "relationship-child", "if": "data['relationship'] == 'relationshipChild'" }
+      ]
+    },
+
+    "death-in-service": {
+      "pagetype": "question",
+      "heading": "Did the service person die in service?",
+      "fields": ["diedInService"],
+      "next": [
+        { "page": "which-services-third-party", "if": "data['diedInService'] == 'yes'" },
+        { "page": "has-death-certificate" }
+      ]
+    },
+
+    "has-death-certificate": {
+      "pagetype": "question",
+      "heading": "Can you provide a copy of the death certificate?",
+      "fields": ["hasDeathCertificate"],
+      "next": [
+        { "page": "upload-death-certificate", "if": "data['hasDeathCertificate'] == 'yes'" },
+        { "page": "has-other-evidence" }
+      ]
+    },
+
+    "upload-death-certificate": {
+      "pagetype": "question",
+      "heading": "",
+      "fields": ["deathCertificate"],
+      "next": "which-services-third-party"
+    },
+
+    "upload-other-evidence": {
+      "pagetype": "question",
+      "heading": "Evidence can be a photo or scan of documents. Make sure the image is clear and legible.",
+      "fields": ["otherEvidence", "otherEvidenceDescription"],
+      "next": "which-services-third-party"
+    },
 
 
     "which-services-third-party": {
@@ -137,9 +179,9 @@
       "pagetype": "question",
       "heading": "Has the service person ever been known by a different name?",
       "guidance": "For example, their maiden name",
-      "fields": ["hasAlternativeNames"],
+      "fields": ["hasAlternativeNamesThirdParty"],
       "next": [
-        { "page": "alternative-names-third-party", "if": "data['hasAlternativeNames'] == 'yes'" },
+        { "page": "alternative-names-third-party", "if": "data['hasAlternativeNamesThirdParty'] == 'yes'" },
         { "page": "contact-preference" }
       ]
     },
@@ -157,8 +199,6 @@
       "fields": ["applicantName"],
       "next": "contact-preference"
     },
-
-
 
 
     "contact-preference": {
@@ -225,8 +265,6 @@
       "heading": "The application must be made by the service person’s closest living relative",
       "guidance": "Medals can only be given to the closest living relative as defined by [intestacy rules](https://www.gov.uk/inherits-someone-dies-without-will).\n\n Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     }
-
-
   },
 
   "fields": {
@@ -271,6 +309,14 @@
         { "value": "relationshipGrandChild", "label": "Grandchild", "fieldref": "eldestGrandchild" },
         { "value": "relationshipNephewNiece", "label": "Nephew or niece", "fieldref": "eldestNephewNiece" },
         { "value": "relationshipNephewNiece", "label": "Half nephew or niece", "fieldref": "eldestHalfNephewNiece" }
+      ]
+    },
+    "otherClosestLivingRelative": {
+      "inputtype": "radio",
+      "legend": "Is there another, closest living relative?",
+      "items": [
+        { "value": "no", "label": "No, I’m the closest living relative" },
+        { "value": "yes", "label": "Yes" }
       ]
     },
     "organisations": {
@@ -342,7 +388,7 @@
         { "label": "No, they’re currently serving", "value": "serving" }
       ]
     },
-    "serviceperson": {
+    "servicepersonName": {
       "description": "Service person’s full name",
       "inputtype": "text",
       "datatype": "text",
@@ -359,15 +405,23 @@
       "legend": "",
       "items": [
         { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "hasAlternativeNamesThirdParty": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
         { "value": "no", "label": "No" },
         { "value": "notsure", "label": "Not sure" }
       ]
     },
     "alternativeNames": {
       "description": "Service person’s alternative names",
+      "label": "Full name",
       "inputtype": "list",
       "field": "name",
-      "label": "Full name",
       "min-length": 1,
       "max-length": 5
     },
@@ -395,6 +449,14 @@
       "inputtype": "textarea",
       "label": "Full address"
     },
+    "diedInService": {
+      "inputtype": "radio",
+      "legend": "Did the service person die in service?",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
     "hasLPA": {
       "inputtype": "radio",
       "legend": "Do you have lasting power of attorney for the service person?",
@@ -403,9 +465,37 @@
         { "value": "no", "label": "No" }
       ]
     },
-    "lpa": {
+    "LPA": {
       "inputtype": "image",
       "legend": "Please upload an image file"
+    },
+    "hasDeathCertificate": {
+      "inputtype": "radio",
+      "legend": "Can you provide a copy of the death certificate?",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "deathCertificate": {
+      "inputtype": "image",
+      "legend": "Please upload an image file"
+    },
+    "hasOtherEvidence": {
+      "inputtype": "radio",
+      "legend": "Do you have any other proof the service person has died?",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "otherEvidence": {
+      "inputtype": "image",
+      "legend": "Please upload an image file"
+    },
+    "otherEvidenceDescription": {
+      "inputtype": "textarea",
+      "label": "Describe the documents you’re uploading"
     }
   }
 }
