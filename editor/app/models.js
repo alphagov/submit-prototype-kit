@@ -3,6 +3,60 @@ const path = require('path');
 const formsData = require(path.resolve(process.cwd(), 'lib/forms_data.js'));
 
 
+class Field {
+  constructor(data, form) {
+    this._data = data;
+    this.form = form;
+
+    if (this._data.hasOwnProperty('items')) {
+      this._items = this._data.items.map(i => {
+        return new FieldItem(i);
+      });
+    }
+  }
+
+  get label() { return this._data.label || undefined; }
+
+  get hint() { return this._data.hint || undefined; }
+
+  get legend() { return this._data.legend || undefined; }
+
+  get items() { return this._data.items || undefined; }
+
+  get id() { return this._data.name.replace(' ', '-').toLowercase(); }
+
+  get isFieldset() { return false; }
+}
+
+
+class FieldItem {
+  constructor(data) {
+    this._data = data;
+  }
+
+  get label() { return this._data.label || undefined; }
+
+  get value() { return this._data.value || undefined; }
+
+  get hint() { return this._data.hint || undefined; }
+}
+
+
+class Fieldset extends Field {
+  constructor(data) {
+    super();
+
+    this._fields = this._data.fields.map(f => {
+      fields.push(form.createField(f));
+    });
+  }
+
+  get isFieldset() { return true; }
+
+  get fields() { return this._fields || undefined; }
+}
+
+
 class FormComponent {
   constructor(data, form) {
     this._data = data;
@@ -11,25 +65,12 @@ class FormComponent {
 }
 
 
-class Field extends FormComponent {
-  get field() { return this._data.field || undefined; }
-
-  get inputtype() { return this._data.inputtype || undefined; }
-
-  get items() { return this._data.items || undefined; }
-}
-
-
 class Page extends FormComponent {
   constructor(data, form) {
     super(data, form);
 
     if (this._data.hasOwnProperty('fields')) {
-      this._fields = this._data.fields.map(f => {
-        let field = new Field(f, form);
-
-        return field;
-      });
+      this._fields = this._data.fields.map(f => { return form.createField(f) });
     }
   }
 
@@ -125,6 +166,20 @@ class Form {
 
   getDataAsString () {
     return JSON.stringify(this._data, null, 2);
+  }
+
+  createField(name) {
+    let fieldData;
+    let fieldClass;
+
+    fieldData = this._data.fields[name];
+    fieldData.name = name;
+
+    if (fieldData.hasOwnProperty('fields')) {
+      return new Fieldset(fieldData, this);
+    }
+
+    return new Field(fieldData, this);
   }
 }
 

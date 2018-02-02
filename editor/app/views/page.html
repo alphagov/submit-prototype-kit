@@ -57,7 +57,80 @@
         {% endif %}
 
         {% for field in page.fields %}
+          {% set fieldindex = loop.index %}
 
+          {# Wrap in a fieldset if multiple properties #}
+          {% if field.hint %}
+          <fieldset>
+            <legend class="visuallyhidden">
+              Field {{ fieldindex }}
+            </legend>
+          {% endif %}
+          {% if field.label %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1, label " + fieldindex
+              },
+              "name": "label",
+              "id": "label",
+              "value": field.label
+            }) }}
+          {% elif field.legend %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1, legend " + fieldindex
+              },
+              "name": "legend",
+              "id": "legend",
+              "value": field.legend
+            }) }}
+          {% endif %}
+          {% if field.hint %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1 " + fieldindex + " hint"
+              },
+              "name": "hint",
+              "id": "hint",
+              "value": field.hint
+            }) }}
+          {% endif %}
+          {% if field.items %}
+            {% for item in field.items %}
+              {% set optionindex = loop.index %}
+
+              <fieldset>
+                <legend class="visuallyhidden">
+                  Field {{ fieldindex }}, option {{ optionindex }}
+                </legend>
+              {% if item.label %}
+                {{ frontend.govukInput({
+                  "label": {
+                    "text": "Option " + optionindex + " label" 
+                  },
+                  "name": "label",
+                  "id": "label",
+                  "value": item.label
+                }) }}
+              {% endif %}
+              {% if item.hint %}
+                {{ frontend.govukInput({
+                  "label": {
+                    "text": "Option 1 " + optionindex + " Hint" 
+                  },
+                  "name": "hint",
+                  "id": "hint",
+                  "value": item.hint
+                }) }}
+              {% endif %}
+            {% endfor %}
+            {% if item.hint %}
+            </fieldset>
+            {% endif %}
+          {% endif %}
+          {% if field.hint %}
+          </fieldset>
+          {% endif %}
         {% endfor %}
 
         {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
