@@ -81,7 +81,7 @@
       "fields": ["active3rdParty"],
       "next": [
         { "page": "has-lpa", "if": "data['active3rdParty'] == 'retired'" },
-        { "page": "ineligible-still-serving", "if": "data['active3rdParty'] == 'serving'"  }
+        { "page": "ineligible-still-serving-third-party", "if": "data['active3rdParty'] == 'serving'"  }
       ]
     },
 
@@ -135,7 +135,7 @@
       "heading": "Is the service person’s husband, wife or civil partner alive?",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -146,7 +146,7 @@
       "guidance": "* husband, wife or civil partner\n* children\n* father",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -157,7 +157,7 @@
       "guidance": "* husband, wife or civil partner\n* children\n* mother",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -168,7 +168,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -179,7 +179,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -190,7 +190,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -201,7 +201,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* other grandmother or grandfather",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -212,7 +212,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* grandmother or grandfather\n* other nieces or nephews",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -223,7 +223,7 @@
       "guidance": "* husband, wife or civil partner\n* mother\n* father\n* brother or sister\nhalf-brother or sister\n* grandchildren\n* grandmother or grandfather\n* nieces or nephews",
       "fields": ["otherClosestLivingRelative"],
       "next": [
-        { "page": "relationship-child", "if": "data['otherClosestLivingRelative'] == 'no'" },
+        { "page": "death-in-service", "if": "data['otherClosestLivingRelative'] == 'no'" },
         { "page": "ineligible-not-next-of-kin" }
       ]
     },
@@ -263,7 +263,7 @@
       "fields": ["hasOtherEvidence"],
       "next": [
         { "page": "upload-other-evidence", "if": "data['hasOtherEvidence'] == 'yes'" },
-        { "page": "upload-other-evidence" }
+        { "page": "ineligible-no-evidence" }
       ]
     },
 
@@ -287,7 +287,7 @@
       "pagetype": "question",
       "heading": "What is the service person’s name?",
       "fields": ["servicepersonName"],
-      "next": "has-alternative-names"
+      "next": "has-alternative-names-third-party"
     },
 
     "has-alternative-names-third-party": {
@@ -297,7 +297,7 @@
       "fields": ["hasAlternativeNamesThirdParty"],
       "next": [
         { "page": "alternative-names-third-party", "if": "data['hasAlternativeNamesThirdParty'] == 'yes'" },
-        { "page": "contact-preference" }
+        { "page": "applicant-name" }
       ]
     },
 
@@ -351,6 +351,12 @@
       "guidance": "You can only apply for a medal online if you’re a retired veteran\n\nIf you are a retired veteran, [continue your medal application](active-service)\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     },
 
+    "ineligible-still-serving-third-party": {
+      "pagetype": "bounce",
+      "heading": "Apply through human resources in your unit",
+      "guidance": "You can only apply for a medal online for a retired veteran\n\nIf the service person is a retired veteran, [continue the medal application](active-service)\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
+    },
+
     "ineligible-no-evidence": {
       "pagetype": "bounce",
       "heading": "You must provide evidence of the service person’s death",
@@ -361,12 +367,6 @@
       "pagetype": "bounce",
       "heading": "You can only apply for the medals on behalf of a service person if you have lasting power of attorney",
       "guidance": "Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
-    },
-
-    "ineligible-not-closest-living-relative": {
-      "pagetype": "bounce",
-      "heading": "The application must be made by the service person’s closest living relative",
-      "guidance": "Medals can only be given to the closest living relative as defined by [intestacy rules](https://www.gov.uk/inherits-someone-dies-without-will).\n\n Contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk), if you have questions about medal applications.\n\n[Read about military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)"
     },
 
     "ineligible-not-eldest": {
