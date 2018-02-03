@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
+import sys
 import json
+from pprint import pprint
 
 class Graph:
+    graph = {}
+
     def load(self, path):
         self.form = json.load(open(path))
         self.graph = {}
@@ -15,6 +19,7 @@ class Graph:
             self.graph[page] = [n['page'] for n in p.get('next', [])]
 
     def cyclic(self):
+        """ test for cycles """
         self.cycle = []
         path = set()
         visited = set()
@@ -33,26 +38,23 @@ class Graph:
 
         return any(visit(v) for v in self.graph)
 
-    def paths(self, node):
+    def paths(self, path=['index'], paths=[]):
+        """ find paths from a point """
+        node = path[-1]
+        if not self.graph[node]:
+            return paths + [path]
 
-        def dfs(path, paths=[]):
-            node = path[-1]
-            if node in self.graph:
-                for val in self.graph[node]:
-                    new_path = path + [val]
-                    paths = dfs(new_path, paths)
-            else:
-                paths += [path]
-            return paths
-
-        return dfs([node])
+        for vertex in self.graph[node]:
+            paths = self.paths(path + [vertex], paths)
+        return paths
 
 
 graph = Graph()
 graph.load('examples/apply-for-a-medal.json')
 
 if (graph.cyclic()):
-    print("Cycle detected:", graph.cycle)
+    print("Cycle detected:", graph.cycle, file=sys.stderr)
     exit(1)
 
-print(graph.paths('index'))
+paths = graph.paths()
+pprint(paths)
