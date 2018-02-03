@@ -173,6 +173,12 @@
     {% for fieldref in field.fields %}
   {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
     {%- endfor %}
+
+{%- elif field.inputtype == 'list' -%}
+    {% for fieldref in field.fields %}
+  {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
+    {%- endfor %}
+
 {%- else %}
 
     <!-- unknown inputtype "{{ field.inputtype }}" -->
