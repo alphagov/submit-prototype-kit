@@ -20,7 +20,7 @@
           <label class="form-label" for="heading">Heading</label>
         </h1>
         <div class="form-group">
-          <input class="form-control form-control-2-3" id="heading" name="heading" value="{{ page.heading}}">
+          <input class="form-control form-control-2-3" id="{{ page.id }}.heading" name="{{ page.id }}.heading" value="{{ page.heading}}">
         </div>
 
         {% if page.pagetype %}
@@ -28,8 +28,8 @@
             "label": {
               "text": "Page type"
             },
-            "name": "pagetype",
-            "id": "pagetype",
+            "name": page.id + ".pagetype",
+            "id": page.id + ".pagetype",
             "value": page.pagetype
           }) }}
         {% endif %}
@@ -39,8 +39,8 @@
             "label": {
               "text": "Guidance"
             },
-            "name": "guidance",
-            "id": "guidance",
+            "name": page.id+ ".guidance",
+            "id": page.id+ ".guidance",
             "value": page.guidance
           }) }}
         {% endif %}
@@ -50,8 +50,8 @@
             "label": {
               "text": "Detail"
             },
-            "name": "detail",
-            "id": "detail",
+            "name": page.id + ".detail",
+            "id": page.id + ".detail",
             "value": page.detail
           }) }}
         {% endif %}
@@ -71,8 +71,8 @@
               "label": {
                 "text": "Field 1, label " + fieldindex
               },
-              "name": "label",
-              "id": "label",
+              "name": field.id + ".label",
+              "id": field.id + ".label",
               "value": field.label
             }) }}
           {% elif field.legend %}
@@ -80,8 +80,8 @@
               "label": {
                 "text": "Field 1, legend " + fieldindex
               },
-              "name": "legend",
-              "id": "legend",
+              "name": field.id + ".legend",
+              "id": field.id + ".legend",
               "value": field.legend
             }) }}
           {% endif %}
@@ -90,8 +90,8 @@
               "label": {
                 "text": "Field 1 " + fieldindex + " hint"
               },
-              "name": "hint",
-              "id": "hint",
+              "name": field.id + ".hint",
+              "id": field.id + ".hint",
               "value": field.hint
             }) }}
           {% endif %}
@@ -99,17 +99,19 @@
             {% for item in field.items %}
               {% set optionindex = loop.index %}
 
+              {% if item.hint %}
               <fieldset>
                 <legend class="visuallyhidden">
                   Field {{ fieldindex }}, option {{ optionindex }}
                 </legend>
+              {% endif %}
               {% if item.label %}
                 {{ frontend.govukInput({
                   "label": {
                     "text": "Option " + optionindex + " label" 
                   },
-                  "name": "label",
-                  "id": "label",
+                  "name": item.id + ".label",
+                  "id": item.id + ".label",
                   "value": item.label
                 }) }}
               {% endif %}
@@ -118,8 +120,8 @@
                   "label": {
                     "text": "Option 1 " + optionindex + " Hint" 
                   },
-                  "name": "hint",
-                  "id": "hint",
+                  "name": item.id + ".hint",
+                  "id": item.id + ".hint",
                   "value": item.hint
                 }) }}
               {% endif %}

@@ -4,13 +4,15 @@ const formsData = require(path.resolve(process.cwd(), 'lib/forms_data.js'));
 
 
 class Field {
-  constructor(data, form) {
+  constructor(data, parentComponent) {
     this._data = data;
-    this.form = form;
+    this.parentComponent = parentComponent;
 
     if (this._data.hasOwnProperty('items')) {
-      this._items = this._data.items.map(i => {
-        return new FieldItem(i);
+      this._items = this._data.items.map((item, idx) => {
+        item.idx = idx;
+
+        return new FieldItem(item, this);
       });
     }
   }
@@ -21,17 +23,18 @@ class Field {
 
   get legend() { return this._data.legend || undefined; }
 
-  get items() { return this._data.items || undefined; }
+  get items() { return this._items || []; }
 
-  get id() { return this._data.name.replace(' ', '-').toLowercase(); }
+  get namespace() { return [this.parentComponent.namespace, `fields[${this._data.name}]`].join('.'); }
 
-  get isFieldset() { return false; }
+  get id() { return this.namespace; }
 }
 
 
 class FieldItem {
-  constructor(data) {
+  constructor(data, parentComponent) {
     this._data = data;
+    this.parentComponent = parentComponent;
   }
 
   get label() { return this._data.label || undefined; }
@@ -39,21 +42,25 @@ class FieldItem {
   get value() { return this._data.value || undefined; }
 
   get hint() { return this._data.hint || undefined; }
+
+  get id() { return [this.parentComponent.namespace, `items[${this._data.idx}]`].join('.'); }
 }
 
 
 class Fieldset extends Field {
-  constructor(data) {
-    super();
+  constructor(data, field) {
+    super(data, field);
 
     this._fields = this._data.fields.map(f => {
-      fields.push(form.createField(f));
+      let field = form.createField(f, this)
+
+      fields.push(field);
     });
   }
 
   get isFieldset() { return true; }
 
-  get fields() { return this._fields || undefined; }
+  get fields() { return this._fields || []; }
 }
 
 
@@ -70,7 +77,7 @@ class Page extends FormComponent {
     super(data, form);
 
     if (this._data.hasOwnProperty('fields')) {
-      this._fields = this._data.fields.map(f => { return form.createField(f) });
+      this._fields = this._data.fields.map(f => { return form.createField(f, this) });
     }
   }
 
@@ -95,17 +102,42 @@ class Page extends FormComponent {
   set detail(value) { this._data.detail = value; }
 
   get fields() {
-    return this._fields || undefined;
+    return this._fields || [];
   }
 
   get next() { return this._data.next || undefined; }
 
+  get namespace() { return `pages[${this.page}]`; }
+
+  get id() { return this.namespace; }
+
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
 
   update(newData) {
+    let updateDataset = function (changedProp, dataset) {
+      if (dataset.hasOwnProperty(prop)) {
+        dataset[prop] = newData[prop];
+      }
+    };
+
     for (let prop in newData) {
-      if (this[prop]) { this[prop] = newData[prop]; }
+
+      // check page-level properties
+      updateDataset(prop, this);
+
+      // check fields in page
+      for (field in this.fields) {
+        updateDataset(prop, field);
+
+        // check items in field
+        for (item in field.items) {
+          updateDataset(prop, item);
+        }
+
+      }
+
     }
+
   } 
 }
 
@@ -172,7 +204,7 @@ class Form {
     return JSON.stringify(this._data, null, 2);
   }
 
-  createField(name) {
+  createField(name, parentComponent) {
     let fieldData;
     let fieldClass;
 
@@ -180,15 +212,16 @@ class Form {
     fieldData.name = name;
 
     if (fieldData.hasOwnProperty('fields')) {
-      return new Fieldset(fieldData, this);
+      return new Fieldset(fieldData, parentComponent);
     }
 
-    return new Field(fieldData, this);
+    return new Field(fieldData, parentComponent);
   }
 
   update(newData) {
     for (let prop in newData) {
-      if (this[prop]) { this[prop] = newData[prop]; }
+      // update any page properties
+      if (this.hasOwnProperty(prop)) { this[prop] = newData[prop]; }
     }
   } 
 }
