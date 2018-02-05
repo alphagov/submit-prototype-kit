@@ -88,7 +88,7 @@ app.use(favicon(path.join(__dirname, 'govuk_modules', 'govuk_template', 'assets'
 // Support for parsing data in POSTs
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: false
 }))
 
 // Add variables that are available in all views
