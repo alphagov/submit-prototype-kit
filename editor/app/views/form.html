@@ -23,7 +23,7 @@
         Pages in this form
       </h2>
       <ul class="list-navigation">
-      {% for page in form.pages %}
+      {% for page in form.getPagesList() %}
         <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
       {% endfor %}
       </ul>

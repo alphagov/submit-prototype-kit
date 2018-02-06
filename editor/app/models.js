@@ -1,6 +1,32 @@
 const path = require('path');
 
-const formsData = require(path.resolve(process.cwd(), 'lib/forms_data.js'));
+
+const _getDatapoint = function(namespace, root) {
+  let keys = namespace.match(/[^\.\[\]]+/g);
+  let datapoint = root;
+  let lastKey = keys.pop();
+
+  if (!keys) { return false; }
+
+  // for each key, check for it on current object to work down tree
+  for (let idx = 0; idx < keys.length; idx++) {
+    let key = keys[idx];
+
+    if (key in datapoint === false) {
+      datapoint = false;
+      break;
+    }
+
+    datapoint = datapoint[key];
+  };
+
+  if (!datapoint) { return false; }
+
+  return {
+    'obj': datapoint,
+    'key': lastKey
+  };
+};
 
 
 class Field {
@@ -8,26 +34,38 @@ class Field {
     this._data = data;
     this.parentComponent = parentComponent;
 
-    if (this._data.hasOwnProperty('items')) {
+    if ('items' in this._data) {
       this._items = this._data.items.map((item, idx) => {
-        item.idx = idx;
+        let fieldItem = new FieldItem(item, this);
 
-        return new FieldItem(item, this);
+        fieldItem.index = idx;
+
+        return fieldItem;
       });
     }
   }
 
+  // Read/write properties
+
   get label() { return this._data.label || undefined; }
+
+  set label(value) { this._data.label = value; }
 
   get hint() { return this._data.hint || undefined; }
 
+  set hint(value) { this._data.hint = value; }
+
   get legend() { return this._data.legend || undefined; }
+
+  set legend(value) { this._data.legend = value; }
+
+  // Read-only properties
 
   get items() { return this._items || []; }
 
-  get namespace() { return [this.parentComponent.namespace, `fields[${this._data.name}]`].join('.'); }
-
-  get id() { return this.namespace; }
+  get id() {
+    return [this.parentComponent.id, `fields[${this.index}]`].join('.');
+  }
 }
 
 
@@ -37,13 +75,23 @@ class FieldItem {
     this.parentComponent = parentComponent;
   }
 
+  // Read/write properties
+
   get label() { return this._data.label || undefined; }
 
-  get value() { return this._data.value || undefined; }
+  set label(value) { this._data.label = value; }
 
   get hint() { return this._data.hint || undefined; }
 
-  get id() { return [this.parentComponent.namespace, `items[${this._data.idx}]`].join('.'); }
+  set hint(value) { this._data.hint = value; }
+
+  // Read-only properties
+
+  get value() { return this._data.value || undefined; }
+
+  get id() {
+    return [this.parentComponent.id, `items[${this.index}]`].join('.');
+  }
 }
 
 
@@ -51,14 +99,17 @@ class Fieldset extends Field {
   constructor(data, field) {
     super(data, field);
 
-    this._fields = this._data.fields.map(f => {
+    this._fields = this._data.fields.map((f, idx) => {
       let field = form.createField(f, this)
 
-      fields.push(field);
+      field.name = f;
+      field.index = idx;
+
+      return field;
     });
   }
 
-  get isFieldset() { return true; }
+  // Read-only properties
 
   get fields() { return this._fields || []; }
 }
@@ -76,14 +127,19 @@ class Page extends FormComponent {
   constructor(data, form) {
     super(data, form);
 
-    if (this._data.hasOwnProperty('fields')) {
-      this._fields = this._data.fields.map(f => { return form.createField(f, this) });
+    if ('fields' in this._data) {
+      this._fields = this._data.fields.map((f, idx) => {
+        let field = form.createField(f, this);
+        
+        field.name = f;
+        field.index = idx;
+
+        return field;
+      });
     }
   }
 
-  get page() { return this._data.page; }
-
-  set page(value) { this._data.page = value; }
+  // Read/write properties
 
   get pagetype() { return this._data.pagetype; }
 
@@ -101,41 +157,32 @@ class Page extends FormComponent {
 
   set detail(value) { this._data.detail = value; }
 
+  // Read-only properties
+
   get fields() {
     return this._fields || [];
   }
 
   get next() { return this._data.next || undefined; }
 
-  get namespace() { return `pages[${this.page}]`; }
-
-  get id() { return this.namespace; }
+  get id() { return `pages[${this.page}]`; }
 
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
 
+  // Methods
+
   update(newData) {
-    let updateDataset = function (changedProp, dataset) {
-      if (dataset.hasOwnProperty(prop)) {
-        dataset[prop] = newData[prop];
-      }
-    };
-
+    // check page-level properties
     for (let prop in newData) {
+      let value = newData[prop];
+      let currentDatapoint = _getDatapoint(prop, this.form);
 
-      // check page-level properties
-      updateDataset(prop, this);
+      // update data point if value sent in is different
+      if (currentDatapoint) {
+        let { obj, key } = currentDatapoint;
 
-      // check fields in page
-      for (field in this.fields) {
-        updateDataset(prop, field);
-
-        // check items in field
-        for (item in field.items) {
-          updateDataset(prop, item);
-        }
-
+        if (obj[key] !== value) { obj[key] = value; }
       }
-
     }
 
   } 
@@ -158,15 +205,13 @@ class Form {
 
     this._data = data;
     this.fileName = fileName;
-    this._pages = [];
-    this._pageIndices = {};
+    this._pages = {};
     
     for (let key in pages) {
       let page = new Page(pages[key], form);
       
       page.page = key;
-      this._pageIndices[key] = this._pages.length;
-      this._pages.push(page);
+      this._pages[key] = page;
     };
   }
 
@@ -197,7 +242,11 @@ class Form {
   get url() { return `/forms/${this.name}`; }
 
   page(name) {
-    return this._pageIndices.hasOwnProperty(name) ? this._pages[this._pageIndices[name]] : undefined;
+    return (name in this._pages) ? this._pages[name] : undefined;
+  }
+
+  getPagesList() {
+    return Object.values(this._pages); 
   }
 
   getDataAsString () {
@@ -209,9 +258,8 @@ class Form {
     let fieldClass;
 
     fieldData = this._data.fields[name];
-    fieldData.name = name;
 
-    if (fieldData.hasOwnProperty('fields')) {
+    if ('fields' in fieldData) {
       return new Fieldset(fieldData, parentComponent);
     }
 
