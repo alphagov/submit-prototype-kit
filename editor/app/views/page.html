@@ -1,0 +1,151 @@
+{% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
+
+{% block page_title %}
+  {{ page.heading }} - Forms editor
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-one-half" id="editor-wrapper">
+    {{ frontend.govukBackLink({
+      "href": "/forms/" + formname,
+      "text": "Back to pages in this form"
+    }) }}
+
+      <form action="{{ page.url }}" method="post" id="form">
+        <h1 class="heading-xlarge heading-label">
+          <label class="form-label" for="heading">Heading</label>
+        </h1>
+        <div class="form-group">
+          <input class="form-control form-control-2-3" id="{{ page.id }}.heading" name="{{ page.id }}.heading" value="{{ page.heading}}">
+        </div>
+
+        {% if page.pagetype %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page type"
+            },
+            "name": page.id + ".pagetype",
+            "id": page.id + ".pagetype",
+            "value": page.pagetype
+          }) }}
+        {% endif %}
+
+        {% if page.guidance %}
+          {{ frontend.govukTextarea({
+            "label": {
+              "text": "Guidance"
+            },
+            "name": page.id+ ".guidance",
+            "id": page.id+ ".guidance",
+            "value": page.guidance
+          }) }}
+        {% endif %}
+
+        {% if page.detail %}
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Detail"
+            },
+            "name": page.id + ".detail",
+            "id": page.id + ".detail",
+            "value": page.detail
+          }) }}
+        {% endif %}
+
+        {% for field in page.fields %}
+          {% set fieldindex = loop.index %}
+
+          {# Wrap in a fieldset if multiple properties #}
+          {% if field.hint %}
+          <fieldset>
+            <legend class="visuallyhidden">
+              Field {{ fieldindex }}
+            </legend>
+          {% endif %}
+          {% if field.label %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1, label " + fieldindex
+              },
+              "name": field.id + ".label",
+              "id": field.id + ".label",
+              "value": field.label
+            }) }}
+          {% elif field.legend %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1, legend " + fieldindex
+              },
+              "name": field.id + ".legend",
+              "id": field.id + ".legend",
+              "value": field.legend
+            }) }}
+          {% endif %}
+          {% if field.hint %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": "Field 1 " + fieldindex + " hint"
+              },
+              "name": field.id + ".hint",
+              "id": field.id + ".hint",
+              "value": field.hint
+            }) }}
+          {% endif %}
+          {% if field.items %}
+            {% for item in field.items %}
+              {% set optionindex = loop.index %}
+
+              {% if item.hint %}
+              <fieldset>
+                <legend class="visuallyhidden">
+                  Field {{ fieldindex }}, option {{ optionindex }}
+                </legend>
+              {% endif %}
+              {% if item.label %}
+                {{ frontend.govukInput({
+                  "label": {
+                    "text": "Option " + optionindex + " label" 
+                  },
+                  "name": item.id + ".label",
+                  "id": item.id + ".label",
+                  "value": item.label
+                }) }}
+              {% endif %}
+              {% if item.hint %}
+                {{ frontend.govukInput({
+                  "label": {
+                    "text": "Option 1 " + optionindex + " Hint" 
+                  },
+                  "name": item.id + ".hint",
+                  "id": item.id + ".hint",
+                  "value": item.hint
+                }) }}
+              {% endif %}
+            {% endfor %}
+            {% if item.hint %}
+            </fieldset>
+            {% endif %}
+          {% endif %}
+          {% if field.hint %}
+          </fieldset>
+          {% endif %}
+        {% endfor %}
+
+        {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+      </form>
+    </div>
+    <div class="column-one-half">
+      <div id="prototype-wrapper" class="prototype-wrapper">
+        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px"></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+

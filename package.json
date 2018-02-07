@@ -18,6 +18,7 @@
     "mkdirp": "^0.5.1",
     "nunjucks": "^2.4.2",
     "nunjucks-markdown": "^2.0.1",
-    "yargs": "^4.6.0"
+    "yargs": "^4.6.0",
+    "request": "2.83.0"
   }
 }

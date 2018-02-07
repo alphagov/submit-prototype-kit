@@ -1,0 +1,4 @@
+editor/app/assets/javascript/editor/head.js
+editor/app/assets/javascript/editor/utils.js
+editor/app/assets/javascript/editor/iframe-controller.js
+editor/app/assets/javascript/editor/onready.js

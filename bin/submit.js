@@ -14,12 +14,19 @@ var yargs = require('yargs')
 var jsonfile = require('jsonfile')
 
 
+var app_paths = [
+  './',
+  './editor'
+];
+
 // Check if node_modules folder exists
-const nodeModulesExists = fs.existsSync(path.join(process.cwd(), '/node_modules'))
-if (!nodeModulesExists) {
-  console.error('ERROR: Node module folder missing. Try running `npm install`')
-  process.exit(0)
-}
+app_paths.forEach(app_path => {
+  const nodeModulesExists = fs.existsSync(path.resolve(process.cwd(), app_path, 'node_modules'))
+  if (!nodeModulesExists) {
+    console.error(`ERROR: Node module folder missing in ${app_path}. Try running \`npm install\``)
+    process.exit(0)
+  }
+})
 
 // command line
 var argv = yargs

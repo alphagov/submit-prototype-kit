@@ -1,0 +1,35 @@
+  {% extends "layout.html" %}
+
+  {% block page_title %}
+    Forms - Forms editor
+  {% endblock %}
+
+  {% block content %}
+
+  <main id="content" role="main">
+    <div class="grid-row">
+      <div class="column-one-half" id="editor-wrapper">
+
+        <h1 class="heading-xlarge">
+          Editor
+        </h1>
+
+        <h2 class="heading-large">Forms</h2>
+        {% for form in forms %}
+          <ul>
+            <li><a href="{{ form.url }}">{{ form.heading }}</a></li>
+          </ul>
+        {% endfor %}
+      </div>
+      <div class="column-one-half">
+        <div id="prototype-wrapper" class="prototype-wrapper">
+          <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px" /></iframe>
+        </div>
+      </div>
+    </div>
+
+</main>
+
+{% endblock %}
+
+

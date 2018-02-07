@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
+
+{% block page_title %}
+  Pages in {{ form.heading }} - Forms editor
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-one-half" id="editor-wrapper">
+      {{ frontend.govukBackLink({
+        "href": "/forms",
+        "text": "Back to forms"
+      }) }}
+
+      <h1 class="heading-xlarge">
+        {{ form.heading }}
+      </h1>
+
+      <h2 class="heading-large">
+        Pages in this form
+      </h2>
+      <ul class="list-navigation">
+      {% for page in form.getPagesList() %}
+        <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
+      {% endfor %}
+      </ul>
+
+      <form method="post" action="{{ form.url }}">
+      {% if form.heading %}
+        {{ frontend.govukInput({
+          "label": {
+            "text": "Heading"
+          },
+          "name": "heading",
+          "id": "heading",
+          "value": form.heading
+        }) }}
+      {% endif %}
+      {% if form.phase %}
+        {{ frontend.govukInput({
+          "label": {
+            "text": "Phase"
+          },
+          "name": "phase",
+          "id": "phase",
+          "value": form.phase
+        }) }}
+      {% endif %}
+
+      {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+      </form>
+    </div>
+    <div class="column-one-half">
+      <div id="prototype-wrapper" class="prototype-wrapper">
+        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px" /></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+

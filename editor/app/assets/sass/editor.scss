@@ -1,0 +1,54 @@
+@import "_conditionals";
+
+#global-header .header-wrapper,
+#global-header-bar,
+#content,
+#footer .footer-wrapper {
+  max-width: 100%;
+}
+
+@include media(desktop) {
+  #content,
+  #footer .footer-wrapper {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+
+.prototype-wrapper {
+  margin: 15px 0;
+}
+
+.prototype {
+  width: 100%;
+}
+
+.list-navigation {
+  margin-bottom: 30px;
+}
+
+.heading-label {
+  margin-bottom: 0;
+}
+
+.status-wrapper {
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  top: 38px;
+}
+
+.status {
+  margin: 0 auto;
+  width: 100px;
+  font-size: 16px;
+  border: solid 1px #333;
+  background: yellow;
+  padding: 0.5em;
+}
+
+.status-hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}

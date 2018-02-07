@@ -1,4 +1,4 @@
-.PHONY:	clean prune prototype build start
+.PHONY:	clean prune prototype build start editor editorstart editorclean editoriframecontroller
 
 KIT_VERSION=6.3.0
 KIT_NAME=govuk_prototype_kit
@@ -8,6 +8,8 @@ KIT_UNZIPPED=prototype/node_modules
 
 APP_DIR=prototype/app
 VIEWS_DIR=$(APP_DIR)/views
+JS_DIR=$(APP_DIR)/assets/javascripts
+EDITOR_DIR=editor
 
 EXAMPLES=\
 	$(VIEWS_DIR)/simplest\
@@ -49,7 +51,20 @@ PROTOTYPE=\
 	$(PROTOTYPE_DAGRE)\
 	$(PROTOTYPE_APPLICATION_SCSS)\
 	$(PROTOTYPE_LAYOUT)\
-	$(PROTOTYPE_INDEX)
+	$(PROTOTYPE_INDEX)\
+	editoriframecontroller
+
+SRC_EDITOR_IFRAME_CONTROLLER_CLIENT=$(EDITOR_DIR)/lib/iframe-controller-client.js
+EDITOR_IFRAME_CONTROLLER_CLIENT_HTML=$(EDITOR_DIR)/lib/iframe-controller-client-script-tag.html
+
+EDITOR_JS_DIR=$(EDITOR_DIR)/app/assets/javascripts
+EDITOR_JS=$(EDITOR_JS_DIR)/editor.js
+SRC_EDITOR_JS=\
+	$(EDITOR_JS_DIR)/editor/head.js\
+	$(EDITOR_JS_DIR)/editor/utils.js\
+	$(EDITOR_JS_DIR)/editor/status.js\
+	$(EDITOR_JS_DIR)/editor/iframe-controller.js\
+	$(EDITOR_JS_DIR)/editor/onready.js
 
 all:	$(EXAMPLES)
 
@@ -60,6 +75,17 @@ start:
 	cd prototype; npm start
 
 prototype:	$(PROTOTYPE)
+
+editor:  $(EDITOR_JS)
+
+editorstart:
+	cd editor; npm start
+
+editorclean:
+	rm $(EDITOR_JS)
+
+$(EDITOR_JS):
+	cat $(SRC_EDITOR_JS)  >> $(EDITOR_JS)
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
@@ -87,6 +113,11 @@ $(PROTOTYPE_APPLICATION_SCSS):	$(SRC_PROTOTYPE_APPLICATION_SCSS) $(KIT_UNZIPPED)
 # copy in dagre
 $(PROTOTYPE_DAGRE):	$(SRC_PROTOTYPE_DAGRE) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_DAGRE) $(PROTOTYPE_DAGRE)
+
+# copy the js used by the editor to control its iframe'd prototype and add the HTML tag for it
+editoriframecontroller:
+	cp $(SRC_EDITOR_IFRAME_CONTROLLER_CLIENT) $(JS_DIR)
+	cat $(EDITOR_IFRAME_CONTROLLER_CLIENT_HTML) >> $(VIEWS_DIR)/scripts.html
 
 $(KIT_UNZIPPED):	$(KIT_ZIP)
 	unzip -o '$(KIT_ZIP)'
