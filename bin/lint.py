@@ -4,7 +4,7 @@ import sys
 import json
 from pprint import pprint
 
-class Graph:
+class FormGraph:
     graph = {}
 
     def load(self, path):
@@ -48,8 +48,19 @@ class Graph:
             paths = self.paths(path + [vertex], paths)
         return paths
 
+    def links(self):
+        links = {}
+        paths = graph.paths()
+        for path in paths:
+            s = ''
+            for vertex in path:
+                if s: 
+                    link = "%s,%s" % (s, vertex)
+                    links[link] = links.get(link, 0) + 1
+                s = vertex
+        return links
 
-graph = Graph()
+graph = FormGraph()
 graph.load('examples/apply-for-a-medal.json')
 
 if (graph.cyclic()):
@@ -57,4 +68,8 @@ if (graph.cyclic()):
     exit(1)
 
 paths = graph.paths()
-pprint(paths)
+for path in paths:
+    print(path)
+
+#pprint(paths)
+#json.dump(paths, sys.stdout)
