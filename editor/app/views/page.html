@@ -148,6 +148,53 @@
 
         {% endfor %} {# end of loop through fields #}
 
+        {% if page.next | length > 1 %}
+        <fieldset>
+          <legend class="heading-small">
+            Next pages
+          </legend>
+          {% for option in page.next %}
+
+          <fieldset>
+            <legend>
+              Option {{ loop.index }}
+            </legend>
+            
+						{{ frontend.govukInput({
+							"label": {
+								"text": "Slug"
+							},
+							"name": option.id + ".page",
+							"id": option.id + ".page",
+							"value": page.next[loop.index0].page
+						}) }}
+
+						{{ frontend.govukInput({
+							"label": {
+								"text": "Condition"
+							},
+							"name": option.id + ".if",
+							"id": option.id + ".if",
+							"value": page.next[loop.index0].if
+						}) }}
+          </fieldset>
+
+          {% endfor %} {# end of loop through next page options #}
+
+         </fieldset>
+        {% else %}
+
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Slug for next page"
+            },
+            "name": page.next[0].id + ".page",
+            "id": page.next[0].id + ".page",
+            "value": page.next[0].page
+          }) }}
+
+        {% endif %}
+
         {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
       </form>
     </div>
