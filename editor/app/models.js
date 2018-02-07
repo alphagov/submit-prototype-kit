@@ -45,16 +45,7 @@ class Page extends FormComponent {
 
   set pagetype(value) { this._data.pagetype = value; }
 
-  get heading() {
-    // monkey patch until we deal with visible-if values
-    let heading = this._data.heading;
-
-    if (!Array.isArray(heading)) {
-      return heading;
-    } else {
-      return undefined;
-    }
-  }
+  get heading() { return this._data.heading; }
 
   set heading(value) { this._data.heading = value; }
 
