@@ -57,6 +57,7 @@
         {% endif %}
 
         {% for field in page.fields %}
+
           {% set fieldindex = loop.index %}
 
           {# Wrap in a fieldset if multiple properties #}
@@ -66,6 +67,7 @@
               Field {{ fieldindex }}
             </legend>
           {% endif %}
+
           {% if field.label %}
             {{ frontend.govukInput({
               "label": {
@@ -85,6 +87,7 @@
               "value": field.legend
             }) }}
           {% endif %}
+
           {% if field.hint %}
             {{ frontend.govukInput({
               "label": {
@@ -95,16 +98,19 @@
               "value": field.hint
             }) }}
           {% endif %}
+
           {% if field.items %}
             {% for item in field.items %}
               {% set optionindex = loop.index %}
 
+              {# Wrap in a fieldset if multiple properties #}
               {% if item.hint %}
               <fieldset>
                 <legend class="visuallyhidden">
                   Field {{ fieldindex }}, option {{ optionindex }}
                 </legend>
               {% endif %}
+
               {% if item.label %}
                 {{ frontend.govukInput({
                   "label": {
@@ -115,6 +121,7 @@
                   "value": item.label
                 }) }}
               {% endif %}
+
               {% if item.hint %}
                 {{ frontend.govukInput({
                   "label": {
@@ -125,15 +132,21 @@
                   "value": item.hint
                 }) }}
               {% endif %}
-            {% endfor %}
+
+            {% endfor %} {# end of loop through items #}
+
             {% if item.hint %}
             </fieldset>
             {% endif %}
+
           {% endif %}
+
+          {# Wrap in a fieldset if multiple properties #}
           {% if field.hint %}
           </fieldset>
           {% endif %}
-        {% endfor %}
+
+        {% endfor %} {# end of loop through fields #}
 
         {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
       </form>
