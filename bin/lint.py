@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import json
+import argparse
 from pprint import pprint
 
 class FormGraph:
@@ -86,8 +88,18 @@ class FormGraph:
                 s = vertex
         return links
 
+parser = argparse.ArgumentParser(description='Lint the data for a form.')
+parser.add_argument('datafile', metavar='F', help='JSON file containing the data')
+args = parser.parse_args()
+print(args)
+
+datafile = args.datafile
+if (not os.path.isfile(datafile)):
+    print("{} does not exist".format(datafile), file=sys.stderr)
+    exit(1)
+
 graph = FormGraph()
-graph.load('examples/apply-for-a-medal.json')
+graph.load('{}'.format(args.datafile))
 
 if (graph.cyclic()):
     print("Cycle detected:", graph.cycle, file=sys.stderr)
