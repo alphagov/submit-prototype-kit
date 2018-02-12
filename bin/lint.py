@@ -8,6 +8,17 @@ class FormGraph:
     graph = {}
 
     def load(self, path):
+        """
+            Graph of all possible journeys through the data
+            
+            This graph is a Dictionary with each pair following the form:
+
+            {
+                <String> page key in form.pages : <List> list of <String> page key in form.pages
+            }
+
+            The value list contains keys to all pages listed in form.pages[page].next
+        """
         self.form = json.load(open(path))
         self.graph = {}
         for page in self.form['pages']:
@@ -19,7 +30,7 @@ class FormGraph:
             self.graph[page] = [n['page'] for n in p.get('next', [])]
 
     def cyclic(self):
-        """ test for cycles """
+        """ Tests all paths for any containing multiple references to a single page """
         self.cycle = []
         path = set()
         visited = set()
@@ -39,7 +50,14 @@ class FormGraph:
         return any(visit(v) for v in self.graph)
 
     def paths(self, path=['index'], paths=[]):
-        """ find paths from a point """
+        """
+            List of unique paths through the data, each following the format:
+
+            [
+                [<String> page key in form.pages, <String> page key in form.pages, ...]
+            ]
+            
+        """
         node = path[-1]
         if not self.graph[node]:
             return paths + [path]
@@ -49,6 +67,14 @@ class FormGraph:
         return paths
 
     def links(self):
+        """
+            Dictionary of connections between pages containing entries following the form:
+            
+            <String> page key in form.pages + "," + page key in form.pages: <Integer> number of
+                                                                            times this connection
+                                                                            appears in individual
+                                                                            journeys
+        """
         links = {}
         paths = graph.paths()
         for path in paths:
