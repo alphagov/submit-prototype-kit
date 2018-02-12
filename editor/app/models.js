@@ -1,6 +1,52 @@
 const path = require('path');
 
 
+class Datapoint {
+  constructor(namespace, form) {
+    this.form = form;
+    this.keys = namespace.match(/[^\.\[\]]+/g);
+    this.key = this.keys[this.keys.length - 1];
+    this.instance = this.getInstance();
+  }
+
+  // Properties
+
+  get value() {
+    return this.instance[this.key];
+  }
+
+  set value(value) {
+    this.instance[this.key] = value;
+  } 
+
+  get exists() {
+    return this.instance !== false;
+  }
+
+  // public methods
+
+  getInstance() {
+    let inst = this.form;
+    let keys = this.keys;
+
+    keys.pop();
+
+    for (let idx = 0; idx < keys.length; idx++) {
+      let key = keys[idx];
+
+      if (key in inst) {
+        inst = inst[key];
+      } else {
+        inst = false;
+        break;
+      }
+    }
+
+    return inst;
+  }
+};
+
+
 const _getDatapoint = function(namespace, root) {
   let keys = namespace.match(/[^\.\[\]]+/g);
   let datapoint = root;
@@ -30,9 +76,8 @@ const _getDatapoint = function(namespace, root) {
 
 
 class Field {
-  constructor(data, parentComponent) {
+  constructor(data) {
     this._data = data;
-    this.parentComponent = parentComponent;
 
     if ('items' in this._data) {
       this._items = this._data.items.map((item, idx) => {
@@ -55,16 +100,12 @@ class Field {
 
   set hint(value) { this._data.hint = value; }
 
-  get legend() { return this._data.legend || undefined; }
-
-  set legend(value) { this._data.legend = value; }
-
   // Read-only properties
 
   get items() { return this._items || []; }
 
   get id() {
-    return [this.parentComponent.id, `fields[${this.index}]`].join('.');
+    return `fields[${this.name}]`;
   }
 }
 
@@ -95,23 +136,24 @@ class FieldItem {
 }
 
 
-class Fieldset extends Field {
-  constructor(data, field) {
-    super(data, field);
+class Fieldset {
+  constructor(data, form) {
+    this._data = data;
 
-    this._fields = this._data.fields.map((f, idx) => {
-      let field = form.createField(f, this)
-
-      field.name = f;
-      field.index = idx;
-
-      return field;
+    this._fields = this._data.fields.map(name => {
+      return form.createField(name)
     });
   }
 
   // Read-only properties
 
   get fields() { return this._fields || []; }
+
+  // Read/write properties
+
+  get legend() { return this._data.legend || undefined; }
+
+  set legend(value) { this._data.legend = value; }
 }
 
 
@@ -123,20 +165,67 @@ class FormComponent {
 }
 
 
+class Next {
+  constructor(data, page) {
+    this._data = data;
+    this._page = page;
+
+    // If there's only one potential next page, get/set it on the page data
+    // Otherwise, pass the actions through to the current instance
+    let propOptions = {};
+
+    let createMethods = function(key) {
+      return {
+        get: (function() {
+          return function() {
+            return this._data[key];
+          };
+        })(),
+
+        set: (function() {
+          return function(value) {
+            if (this._page._next.length === 1) {
+              this._page._data.next = value;
+            } else {
+              // if more than one next step, use this instance
+              this._data[key] = value;
+            }
+          };
+        })()
+      }
+    };
+
+    ['page', 'if'].forEach(key => { propOptions[key] = createMethods(key); });
+    Object.defineProperties(this, propOptions);
+  }
+
+  get id() { return [`${this._page.id}`, `next[${this.index}]`].join('.'); }
+}
+
+
 class Page extends FormComponent {
   constructor(data, form) {
     super(data, form);
 
     if ('fields' in this._data) {
-      this._fields = this._data.fields.map((f, idx) => {
-        let field = form.createField(f, this);
-        
-        field.name = f;
-        field.index = idx;
-
-        return field;
-      });
+      this._fields = this._data.fields.map(fieldName => {
+        return form.fields[fieldName];
+      })
     }
+
+    if ('next' in this._data) {
+      if (Array.isArray(this._data.next)) {
+        this._next = this._data.next.map((nextPageData, idx) => {
+          let option = new Next(nextPageData, this);
+
+          option.index = idx;
+          return option;
+        });
+      } else { // string
+        this._next = [ new Next({ 'page': this._data.next }) ];
+      }
+    }
+
   }
 
   // Read/write properties
@@ -163,7 +252,7 @@ class Page extends FormComponent {
     return this._fields || [];
   }
 
-  get next() { return this._data.next || undefined; }
+  get next() { return this._next; }
 
   get id() { return `pages[${this.page}]`; }
 
@@ -175,13 +264,13 @@ class Page extends FormComponent {
     // check page-level properties
     for (let prop in newData) {
       let value = newData[prop];
-      let currentDatapoint = _getDatapoint(prop, this.form);
+
+      // if current value !== new value, update it to the new value
+      let datapoint = new Datapoint(prop, this.form);
 
       // update data point if value sent in is different
-      if (currentDatapoint) {
-        let { obj, key } = currentDatapoint;
-
-        if (obj[key] !== value) { obj[key] = value; }
+      if (datapoint.exists) {
+        if (datapoint.value !== value) { datapoint.value = value; }
       }
     }
 
@@ -202,17 +291,23 @@ class Form {
   constructor(data, fileName) {
     let form = this;
     let pages = data.pages;
+    let fields = data.fields;
 
     this._data = data;
     this.fileName = fileName;
     this._pages = {};
+    this._fields = {};
+    
+    for (let fieldName in fields) {
+      this._fields[fieldName] = this.createField(fieldName);
+    }
     
     for (let key in pages) {
       let page = new Page(pages[key], form);
       
       page.page = key;
       this._pages[key] = page;
-    };
+    }
   }
 
   get name() { return this._data.name; }
@@ -227,6 +322,10 @@ class Form {
 
   get pages() {
     return this._pages;
+  }
+
+  get fields() {
+    return this._fields;
   }
 
   get organisations() {
@@ -253,17 +352,22 @@ class Form {
     return JSON.stringify(this._data, null, 2);
   }
 
-  createField(name, parentComponent) {
+  createField(name) {
     let fieldData;
     let fieldClass;
+    let result;
 
     fieldData = this._data.fields[name];
 
     if ('fields' in fieldData) {
-      return new Fieldset(fieldData, parentComponent);
+      result = new Fieldset(fieldData, this);
+    } else {
+      result = new Field(fieldData);
     }
 
-    return new Field(fieldData, parentComponent);
+    result.name = name;
+
+    return result;
   }
 
   update(newData) {
