@@ -91,7 +91,7 @@ class FormGraph:
 parser = argparse.ArgumentParser(description='Lint the data for a form.')
 parser.add_argument('datafile', metavar='F', help='JSON file containing the data')
 parser.add_argument('--output', type=str, default='lint', help='Type of output',
-                    choices=['lint', 'paths', 'links'])
+                    choices=['lint', 'graph', 'paths', 'links'])
 args = parser.parse_args()
 
 datafile = args.datafile
@@ -107,6 +107,9 @@ if (output == 'lint'):
     if (graph.cyclic()):
         print("Cycle detected:", graph.cycle, file=sys.stderr)
         exit(1)
+
+if (output == 'graph'):
+    print(json.dumps(graph.graph, indent=4), file=sys.stdout)
 
 if (output == 'paths'):
     print(json.dumps(graph.paths(), indent=4), file=sys.stdout)
