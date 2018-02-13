@@ -2,10 +2,14 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var formsData = require('../lib/forms_data.js')
+var graphData = require('../lib/graph_data.js')
 
 
 // load forms data
 formsData.init();
+
+// load graph data
+graphData.init();
 
 // GET routes
 router.get('/', function (req, res) {
@@ -13,6 +17,32 @@ router.get('/', function (req, res) {
     'forms': formsData.getAll(),
     'currentFormPage': '/'
   })
+})
+
+router.get('/flowchart', function (req, res) {
+  let onSuccess = function (data) {
+    let graph = data.graph;
+    let links = data.links;
+
+    if (req.get('Accept') === 'application/json') {
+      res.send({ 'graph': graph, 'links': links });
+    } else {
+      res.render('flowchart', {
+        'graph': graph,
+        'links': links
+      })
+    }
+  };
+
+  let onError = function (error) {
+    if (req.get('Accept') === 'application/json') {
+      res.status(500).send(`{ "error": "${error.code}" }`);
+    } else {
+      res.status(500).send(`Error: ${error.code}`);
+    }
+  };
+
+  graphData.getGraphAndLinks(onSuccess, onError);
 })
 
 router.get('/forms', function (req, res) {
