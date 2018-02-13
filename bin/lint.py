@@ -1,13 +1,26 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import json
+import argparse
 from pprint import pprint
 
 class FormGraph:
     graph = {}
 
     def load(self, path):
+        """
+            Graph of all possible journeys through the data
+            
+            This graph is a Dictionary with each pair following the form:
+
+            {
+                <String> page key in form.pages : <List> list of <String> page key in form.pages
+            }
+
+            The value list contains keys to all pages listed in form.pages[page].next
+        """
         self.form = json.load(open(path))
         self.graph = {}
         for page in self.form['pages']:
@@ -19,7 +32,7 @@ class FormGraph:
             self.graph[page] = [n['page'] for n in p.get('next', [])]
 
     def cyclic(self):
-        """ test for cycles """
+        """ Tests all paths for any containing multiple references to a single page """
         self.cycle = []
         path = set()
         visited = set()
@@ -39,7 +52,14 @@ class FormGraph:
         return any(visit(v) for v in self.graph)
 
     def paths(self, path=['index'], paths=[]):
-        """ find paths from a point """
+        """
+            List of unique paths through the data, each following the format:
+
+            [
+                [<String> page key in form.pages, <String> page key in form.pages, ...]
+            ]
+            
+        """
         node = path[-1]
         if not self.graph[node]:
             return paths + [path]
@@ -49,6 +69,14 @@ class FormGraph:
         return paths
 
     def links(self):
+        """
+            Dictionary of connections between pages containing entries following the form:
+            
+            <String> page key in form.pages + "," + page key in form.pages: <Integer> number of
+                                                                            times this connection
+                                                                            appears in individual
+                                                                            journeys
+        """
         links = {}
         paths = graph.paths()
         for path in paths:
@@ -60,16 +88,28 @@ class FormGraph:
                 s = vertex
         return links
 
-graph = FormGraph()
-graph.load('examples/apply-for-a-medal.json')
+parser = argparse.ArgumentParser(description='Lint the data for a form.')
+parser.add_argument('datafile', metavar='F', help='JSON file containing the data')
+parser.add_argument('--output', type=str, default='lint', help='Type of output',
+                    choices=['lint', 'paths', 'links'])
+args = parser.parse_args()
 
-if (graph.cyclic()):
-    print("Cycle detected:", graph.cycle, file=sys.stderr)
+datafile = args.datafile
+if (not os.path.isfile(datafile)):
+    print("{} does not exist".format(datafile), file=sys.stderr)
     exit(1)
 
-paths = graph.paths()
-for path in paths:
-    print(path)
+graph = FormGraph()
+graph.load('{}'.format(args.datafile))
 
-#pprint(paths)
-#json.dump(paths, sys.stdout)
+output = args.output
+if (output == 'lint'):
+    if (graph.cyclic()):
+        print("Cycle detected:", graph.cycle, file=sys.stderr)
+        exit(1)
+
+if (output == 'paths'):
+    print(json.dumps(graph.paths(), indent=4), file=sys.stdout)
+
+if (output == 'links'):
+    print(json.dumps(graph.links(), indent=4), file=sys.stdout)
