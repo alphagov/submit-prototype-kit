@@ -1,0 +1,58 @@
+  {% extends "layout.html" %}
+
+  {% block page_title %}
+    FLowchart - Forms editor
+  {% endblock %}
+
+  {% block content %}
+
+  <main id="content" role="main">
+    <style id="css">
+    text {
+      font-weight: 300;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+      font-size: 14px;
+    }
+
+    .node rect {
+      stroke: #333;
+      fill: #fff;
+      stroke-width: 1.5px;
+    }
+
+    .edgePath path {
+      stroke: #333;
+      stroke-width: 1.5px;
+    }
+
+    #content {
+      background: lightblue;
+    }
+
+    #svg-canvas {
+      background: white; 
+    }
+    </style>
+
+    <svg id="svg-canvas" width=1380 height=600>
+      <g/>
+    </svg>
+
+    {% block scripts %}
+    <script src="https://d3js.org/d3.v5.js" charset="utf-8"></script>
+    <script src="/public/javascripts/dagre-d3.js"></script>
+
+    <script>
+      document.Editor = {};
+      document.Editor.flowchart = {};
+      document.Editor.flowchart.graph = {{ graph | safe }}
+      document.Editor.flowchart.links = {{ links | safe }}
+    </script>
+    <script src="/public/javascripts/flowchart.js"></script>
+    {% endblock %}
+
+  </main>
+
+{% endblock %}
+
+
