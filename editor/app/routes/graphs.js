@@ -12,7 +12,6 @@ const graphs = {
       let onSuccess = function (data) {
         let graph = data.graph;
         let links = data.links;
-        let form = formsData.getForm('apply-for-a-medal');
 
         if (req.get('Accept') === 'application/json') {
           res.send({ 'graph': graph, 'links': links });
