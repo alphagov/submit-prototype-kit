@@ -1,0 +1,30 @@
+  {% extends "layout.html" %}
+
+  {% block page_title %}
+    Railroad diagram - Forms editor
+  {% endblock %}
+
+  {% block content %}
+
+  <main id="content" role="main" style="text-align: center">
+		<link rel="stylesheet" href="/public/stylesheets/railroad-diagrams.css" />
+
+		<div id="canvas"></div>
+
+    {% block scripts %}
+		<script src="/public/javascripts/railroad-diagrams.js"></script>
+
+    <script>
+      document.Editor = {};
+      document.Editor.railroad = {};
+      document.Editor.railroad.graph = {{ graph | safe }};
+      document.Editor.railroad.links = {{ links | safe }};
+    </script>
+    <script src="/public/javascripts/railroad.js"></script>
+    {% endblock %}
+
+  </main>
+
+{% endblock %}
+
+
