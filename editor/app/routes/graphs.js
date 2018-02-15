@@ -8,7 +8,7 @@ const graphs = {
     // load graph data
     graphData.init();
 
-    router.get('/railroad', function (req, res) {
+    router.get('/:formname/railroad', function (req, res) {
       let onSuccess = function (data) {
         let graph = data.graph;
         let links = data.links;
@@ -34,7 +34,7 @@ const graphs = {
       graphData.getGraphAndLinks(onSuccess, onError);
     })
 
-    router.get('/flowchart', function (req, res) {
+    router.get('/:formname/flowchart', function (req, res) {
       let onSuccess = function (data) {
         let graph = data.graph;
         let links = data.links;
