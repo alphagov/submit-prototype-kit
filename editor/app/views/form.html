@@ -24,7 +24,10 @@
       </h2>
       <ul class="list-navigation">
       {% for page in form.getPagesList() %}
-        <li><a href="{{ page.url }}">{{ page.heading }}</a></li>
+        <li>
+          <a href="{{ page.url }}">{{ page.heading }}</a>
+          ({{ page.page }})  
+        </li>
       {% endfor %}
       </ul>
 
