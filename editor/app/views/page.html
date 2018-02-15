@@ -61,7 +61,7 @@
           {% set fieldindex = loop.index %}
 
           {# Wrap in a fieldset if multiple properties #}
-          {% if field.hint %}
+          {% if page.fields | length > 1 %}
           <fieldset>
             <legend class="visuallyhidden">
               Field {{ fieldindex }}
@@ -104,7 +104,7 @@
               {% set optionindex = loop.index %}
 
               {# Wrap in a fieldset if multiple properties #}
-              {% if item.hint %}
+              {% if field.items | length > 1 %}
               <fieldset>
                 <legend class="visuallyhidden">
                   Field {{ fieldindex }}, option {{ optionindex }}
@@ -135,14 +135,14 @@
 
             {% endfor %} {# end of loop through items #}
 
-            {% if item.hint %}
+            {% if field.items | length > 1 %}
             </fieldset>
             {% endif %}
 
           {% endif %}
 
           {# Wrap in a fieldset if multiple properties #}
-          {% if field.hint %}
+          {% if page.fields | length > 1 %}
           </fieldset>
           {% endif %}
 
