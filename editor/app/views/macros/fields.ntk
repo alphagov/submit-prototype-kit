@@ -1,0 +1,60 @@
+{% macro generic(fieldobj, fieldindex, multiplefields) %}
+
+  {% for prop in ['label', 'legend', 'hint'] %}
+
+	  {% if fieldobj[prop] %}
+		{{ frontend.govukInput({
+		  "label": {
+			"text": "Field " + fieldindex + " " + prop
+		  },
+		  "name": fieldobj.id + "." + prop,
+		  "id": fieldobj.id + "." + prop,
+		  "value": fieldobj[prop]
+		}) }}
+	  {% endif %}
+
+  {% endfor %} {# end loop through field props #}
+
+  {% if fieldobj.items %}
+
+    {% set multipleitems = fieldobj.items | length > 1 %}
+
+    {% if multipleitems %}
+    <fieldset>
+    <legend class="visuallyhidden">
+      Field {{ fieldindex }}, options
+    </legend>
+    {% endif %}
+
+    {% for item in fieldobj.items %}
+
+      {% set itemindex = loop.index %}
+
+      <div class="grid-row">
+      {% for prop in ['label', 'value'] %}
+
+        <div class="column-one-half">
+        {% if item[prop] %}
+        {{ frontend.govukInput({
+          "label": {
+          "text": "Option " + itemindex + " " + prop
+          },
+          "name": item.id + "." + prop,
+          "id": item.id + "." + prop,
+          "value": item[prop]
+        }) }}
+        {% endif %}
+        </div>
+
+      {% endfor %} {# end loop through item props #}
+      </div>
+
+    {% endfor %} {# end of loop through items #}
+
+    {% if multipleitems %}
+    </fieldset>
+    {% endif %}
+
+  {% endif %} {# end if field has items #}
+
+{% endmacro %}

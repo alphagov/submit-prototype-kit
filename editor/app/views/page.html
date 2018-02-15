@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% import "frontend_macros.ntk" as frontend with context %}
+{% import "macros/fields.ntk" as fields with context %}
 
 {% block page_title %}
   {{ page.heading }} - Forms editor
@@ -23,130 +24,43 @@
           <input class="form-control form-control-2-3" id="{{ page.id }}.heading" name="{{ page.id }}.heading" value="{{ page.heading}}">
         </div>
 
-        {% if page.pagetype %}
-          {{ frontend.govukInput({
-            "label": {
-              "text": "Page type"
-            },
-            "name": page.id + ".pagetype",
-            "id": page.id + ".pagetype",
-            "value": page.pagetype
-          }) }}
-        {% endif %}
+        {% for prop, txt in {
+            'pagetype': 'Page type',
+            'guidance': 'Page guidance',
+            'detail': 'Page detail'
+        } %}
 
-        {% if page.guidance %}
-          {{ frontend.govukTextarea({
-            "label": {
-              "text": "Guidance"
-            },
-            "name": page.id+ ".guidance",
-            "id": page.id+ ".guidance",
-            "value": page.guidance
-          }) }}
-        {% endif %}
+          {% if page[prop] %}
+            {{ frontend.govukInput({
+              "label": {
+                "text": txt
+              },
+              "name": page.id + "." + prop,
+              "id": page.id + "." + prop,
+              "value": page[prop]
+            }) }}
+          {% endif %}
 
-        {% if page.detail %}
-          {{ frontend.govukInput({
-            "label": {
-              "text": "Detail"
-            },
-            "name": page.id + ".detail",
-            "id": page.id + ".detail",
-            "value": page.detail
-          }) }}
-        {% endif %}
+        {% endfor %} {# end loop through page props #}
 
         {% for field in page.fields %}
 
           {% set fieldindex = loop.index %}
+          {% set multiplefields = page.fields | length > 1 %}
 
-          {# Wrap in a fieldset if multiple properties #}
-          {% if page.fields | length > 1 %}
+          {% if multiplefields %}
           <fieldset>
-            <legend class="visuallyhidden">
-              Field {{ fieldindex }}
-            </legend>
+          <legend class="visuallyhidden">
+            Field {{ fieldindex }}
+          </legend>
           {% endif %}
 
-          {% if field.label %}
-            {{ frontend.govukInput({
-              "label": {
-                "text": "Field 1, label " + fieldindex
-              },
-              "name": field.id + ".label",
-              "id": field.id + ".label",
-              "value": field.label
-            }) }}
-          {% elif field.legend %}
-            {{ frontend.govukInput({
-              "label": {
-                "text": "Field 1, legend " + fieldindex
-              },
-              "name": field.id + ".legend",
-              "id": field.id + ".legend",
-              "value": field.legend
-            }) }}
-          {% endif %}
+            {{ fields.generic(field, fieldrefs, fieldindex, multiplefields) }}
 
-          {% if field.hint %}
-            {{ frontend.govukInput({
-              "label": {
-                "text": "Field 1 " + fieldindex + " hint"
-              },
-              "name": field.id + ".hint",
-              "id": field.id + ".hint",
-              "value": field.hint
-            }) }}
-          {% endif %}
-
-          {% if field.items %}
-            {% for item in field.items %}
-              {% set optionindex = loop.index %}
-
-              {# Wrap in a fieldset if multiple properties #}
-              {% if field.items | length > 1 %}
-              <fieldset>
-                <legend class="visuallyhidden">
-                  Field {{ fieldindex }}, option {{ optionindex }}
-                </legend>
-              {% endif %}
-
-              {% if item.label %}
-                {{ frontend.govukInput({
-                  "label": {
-                    "text": "Option " + optionindex + " label" 
-                  },
-                  "name": item.id + ".label",
-                  "id": item.id + ".label",
-                  "value": item.label
-                }) }}
-              {% endif %}
-
-              {% if item.hint %}
-                {{ frontend.govukInput({
-                  "label": {
-                    "text": "Option 1 " + optionindex + " Hint" 
-                  },
-                  "name": item.id + ".hint",
-                  "id": item.id + ".hint",
-                  "value": item.hint
-                }) }}
-              {% endif %}
-
-            {% endfor %} {# end of loop through items #}
-
-            {% if field.items | length > 1 %}
-            </fieldset>
-            {% endif %}
-
-          {% endif %}
-
-          {# Wrap in a fieldset if multiple properties #}
-          {% if page.fields | length > 1 %}
+          {% if multiplefields %}
           </fieldset>
           {% endif %}
-
-        {% endfor %} {# end of loop through fields #}
+        {% endfor %}
 
         {% if page.next | length > 1 %}
         <fieldset>
@@ -160,26 +74,25 @@
               Option {{ loop.index }}
             </legend>
             
-						{{ frontend.govukInput({
-							"label": {
-								"text": "Slug"
-							},
-							"name": option.id + ".page",
-							"id": option.id + ".page",
-							"value": page.next[loop.index0].page
-						}) }}
+            {% for prop, txt in {
+              'page': 'Slug',
+              'if': 'Condition'
+            } %}
 
 						{{ frontend.govukInput({
 							"label": {
-								"text": "Condition"
+								"text": txt
 							},
-							"name": option.id + ".if",
-							"id": option.id + ".if",
-							"value": page.next[loop.index0].if
+							"name": option.id + "." + prop,
+							"id": option.id + "." + prop,
+							"value": page.next[loop.index0][prop]
 						}) }}
+
+            {% endfor %}
+
           </fieldset>
 
-          {% endfor %} {# end of loop through next page options #}
+          {% endfor %} {# end of loop through next pages #}
 
          </fieldset>
         {% else %}
