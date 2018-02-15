@@ -222,7 +222,7 @@ class Page extends FormComponent {
           return option;
         });
       } else { // string
-        this._next = [ new Next({ 'page': this._data.next }) ];
+        this._next = [ new Next({ 'page': this._data.next }, this) ];
       }
     }
 
