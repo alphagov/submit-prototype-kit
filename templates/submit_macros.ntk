@@ -196,6 +196,19 @@
   {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
     {%- endfor %}
 
+{%- elif field.inputtype == 'date' -%}
+
+{{ frontend_macro('govukDate') }}
+  {%- if field.label %}
+    "label": {
+        "text": {{ text_param(field.label) }}
+    },
+  {% endif %}
+    "id": {{ text_param(field.field) }},
+    "name": {{ text_param(field.field) }},
+    "hintHtml": {{ markdown_param(field.hint) }}
+{{ frontend_endmacro() }}
+
 {%- else %}
 
     <!-- unknown inputtype "{{ field.inputtype }}" -->
