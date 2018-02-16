@@ -37,6 +37,12 @@
       "pagetype": "question",
       "heading": "Are you aged 18 or older?",
       "fields": ["adult"],
+      "next": "country"
+    },
+    "country": {
+      "pagetype": "question",
+      "heading": "What country are you applying from?",
+      "fields": ["country"],
       "next": "confirmation"
     },
     "confirmation": {
@@ -59,6 +65,21 @@
       "items": [
         { "label": "Yes", "value": "yes" },
         { "label": "No", "value": "no" }
+      ]
+    },
+    "country": {
+      "label": "Country",
+      "inputtype": "select",
+      "items": [
+        { "label": "Afghanistan", "value": "AF" },
+        { "label": "Albania", "value": "AL" },
+        { "label": "Algeria", "value": "DZ" },
+        { "label": "American Samoa", "value": "AS" },
+        { "label": "Andorra", "value": "AD" },
+        { "label": "Angola", "value": "AO" },
+        { "label": "Anguilla", "value": "AI" },
+        { "label": "Antigua and Barbuda", "value": "AG" },
+        { "label": "Argentina", "value": "AR" }
       ]
     }
   }

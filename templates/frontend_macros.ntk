@@ -94,6 +94,19 @@
 </div>
 {% endmacro %}
 
+
+{% macro govukSelectboxes(params={}) %}
+<div class="form-group">
+  <label class="form-label" for="{{ params.name }}">{{ params.label }}</label>
+  <select class="form-control" id="{{ params.id }}" name="{{ params.name }}">
+{% for item in params.items %}
+    <option value={{ item.value }}>{{ item.text }}</option>
+{% endfor %}
+  </select>
+</div>
+{% endmacro %}
+
+
 {% macro govukTextarea(params={}) %}
 <div class="form-group">
   {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label.text }}</label>{% endif %}

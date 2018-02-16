@@ -147,6 +147,20 @@
     ]
 {{ frontend_endmacro() }}
 
+{%- elif field.inputtype == 'select' -%}
+  {{ frontend_macro('govukSelectboxes') }}
+    "id": {{ text_param(field.field) }},
+    "name": {{ text_param(field.field) }},
+    "label": {{ text_param(field.label) }},
+    "items" : [{% set comma = joiner() -%}
+    {% for item in field.items -%}
+      {{ comma() }}
+      { {%- if item.fieldref %}"fieldref": {{ text_param(item.fieldref) }}, "fieldhtml": {{ item.fieldref }}Ref, {% endif -%}
+        "text": {{ text_param(item.label) }}, "value": {{ text_param(item.value) }} }
+    {%- endfor %}
+    ]
+{{ frontend_endmacro() }}
+
 {%- elif field.inputtype == 'textarea' -%}
   {{ frontend_macro('govukTextarea') }}
     "name": {{ text_param(field.field) }},
