@@ -260,6 +260,10 @@ class Page extends FormComponent {
     return this._fields || [];
   }
 
+  get fieldrefs() {
+    return this._fieldrefs;
+  }
+
   get next() { return this._next; }
 
   get id() { return `pages[${this.page}]`; }
@@ -334,10 +338,6 @@ class Form {
 
   get fields() {
     return this._fields;
-  }
-
-  get fieldrefs() {
-    return this._fieldrefs;
   }
 
   get organisations() {
