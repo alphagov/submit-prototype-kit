@@ -14,6 +14,7 @@ EDITOR_DIR=editor
 EXAMPLES=\
 	$(VIEWS_DIR)/simplest\
 	$(VIEWS_DIR)/simple\
+	$(VIEWS_DIR)/passport\
 	$(VIEWS_DIR)/apply-for-a-medal
 
 SRC_TEMPLATES=\
