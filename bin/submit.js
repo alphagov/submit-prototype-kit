@@ -12,6 +12,7 @@ var chalk = require('chalk')
 var glob = require("glob")
 var yargs = require('yargs')
 var jsonfile = require('jsonfile')
+var utils = require('../lib/utils.js')
 
 
 var app_paths = [
@@ -118,6 +119,7 @@ function renderForm(form) {
 function loadForm(path) {
   console.log(chalk.blue('Loading ' + path))
   var form = JSON.parse(fs.readFileSync(path, 'utf8'))
+  var fieldrefLogs = {};
 
   // add field key to field object
   for (fieldref in form.fields) {
@@ -160,8 +162,15 @@ function loadForm(path) {
       }
     }
 
-    // TBD: calculate page fieldrefs
+    // log references to fields in page
+    if ('fieldrefs' in page) {
+      fieldrefLogs[name] = utils.logFieldrefs(page, name, form);
+    }
+
   }
+
+  // add unique variants of existing fields used multiple times
+  utils.makeFieldrefsUnique(fieldrefLogs, form);
 
   return form
 }
