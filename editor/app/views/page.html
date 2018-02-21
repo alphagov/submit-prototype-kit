@@ -12,7 +12,7 @@
   <div class="grid-row">
     <div class="column-one-half" id="editor-wrapper">
     {{ frontend.govukBackLink({
-      "href": "/forms/" + formname,
+      "href": "/forms/" + form.name,
       "text": "Back to pages in this form"
     }) }}
 
@@ -55,46 +55,50 @@
           </legend>
           {% endif %}
 
-            {{ fields.generic(field, fieldrefs, fieldindex, multiplefields) }}
+            {{ fields.generic(field, fieldindex, multiplefields) }}
 
           {% if multiplefields %}
           </fieldset>
           {% endif %}
         {% endfor %}
 
-        {% if page.next | length > 1 %}
+        {% if page.next %}
+
+        {% set multiplenext = page.next | length > 1 %}
+
+        {% if multiplenext %}
         <fieldset>
-          <legend class="heading-small">
-            Next pages
+          <legend>
+            <h2 class="heading-medium">Next pages</h2>
           </legend>
-          {% for option in page.next %}
+        {% else %}
+          <h2 class="heading-medium">Next pages</h2>
+        {% endif %}
 
-          <fieldset>
-            <legend>
-              Option {{ loop.index }}
-            </legend>
-            
-            {% for prop, txt in {
-              'page': 'Slug',
-              'if': 'Condition'
-            } %}
+        {% for option in page.next %}
+          
+          <div class="grid-row">
+          {% for prop, txt in {
+            'page': 'Slug',
+            'if': 'Condition'
+          } %}
 
-						{{ frontend.govukInput({
-							"label": {
-								"text": txt
-							},
-							"name": option.id + "." + prop,
-							"id": option.id + "." + prop,
-							"value": page.next[loop.index0][prop]
-						}) }}
+          <div class="column-one-half">
+          {{ frontend.govukInput({
+            "label": {
+              "text": txt
+            },
+            "name": option.id + "." + prop,
+            "id": option.id + "." + prop,
+            "value": page.next[loop.index0][prop]
+          }) }}
+          </div>
 
-            {% endfor %}
+          {% endfor %}
+          </div>
 
-          </fieldset>
+        {% endfor %} {# end of loop through next pages #}
 
-          {% endfor %} {# end of loop through next pages #}
-
-         </fieldset>
         {% else %}
 
           {{ frontend.govukInput({
@@ -105,6 +109,38 @@
             "id": page.next[0].id + ".page",
             "value": page.next[0].page
           }) }}
+
+        {% endif %}
+
+        {% if mutiplenext %}
+        </fieldset>
+        {% endif %}
+
+        {% set fieldrefs = page.uniqueFieldrefs %}
+
+        {% if fieldrefs %}
+
+          {% set multiplefields = fieldrefs | length > 1 %}
+
+          {% if multiplefields %}
+          <fieldset>
+            <legend>
+              <h2 class="heading-medium">Optional fields</h2>
+            </legend>
+          </fieldset>
+          {% else %}
+          <h2 class="heading-medium">Optional fields</h2>
+          {% endif %}
+
+          {% for fieldref in fieldrefs %}
+
+            {{ fields.generic(form.fields[fieldref], loop.index, multiplefields) }}
+            
+          {% endfor %}
+
+          {% if multiplefields %}
+          </fieldset>
+          {% endif %}
 
         {% endif %}
 
