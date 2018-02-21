@@ -1,4 +1,5 @@
 const path = require('path');
+const utils = require('../../lib/utils.js');
 
 
 class Datapoint {
@@ -269,6 +270,10 @@ class Page extends FormComponent {
   get id() { return `pages[${this.page}]`; }
 
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
+
+  get uniqueFieldrefs() {
+    return utils.pruneFieldrefs(this._data, this.page, this.form._data);
+  }
 
   // Methods
 

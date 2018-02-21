@@ -32,15 +32,16 @@ const gets = {
 		});
 
 		router.get('/forms/:formname/pages/:pagename', function (req, res) {
-			let page = formsData.getForm(req.params.formname).page(req.params.pagename);
-			// if index page, rewrite prototype URL to remove page name
-			let pageName = (page.page == 'index') ? '' : page.page;
+      let form = formsData.getForm(req.params.formname);
+      let page = form.page(req.params.pagename);
+      // if index page, rewrite prototype URL to remove page name
+      let pageName = (page.page == 'index') ? '' : page.page;
 
 			res.render('page', {
 				'page': page,
-				'formname': req.params.formname,
+        'form': form,
 				'message': req.query.message,
-				'currentFormPage': `${req.params.formname}/${pageName}`
+				'currentFormPage': `${form.name}/${pageName}`
 			})
 		});
 
