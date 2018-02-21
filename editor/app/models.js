@@ -1,4 +1,5 @@
 const path = require('path');
+const utils = require('../../lib/utils.js');
 
 
 class Datapoint {
@@ -76,8 +77,9 @@ const _getDatapoint = function(namespace, root) {
 
 
 class Field {
-  constructor(data) {
+  constructor(data, form) {
     this._data = data;
+    this.form = form;
 
     if ('items' in this._data) {
       this._items = this._data.items.map((item, idx) => {
@@ -139,6 +141,7 @@ class FieldItem {
 class Fieldset {
   constructor(data, form) {
     this._data = data;
+    this.form = form;
 
     this._fields = this._data.fields.map(name => {
       return form.createField(name)
@@ -210,7 +213,13 @@ class Page extends FormComponent {
     if ('fields' in this._data) {
       this._fields = this._data.fields.map(fieldName => {
         return form.fields[fieldName];
-      })
+      });
+    }
+
+    if ('fieldrefs' in this._data) {
+      this._fieldrefs = this._data.fieldrefs.map(fieldref => {
+        return form.fields[fieldref];
+      });
     }
 
     if ('next' in this._data) {
@@ -252,11 +261,19 @@ class Page extends FormComponent {
     return this._fields || [];
   }
 
+  get fieldrefs() {
+    return this._fieldrefs;
+  }
+
   get next() { return this._next; }
 
   get id() { return `pages[${this.page}]`; }
 
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
+
+  get uniqueFieldrefs() {
+    return utils.pruneFieldrefs(this._data, this.page, this.form._data);
+  }
 
   // Methods
 
@@ -362,7 +379,7 @@ class Form {
     if ('fields' in fieldData) {
       result = new Fieldset(fieldData, this);
     } else {
-      result = new Field(fieldData);
+      result = new Field(fieldData, this);
     }
 
     result.name = name;

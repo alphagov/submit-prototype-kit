@@ -52,3 +52,13 @@
   opacity: 0;
   transition: visibility 0s 1s, opacity 1s linear;
 }
+
+/* GOVUK Elements overrides */
+
+.column-one-half .form-control-2-3 {
+  width: 66.66%;
+}
+
+.column-one-half .column-one-half .form-control-2-3 {
+  width: 100%;
+}

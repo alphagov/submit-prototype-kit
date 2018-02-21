@@ -183,10 +183,13 @@
     "id": {{ text_param(field.field) }}
 {{ frontend_endmacro() }}
 
-{%- elif field.inputtype == 'fieldset' -%}
-    {% for fieldref in field.fields %}
+{%- elif field.inputtype == 'fieldset' %}
+  <fieldset>
+    <legend class="visuallyhidden">{{ field.legend }}</legend>
+    {%- for fieldref in field.fields %}
   {%raw%}{{{%endraw%}{{ fieldref }}Ref{%raw%} | safe}}{%endraw%}
     {%- endfor %}
+  </fieldset>
 
 {%- elif field.inputtype == 'list' -%}
     {% for fieldref in field.fields %}
