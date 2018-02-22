@@ -9,11 +9,12 @@
       "website": "https://www.gov.uk/government/organisations/marine-management-organisation"
     }
   ],
+
   "pages": {
     "index": {
       "_id": 1,
       "pagetype": "start-page",
-      "heading": "Ragister as a buyer of 'first-sale' fish",
+      "heading": "Register as a buyer of 'first-sale' fish",
       "guidance": "You need to register as a buyer of ‘first-sale’ fish if all of the following apply:\n* you’re buying fish that was landed in the UK\n* you’re buying fish or shellfish directly from a fishing vessel\n* you’re buying more than 30kg of fish per day\n\nYou don’t need to register if you buy fish from a: \n* designated auction site\n* merchant or wholesaler (this is ‘second sale’) \n* fish farm\n\nRegistering as a business\n-------------------------\n\nYou’ll need to upload documents to prove the address where you keep your records.\n\nRegistering as an individual\n----------------------------\n\nYou’ll need to prove your identity and the address where you keep your records. You might be able to do this by:\n* using GOV.UK Verify \n* uploading documents\n",
       "next": [ { "page": "where-will-you-buy" } ]
     },
@@ -54,7 +55,7 @@
       "pagetype": "interruption",
       "heading": "GOV.UK Verify",
       "body": "Verifying happens here.",
-      "next": [ { "page": "location-of-records" } ]
+      "next": [ { "page": "verify-location-of-records" } ]
     },
 
     "your-name": {
@@ -118,7 +119,7 @@
       "pagetype": "question",
       "heading": "What's your email address?",
       "guidance": "Details on how to report purchases of first-sale fish will be sent with your licence.",
-      "fields": [ "emailAddress" ],
+      "fields": [ "reportOnlineEmailAddress" ],
       "next": [ { "page": "how-do-we-contact-you" } ]
     },
 
@@ -128,7 +129,7 @@
       "heading": "How do you want to be contacted about your application?",
       "fields": [ "contactedAboutApplication" ],
       "fieldrefs": [ "emailAddress", "mobilePhoneNumber", "landlinePhoneNumber", "recordKeepingAddress" ],
-      "next": [ 
+      "next": [
         { "page": "contact-address", "if": "data['contactedAboutApplication'] == 'differentAddress'" },
         { "page": "check-your-answers" }
       ]
@@ -140,6 +141,210 @@
       "heading": "Contact address",
       "fields": [ "recordsAddress" ],
       "next": [ { "page": "check-your-answers" } ]
+    },
+
+    "verify-location-of-records": {
+      "_id": 15,
+      "pagetype": "question",
+      "heading": "Where will you keep records of first-sale fish purchases?",
+      "guidance": "To hold a first-sale licence you must keep records of each purchase of first-sale fish for 2 years.\n\nThese records must be shown to a marine officer on request.\n\nIf you choose a different address, you'll need to provide documents as proof of address.",
+      "fields": [ "verifyOrOtherAddress" ],
+      "next": [
+        { "page": "verify-report-online", "if": "data['verifyOrOtherAddress'] == 'verify'" },
+        { "page": "different-address" }
+      ]
+    },
+
+    "different-address": {
+      "_id": 16,
+      "pagetype": "question",
+      "heading": "Where will you keep records of first-sale fish purchases?",
+      "fields": [ "recordsAddress" ],
+      "next": [ { "page": "verify-proof-of-address" } ]
+    },
+
+    "verify-proof-of-address": {
+      "_id": 17,
+      "pagetype": "question",
+      "heading": "Upload proof of address",
+      "_todo": "Variable substitution",
+      "guidance": "To hold a licence you must prove you live at, or have access to:\n\n{{data.recordsAddress}}\n\n\n\nTo prove your address, upload a copy of either: \n\n* your current council tax bill (or equivalent)\n\n* utility bill from the last 3 months (must not be the same as the one used for proof of name)\n\n\n\nYou can use photographs or scans, as long as the image is clearly legible.\n\n\n\nFiles can be either JPG or PDF and no larger than 5mb.",
+      "fields": [ "proofOfAddress" ],
+      "next": [ { "page": "verify-report-purchases-online" } ]
+    },
+
+    "verify-report-purchases-online": {
+      "_id": 18,
+      "pagetype": "question",
+      "heading": "Do you want to report purchases online?",
+      "guidance": "You must submit sales notes for all purchases of first-sale fish.\n\nYou will need to give Email address if to report purchases of first-sale fish online.",
+      "fields": [ "reportPurchases" ],
+      "next": [
+        { "page": "verify-report-online", "if": "data['reportPurchases'] == 'online'" },
+        { "page": "verify-how-do-we-contact-you" }
+      ]
+    },
+
+    "verify-report-online": {
+      "_id": 19,
+      "pagetype": "question",
+      "heading": "What's your email address?",
+      "guidance": "Details on how to report purchases of first-sale fish will be sent with your licence.",
+      "fields": [ "reportOnlineEmailAddress" ],
+      "next": [ { "page": "verify-how-do-we-contact-you" } ]
+    },
+
+    "verify-how-do-we-contact-you": {
+      "_id": 20,
+      "pagetype": "question",
+      "heading": "How do you want to be contacted about your application?",
+      "fields": [ "contactedAboutApplication" ],
+      "fieldrefs": [ "emailAddress", "mobilePhoneNumber", "landlinePhoneNumber", "recordKeepingAddress" ],
+      "next": [
+        { "page": "verify-contact-address", "if": "data['contactedAboutApplication'] == 'differentAddress'" },
+        { "page": "check-your-answers" }
+      ]
+    },
+
+    "verify-contact-address": {
+      "_id": 21,
+      "pagetype": "question",
+      "heading": "Contact address",
+      "fields": [ "recordsAddress" ],
+      "next": [ { "page": "check-your-answers" } ]
+    },
+
+    "company-name": {
+      "_id": 22,
+      "pagetype": "question",
+      "heading": "What's your company name?",
+      "fields": [ "companyName" ],
+      "next": [ { "page": "company-number" } ]
+    },
+
+    "company-number": {
+      "_id": 23,
+      "pagetype": "question",
+      "heading": "Do you have a company number?",
+      "fields": [ "haveCompanyNumber" ],
+      "fieldrefs": [ "companyNumber" ],
+      "next": [ { "page": "vat-registered" } ]
+    },
+
+    "vat-registered": {
+      "_id": 24,
+      "pagetype": "question",
+      "heading": "Are you, or your company VAT registrered?",
+      "fields": [ "vatRegistered" ],
+      "fieldrefs": [ "vatRegistrationNumber" ],
+      "next": [ { "page": "company-your-name" } ]
+    },
+
+    "company-your-name": {
+      "_id": 25,
+      "pagetype": "question",
+      "heading": "Your name",
+      "fields": [ "name" ],
+      "next": [ { "page": "registered-business-address" } ]
+    },
+
+    "registered-business-address": {
+      "_id": 26,
+      "pagetype": "question",
+      "heading": "What's your registered business address?",
+      "fields": [ "companyAddress" ],
+      "next": [ { "page": "company-location-of-records" } ]
+    },
+
+    "company-location-of-records": {
+      "_id": 27,
+      "pagetype": "question",
+      "heading": "Where will you keep records of first-sale fish purchases?",
+      "guidance": "To hold a first-sale licence you must keep records of each purchase of first-sale fish for 2 years.\n\nThese records must be shown to a marine officer on request.",
+      "fields": [ "companyOrOtherAddress" ],
+      "next": [
+        { "page": "company-proof-of-address", "if": "data['companyOrOtherAddress'] == 'company'" },
+        { "page": "company-different-address" }
+      ]
+    },
+
+    "company-different-address": {
+      "_id": 28,
+      "pagetype": "question",
+      "heading": "Where will you keep records of first-sale fish purchases?",
+      "fields": [ "recordsAddress" ],
+      "next": [ { "page": "company-proof-of-address" } ]
+    },
+
+    "company-proof-of-address": {
+      "_id": 29,
+      "pagetype": "question",
+      "heading": "Upload proof of address",
+      "_todo": "Variable substitution",
+      "guidance": "To hold a licence you must prove you live at, or have access to:\n\n{{data.recordsAddress}}\n\n\n\nTo prove your address, upload a copy of either: \n\n* your current council tax bill (or equivalent)\n\n* utility bill from the last 3 months (must not be the same as the one used for proof of name)\n\n\n\nYou can use photographs or scans, as long as the image is clearly legible.\n\n\n\nFiles can be either JPG or PDF and no larger than 5mb.",
+      "fields": [ "proofOfAddress" ],
+      "next": [ { "page": "online-threshold" } ]
+    },
+
+    "online-threshold": {
+      "_id": 30,
+      "pagetype": "question",
+      "heading": "Do you plan to buy more than £180,000 of first-sale fish per year?",
+      "guidance": "If you buy more than £180,000 per year, you must report sales online.",
+      "fields": [ "onlineSalesThreshold" ],
+      "next": [
+        { "page": "company-email-address", "if": "data['onlineSalesThreshold'] == 'yes'" },
+        { "page": "company-report-online" }
+      ]
+    },
+
+    "company-report-online": {
+      "_id": 31,
+      "pagetype": "question",
+      "heading": "Do you want to report purchases online?",
+      "guidance": "You must submit sales notes for all purchases of first-sale fish.\n\nYou will need to give Email address if to report purchases of first-sale fish online.",
+      "fields": [ "reportPurchases" ],
+      "next": [
+        { "page": "company-email-address", "if": "data['reportPurchases'] == 'online'" },
+        { "page": "company-how-do-we-contact-you" }
+      ]
+    },
+
+    "company-email-address": {
+      "_id": 32,
+      "pagetype": "question",
+      "heading": "What's your email address?",
+      "guidance": "Details on how to report purchases of first-sale fish will be sent with your licence.",
+      "fields": [ "reportOnlineEmailAddress" ],
+      "next": [ { "page": "company-how-do-we-contact-you" } ]
+    },
+
+    "company-how-do-we-contact-you": {
+      "_id": 33,
+      "pagetype": "question",
+      "heading": "How do you want to be contacted about your application?",
+      "fields": [ "companyContactedAboutApplication" ],
+      "fieldrefs": [ "emailAddress", "mobilePhoneNumber", "landlinePhoneNumber", "registeredAddress" ],
+      "next": [
+        { "page": "company-contact-address", "if": "data['companyContactedAboutApplication'].includes('differentAddress')" },
+        { "page": "check-your-answers" }
+      ]
+    },
+
+    "company-contact-address": {
+      "_id": 34,
+      "pagetype": "question",
+      "heading": "Contact address",
+      "fields": [ "contactAddress" ],
+      "next": [ { "page": "check-your-answers" } ]
+    },
+
+    "blah": {
+      "_id": 0,
+      "pagetype": "question",
+      "heading": "heading",
+      "fields": [ "field1" ],
+      "next": [ { "page": "blah" } ]
     },
 
     "check-your-answers": {
@@ -203,6 +408,12 @@
       "inputtype": "textarea"
     },
 
+    "recordsAddress": {
+      "_todo": "Address lookup",
+      "label": "Address including postcode",
+      "inputtype": "textarea"
+    },
+
     "proofOfAddress": {
       "inputtype": "image"
     },
@@ -220,13 +431,18 @@
       "inputtype": "text"
     },
 
+    "reportOnlineEmailAddress": {
+      "label": "Email address",
+      "inputtype": "text"
+    },
+
     "contactedAboutApplication": {
       "inputtype": "checkboxes",
       "items": [
         { "label": "Email", "value": "email", "fieldref": "emailAddress" },
         { "label": "Text message", "value": "textMessage", "fieldref": "mobilePhoneNumber" },
         { "label": "Phone", "value": "phone", "fieldref": "landlinePhoneNumber" },
-        { "label": "Post at {{recordKeepingAddress}}", "_todo": "Variable substition", "value": "recordKeepingAddress" },
+        { "label": "Post at *{{recordsAddress}}*", "_todo": "Variable substition", "value": "recordKeepingAddress" },
         { "label": "Post at a different address", "value": "differentAddress" }
       ]
     },
@@ -239,6 +455,78 @@
     "landlinePhoneNumber": {
       "label": "Phone number",
       "inputtype": "text"
+    },
+
+    "verifyOrOtherAddress": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "{{address from verify}}", "value": "verify" },
+        { "label": "At a different address", "value": "other" }
+      ]
+    },
+
+    "companyName": {
+      "inputtype": "text"
+    },
+
+    "haveCompanyNumber": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "yes", "fieldref": "companyNumber" },
+        { "label": "No", "value": "no" }
+      ]
+    },
+
+    "companyNumber": {
+      "label": "Company number",
+      "inputtype": "text"
+    },
+
+    "vatRegistered": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "yes", "fieldref": "vatRegistrationNumber" },
+        { "label": "No", "value": "no" }
+      ]
+    },
+
+    "vatRegistrationNumber": {
+      "label": "VAT registration number",
+      "inputtype": "text"
+    },
+
+    "companyAddress": {
+      "_todo": "Address lookup",
+      "label": "Address including postcode",
+      "inputtype": "textarea"
+    },
+
+    "companyOrOtherAddress": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "{{companyRegisteredAddress}}", "value": "company" },
+        { "label": "At a different address", "value": "other" }
+      ]
+    },
+
+    "onlineSalesThreshold": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "yes" },
+        { "label": "No", "value": "no" }
+      ]
+    },
+
+    "companyContactedAboutApplication": {
+      "inputtype": "checkboxes",
+      "items": [
+        { "label": "Email", "value": "email", "fieldref": "emailAddress" },
+        { "label": "Text message", "value": "textMessage", "fieldref": "mobilePhoneNumber" },
+        { "label": "Phone", "value": "phone", "fieldref": "landlinePhoneNumber" },
+        { "label": "Post at *{{companyAddress}}*", "_todo": "Variable substition", "value": "companyAddress" },
+        { "label": "Post at *{{recordsAddress}}*", "_todo": "Variable substition", "value": "recordKeepingAddress" },
+        { "label": "Post at a different address", "value": "differentAddress" }
+      ]
     }
 
   }
