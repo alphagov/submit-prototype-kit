@@ -1,0 +1,416 @@
+{
+  "name": "renew-your-passport",
+  "heading": "Renew your passport",
+  "phase": "alpha",
+  "organisations": [
+    {
+      "name": "HM Passport Office",
+      "organisation": "government-organisation:EA66",
+      "website": "https://www.gov.uk/government/organisations/hm-passport-office"
+    }
+  ],
+  "pages": {
+    "index": {
+      "pagetype": "start-page",
+      "heading": "Start page",
+      "guidance": "Apply for a passport",
+      "next": [ { "page": "filter-overseas" } ]
+    },
+
+    "filter-overseas": {
+      "pagetype": "question",
+      "heading": "Are you applying from the UK?",
+      "fields": [ "ukApplication" ],
+      "fieldrefs": [ "countryOfApplication" ],
+      "next": [ { "page": "filter-previous-passport" } ]
+    },
+
+    "filter-previous-passport": {
+      "pagetype": "question",
+      "heading": "Have you had a UK passport before?",
+      "fields": [ "previousPassport" ],
+      "next": [
+        {
+          "if": "data['previousPassport'] == 'false'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "filter-lost-or-stolen" }
+      ]
+    },
+
+    "filter-lost-or-stolen": {
+      "pagetype": "question",
+      "heading": "Is your passport lost or stolen?",
+      "fields": [ "passportLost" ],
+      "next": [
+        {
+          "page": "filter-report-lost-or-stolen-passport",
+          "if": "data['passportLost'] == 'true'"
+        },
+        { "page": "filter-name-changed" }
+      ]
+    },
+
+    "filter-name-changed": {
+      "pagetype": "question",
+      "heading": "Have you changed your name?",
+      "guidance": "This includes changing your last name or spelling your name differently.",
+      "fields": [ "nameChanged" ],
+      "next": [
+        {
+          "if": "data['nameChanged'] == 'true'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "filter-age" }
+      ]
+    },
+
+    "filter-age": {
+      "pagetype": "question",
+      "heading": "Are you 16 or older?",
+      "guidance": "It should take around 3 weeks to get your new passport. You need to apply for a 10 year adult passport by answering ‘yes’ to this question.",
+      "_todo": "Reveal guidance from link",
+      "fields": [ "overSixteen" ],
+      "next": [
+        {
+          "if": "data['overSixteen'] == 'false'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "filter-issue-date" }
+      ]
+    },
+
+    "filter-issue-date": {
+      "pagetype": "question",
+      "heading": "Your old passport",
+      "guidance": "When was your passport issued? For example, 01 08 2007",
+      "_todo": "Reveal guidance from link",
+      "fields": [ "passportIssued" ],
+      "next": [
+        {
+          "if": "data['passportIssued'] <= '1918-04-06'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "filter-damaged" }
+      ]
+    },
+
+    "filter-damaged": {
+      "pagetype": "question",
+      "heading": "Is your passport damanged?",
+      "guidance": "I'm not sure if my passport is damaged\n\nHM Passport Office classes your passport as damaged if:\n\n* you can’t read any of your details\n* the laminate cover has come away\n* there’s an ink or chemical spillage on any of the pages\n* there’s discolouring of your personal details (eg your name or date of birth)\n* any of the pages are missing or detached\n* the chip is damaged or showing through the back cover (e-passports only)\n* there’s excess water damage\n",
+      "_todo": "Reveal guidance from link",
+      "fields": [ "damaged" ],
+      "next": [
+        {
+          "if": "data['damaged'] == 'yes'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "filter-dual-nationality" }
+      ]
+    },
+
+    "filter-dual-nationality": {
+      "pagetype": "question",
+      "heading": "Do you have dual nationality?",
+      "guidance": "Do you have dual nationality if you’re a British citizen and a citizen of another country. For example, if you have a passport from another country.",
+      "fields": [ "dualNationality" ],
+      "next": [
+        {
+          "if": "data['dualNationality'] == 'yes'",
+          "page": "exit-url",
+          "_todo": "URL for next",
+          "_url": "https://passportapplication.service.gov.uk/ips-olc/"
+        },
+        { "page": "renew-before-you-continue" }
+      ]
+    },
+
+    "renew-before-you-continue": {
+      "pagetype": "interruption",
+      "heading": "Before you continue",
+      "body": "It should take around 3 weeks to get your new passport. Use a different service if you need to get a passport urgently.\n\nApplying for someone else\n\nIf you’re applying for someone who is unable to make their own decisions, you need to use a different service.\n\nChanges to your face\nIf your face has changed because of an accident or illness such as a stroke, you need to apply in a different way. This doesn’t include the normal signs of ageing.",
+      "next": [ { "page": "renew-how-to-apply" } ]
+    },
+
+    "renew-how-to-apply": {
+      "pagetype": "interruption",
+      "heading": "How to apply for a passport online",
+      "body": "Get a digital passport photo\nWe’ll show you 3 ways to get a digital photo. Your photo must meet the rules for digital photos.\n \n 2\n Apply online\n You’ll need to check the details in your old passport.\n \n 3\n Pay for your new passport\n You’ll need a debit or credit card. A standard passport is £72.50 including special delivery.\n4\n Send us your old passport\nYou need to pay the postage to return your old passport.",
+      "next": [ { "page": "photo-digital-photo" } ]
+    },
+
+    "photo-digital-photo": {
+      "pagetype": "interruption",
+      "heading": "Get your digital passport photo",
+      "body": "You can choose from 3 ways to get your digital photo.\n\nGet a friend to take one\nThey can use a phone, tablet or digital camera. We’ll show you how to take a good passport photo and upload it.\n\nGo to a photo shop\nAt a shop, you’ll get a digital copy of your photo. Some shops can also give you a photo code. We’ll show you how to use the code to retrieve your digital photo.\n\nGo to a booth\nFrom some booths in the UK and abroad, you’ll be able to get a photo code with your printed photos. We’ll show you how to use the code to retrieve your digital photo.",
+      "next": [ { "page": "photo-choose-photo-method" } ]
+    },
+
+    "photo-choose-photo-method": {
+      "pagetype": "question",
+      "heading": "Get your digital photo",
+      "guidance": "[Get a friend to take one](), [Go to a booth or a shop]()",
+      "fields": [ "choosePhotoUpload" ],
+      "next": [
+        {
+          "if": "data['choosePhotoUpload'] == 'photo-upload'", "page": "photo-upload"
+        },
+        {
+          "if": "data['choosePhotoUpload'] == 'photo-code'", "page": "photo-retreive"
+        }
+      ]
+    },
+
+    "photo-retreive": {
+      "pagetype": "question",
+      "heading": "Retrieve your digital photo",
+      "guidance": "This is case-sensitive, for example abc.de/1fG2h3i4",
+      "fields": [ "photoCode" ],
+      "fieldrefs": [ "photoCodeSld", "photoCodeTld", "photoCodePath" ],
+      "next": [
+        { "page": "photo-code-error" }
+      ]
+    },
+
+    "photo-code-error": {
+      "pagetype": "bounce",
+      "heading": "We can't find your code",
+      "guidance": "Check your code and try again. You need to enter the code exactly as it’s written.\n\n\n\nYou entered: abc.de/1fG2h3i4\n\n\n\nIf this keeps happening, contact the company that provided your digital photo.\n\n"
+    },
+
+    "photo-upload": {
+      "pagetype": "question",
+      "heading": "Upload your photo",
+      "_todo": "Link to page from Markdown",
+      "guidance": "Your photo must meet the rules for digital passport photos.\n\nRead the [photo guide](photo-guide).\n\n\n\nWe’ll store all photos for up to 30 days in line with our [privacy policy](https://www.passport.service.gov.uk/help/privacy).",
+      "fields": [ "photo" ],
+      "next": [
+        {
+          "if": "data['photo'] == 'error'", "page": "photo-not-accepted"
+        },
+        {
+          "page": "renew-passport-details"
+        }
+      ]
+    },
+
+    "photo-not-accepted": {
+      "pagetype": "question",
+      "heading": "You need another photo",
+      "_todo": "Click link to reveal button",
+      "guidance": "This photo has failed our automated checks for the following reasons:\n\n### It looks like you’re not facing the camera\nIf you tilt your head it may appear you’re not facing the camera.\n\nYou can still submit your photo if you believe it should be accepted (eg there’s a medical reason why you can’t face the camera).\n\n###It looks like your mouth is open\nSometimes this is caused by facial hair or shadows near your mouth. Please try different lighting.\n\nYou can still submit your photo if you believe it should be accepted (eg there’s a medical reason why your mouth appears to be open).\n\n###We can’t find the outline of your head\nOur automated checks can’t find the outline of your head.\n\nPlease try:\n\n* standing in front of a plain, light-coloured (eg, cream or grey) background\n* tying your hair back or brushing it down if it’s loose\n* standing further away from the wall to avoid shadows\n* to make sure the background has no glare or patterns",
+      "next": [ { "page": "questions-intro" } ]
+    },
+
+    "renew-passport-details": {
+      "pagetype": "question",
+      "heading": "Your old passport details",
+      "_todo": "Reveal guidance",
+      "fields": [ "passportNumber", "passportExpiryDate" ],
+      "next": [ { "page": "renew-name" } ]
+    },
+
+    "renew-name": {
+      "pagetype": "question",
+      "heading": "Your new passport details",
+      "fields": [ "title", "firstName", "lastName" ],
+      "fieldrefs": [ "otherTitle" ],
+      "next": [ { "page": "renew-previous-names" } ]
+    },
+
+    "renew-previous-names": {
+      "pagetype": "question",
+      "heading": "Have you every been known by any other names?",
+      "fields": [ "previousNames" ],
+      "fieldrefs": [ "otherName", "firstName", "lastName" ],
+      "next": [ { "page": "renew-name" } ]
+    },
+
+
+
+
+
+    "exit-url": {
+      "pagetype": "bounce",
+      "heading": "We're going to automatically redirect you",
+      "guidance": "Redirecting [redirecting](https://passportapplication.service.gov.uk/ips-olc/)"
+    },
+
+    "filter-report-lost-or-stolen-passport": {
+      "pagetype": "bounce",
+      "heading": "You need a different service",
+      "guidance": "You must [cancel your old passport](https://www.gov.uk/report-a-lost-or-stolen-passport) as soon as you can if it’s lost or stolen.\nIf you’ve already cancelled your passport you can apply for a replacement, or you can get a passport urgently with Fast Track (1 week)."
+    }
+  },
+
+  "fields": {
+    "ukApplication": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false", "fieldref": "countryOfApplication" }
+      ]
+    },
+    "countryOfApplication": {
+      "label": "Country",
+      "inputtype": "select",
+      "items": [
+        { "label": "Afghanistan", "value": "AF" },
+        { "label": "Albania", "value": "AL" },
+        { "label": "Algeria", "value": "DZ" },
+        { "label": "American Samoa", "value": "AS" },
+        { "label": "Andorra", "value": "AD" },
+        { "label": "Angola", "value": "AO" },
+        { "label": "Anguilla", "value": "AI" },
+        { "label": "Antigua and Barbuda", "value": "AG" },
+        { "label": "Argentina", "value": "AR" }
+      ]
+    },
+    "previousPassport": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+    "passportLost": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+    "nameChanged": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+    "overSixteen": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+    "passportIssued": {
+      "inputtype": "date",
+      "_todo": "Date validation, - input range restriction"
+    },
+    "damaged": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+    "dualNationality": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "true" },
+        { "label": "No", "value": "false" }
+      ]
+    },
+
+    "choosePhotoUpload": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "I have a digital photo to upload", "value": "photo-upload" },
+        {
+          "label": "I have a code to enter",
+          "value": "photo-code",
+          "_todo": "Reveal text on click",
+          "_hint": "Check if your printed photos have a photo code - you’ll need to enter this code to retrieve your photo."
+        }
+      ]
+    },
+
+    "photoCode": {
+      "inputtype": "fieldset",
+      "legend": "Photo code",
+      "fields": [ "photoCodeSld", "photoCodeTld", "photoCodePath" ]
+    },
+    "photoCodeSld": {
+      "inputtype": "text"
+    },
+    "photoCodeTld": {
+      "inputtype": "text"
+    },
+    "photoCodePath": {
+      "inputtype": "text"
+    },
+
+    "photo": {
+      "inputtype": "file"
+    },
+
+    "passportNumber": {
+      "inputtype": "text",
+      "label": "Passport number",
+      "hint": "For example, 502135326"
+    },
+
+    "passportExpiryDate": {
+      "inputtype": "date",
+      "label": "Expiry date",
+      "hint": "For example, 01 08 2017",
+      "_todo": "Date validation, - input range restriction"
+    },
+
+    "title": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Mr", "value": "Mr" },
+        { "label": "Mrs", "value": "Mrs" },
+        { "label": "Miss", "value": "Miss" },
+        { "label": "Ms", "value": "Ms" },
+        { "label": "Other", "value": "", "fieldref": "otherTitle" }
+      ]
+    },
+
+    "otherTitle": {
+      "inputtype": "text",
+      "label": "Title in old passport",
+      "_todo": "Order of hint, should be above title",
+      "hint": "You can only use another title, such as a professional title or honour, if it’s already used in your old passport.\n\nTo use a new title you’ll need to [apply to update your passport](https://passportapplication.service.gov.uk/ips-olc/) instead."
+    },
+
+    "firstName": {
+      "inputtype": "text",
+      "label": "First and middle name"
+    },
+
+    "lastName": {
+      "inputtype": "text",
+      "label": "Last name"
+    },
+
+    "previousNames": {
+      "inputtype": "radio",
+      "fields": [
+        { "label": "Yes", "value": "yes", "fieldref": "otherName" },
+        { "label": "No", "value": "no" }
+      ]
+    },
+
+    "otherName": {
+      "inputtype": "fieldset",
+      "legend": "List all your previous names",
+      "fields": [ "firstName", "lastName" ]
+    }
+
+  }
+}
+

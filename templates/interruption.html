@@ -1,0 +1,24 @@
+{% extends "submit_layout.html" %}
+{% import "submit_macros.ntk" as submit with context %}
+
+{% block content %}
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      {{ submit.back_link(page) | indent(6) }}
+
+      <h1 class="heading-large">
+        {{ submit.optional_text(page.heading) }}
+      </h1>
+
+      {{ submit.markdown_text(page.body) }}
+
+      <form class="form" action="" method="post">
+        {% set f %}
+          {{ submit.nextButton(page) }}
+        {% endset %}
+      {{ f | safe | indent(8) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}

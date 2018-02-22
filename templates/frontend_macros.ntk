@@ -122,3 +122,31 @@
   <input class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}" type="file">
 </div>
 {% endmacro %}
+
+{% macro govukDate(params={}) %}
+<fieldset class="form-group">
+  <legend>
+    {% if params.label %}<h1 class="heading-large">{{ params.label.text }}</h1>{% endif %}
+    {% if params.hintHtml %}<p class="body-text">{{ params.name }}</p>{% endif %}
+  </legend>
+
+  <div class="form-date">
+
+    <div class="form-group form-group-day">
+      <label for="dob-day">Day</label>
+      <input class="form-control" id="{{ params.id }}-day" name="{{ params.name }}-day" type="number" pattern="[0-9]*" min="0" max="31">
+    </div>
+
+    <div class="form-group form-group-month">
+      <label for="dob-month">Month</label>
+      <input class="form-control" id="{{ params.id }}-month" name="{{ params.name }}-month" type="number" pattern="[0-9]*" min="0" max="12">
+    </div>
+
+    <div class="form-group form-group-year">
+      <label for="dob-year">Year</label>
+      <input class="form-control" id="{{ params.id }}-year" name="{{ params.name }}-year" type="number" pattern="[0-9]*" min="0">
+    </div>
+
+  </div>
+</fieldset>
+{% endmacro %}
