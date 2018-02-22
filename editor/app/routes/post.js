@@ -5,27 +5,27 @@ const posts = {
 
 	bind: function (router) {
 
-      // load forms data
-      formsData.init();
+    // load forms data
+    formsData.init();
 
-      // POST routes
+    // POST routes
 
-      let htmlResponse = function (res, req, form, page) {
-        let message = "Form data saved";
-        let redirectURL = (page !== undefined) ? page.url : form.url;
+    let htmlResponse = function (res, req, form, page) {
+      let message = "Form data saved";
+      let redirectURL = (page !== undefined) ? page.url : form.url;
 
-        let onSaved = function (error) {
-          if (error !== undefined) { message = "Form data saved"; }
+      let onSaved = function (error) {
+        if (error !== undefined) { message = "Form data saved"; }
 
-          res.redirect(`${redirectURL}?message=${encodeURIComponent(message)}`);
-        };
-
-        if (page !== undefined) { page.update(req.body) } else { form.update(req.body) }
-        formsData.save(form, onSaved);
+        res.redirect(`${redirectURL}?message=${encodeURIComponent(message)}`);
       };
 
-      let jsonResponse = function (res, req, form, page) {
-        let message = "Form data saved";
+      if (page !== undefined) { page.update(req.body) } else { form.update(req.body) }
+      formsData.save(form, onSaved);
+    };
+
+    let jsonResponse = function (res, req, form, page) {
+      let message = "Form data saved";
 
 			let onSaved = function (error) {
 				if (error !== undefined) {
@@ -46,6 +46,12 @@ const posts = {
 			} else {
 				htmlResponse(res, req, form);
 			}
+		});
+
+		router.post('/forms/:formname/pages', function (req, res) {
+			let form = formsData.getForm(req.params.formname)
+
+
 		});
 
 		router.post('/forms/:formname/pages/:pagename', function (req, res) {

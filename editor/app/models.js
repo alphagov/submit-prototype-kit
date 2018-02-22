@@ -144,7 +144,7 @@ class Fieldset {
     this.form = form;
 
     this._fields = this._data.fields.map(name => {
-      return form.createField(name)
+      return form.createFieldReference(name)
     });
   }
 
@@ -318,7 +318,7 @@ class Form {
     this._fields = {};
     
     for (let fieldName in fields) {
-      this._fields[fieldName] = this.createField(fieldName);
+      this._fields[fieldName] = this.createFieldReference(fieldName);
     }
     
     for (let key in pages) {
@@ -371,7 +371,7 @@ class Form {
     return JSON.stringify(this._data, null, 2);
   }
 
-  createField(name) {
+  createFieldReference(name) {
     let fieldData;
     let fieldClass;
     let result;
