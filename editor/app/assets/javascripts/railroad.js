@@ -7,7 +7,7 @@
   
   processPage = function (key) {
     var children = graph[key];
-    var index = Math.ceil(children.length / 2);
+    var index = Math.floor(children.length / 2) - 1
     var args = [];
     var tree;
 
