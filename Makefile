@@ -15,7 +15,8 @@ EXAMPLES=\
 	$(VIEWS_DIR)/simplest\
 	$(VIEWS_DIR)/simple\
 	$(VIEWS_DIR)/first-sale-fish\
-	$(VIEWS_DIR)/apply-for-a-medal
+	$(VIEWS_DIR)/apply-for-a-medal\
+	$(VIEWS_DIR)/apply-for-a-veterans-badge
 
 SRC_TEMPLATES=\
 	templates/*.ntk\
