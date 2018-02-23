@@ -58,7 +58,8 @@ PROTOTYPE=\
 	$(PROTOTYPE_LAYOUT)\
 	$(PROTOTYPE_INDEX)\
 	$(PROTOTYPE_VALIDATOR)\
-	editoriframecontroller
+	editoriframecontroller\
+	prototypegitinit
 
 SRC_EDITOR_IFRAME_CONTROLLER_CLIENT=$(EDITOR_DIR)/lib/iframe-controller-client.js
 EDITOR_IFRAME_CONTROLLER_CLIENT_HTML=$(EDITOR_DIR)/lib/iframe-controller-client-script-tag.html
@@ -71,6 +72,8 @@ SRC_EDITOR_JS=\
 	$(EDITOR_JS_DIR)/editor/status.js\
 	$(EDITOR_JS_DIR)/editor/iframe-controller.js\
 	$(EDITOR_JS_DIR)/editor/onready.js
+
+HEROKU_APP_NAME=submit-prototype-kit
 
 all:	$(EXAMPLES)
 
@@ -137,6 +140,12 @@ $(KIT_UNZIPPED):	$(KIT_ZIP)
 $(KIT_ZIP):
 	@mkdir -p cache
 	curl -sL '$(KIT_URL)' > '$@'
+
+prototypegitinit:
+	cd prototype && git init && git remote add heroku https://git.heroku.com/$(HEROKU_APP_NAME).git
+
+prototypedeploy:
+	cd prototype && git add . && git commit -m 'wip' && git push -f heroku master
 
 init:
 	npm install
