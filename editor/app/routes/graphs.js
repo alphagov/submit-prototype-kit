@@ -5,9 +5,6 @@ const graphs = {
 
   bind: function (router) {
 
-    // load graph data
-    graphData.init();
-
     router.get('/:formname/railroad', function (req, res) {
       let onSuccess = function (data) {
         let graph = data.graph;
@@ -31,6 +28,10 @@ const graphs = {
         }
       };
 
+      // load form data
+      graphData.init(req.params.formname);
+
+      // get graph data
       graphData.getGraphAndLinks(onSuccess, onError);
     })
 
@@ -57,6 +58,10 @@ const graphs = {
         }
       };
 
+      // load form data
+      graphData.init(req.params.formname);
+
+      // get graph data
       graphData.getGraphAndLinks(onSuccess, onError);
     })
 

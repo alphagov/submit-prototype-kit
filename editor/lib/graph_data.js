@@ -4,10 +4,10 @@ const childProcess = require('child_process');
 
 
 const GraphData = {
-  init() {
+  init(formname) {
     this.command = 'bin/lint.py';
     this.opts = { 'cwd': path.resolve(process.cwd(), '../') }
-    this.dataFile = 'examples/apply-for-a-medal.json';
+    this.dataFile = `examples/${formname}.json`;
   },
 
   runCommand(output, onSuccess, onError) {
