@@ -1,0 +1,359 @@
+{
+  "name": "apply-for-a-veterans-badge",
+  "heading": "Apply for a veterans badge",
+  "phase": "alpha",
+  "organisations": [
+    {
+      "name": "Ministry of Defence",
+      "organisation": "government-organisation:D17",
+      "website": "https://www.gov.uk/government/organisations/ministry-of-defence"
+    }
+  ],
+  "pages": {
+    "index": {
+      "_id": 1,
+      "pagetype": "start-page",
+      "heading": "Apply for a veterans badge earned by you",
+      "guidance": "",
+      "detail": "",
+      "next": [ { "page": "type-of-applicant" } ]
+    },
+
+    "type-of-applicant": {
+      "_id": 2,
+      "pagetype": "question",
+      "heading": "Are you applying for a veterans badge for yourself?",
+      "fields": [ "applicationPerson" ],
+      "next": [
+        { "page": "active-service", "if": "data['applicationPerson'] == 'myself'" },
+        { "page": "relationship-to-serviceperson" }
+      ]
+    },
+
+    "relationship-to-serviceperson": {
+      "_id": 3,
+      "pagetype": "question",
+      "heading": "Was the serviceperson who earnt the badge your husband, wife or civil partner?",
+      "fields": ["marriedOrCivilPartner"],
+      "next": [
+        { "page": "serviceperson-is-alive", "if": "data['marriedOrCivilPartner'] == 'yes'" },
+        { "page": "ineligible-recipient-of-badge" }
+      ]
+    },
+
+    "ineligible-recipient-of-badge": {
+      "_id": 4,
+      "pagetype": "bounce",
+      "heading": "You can only receive a veterans badge if you’re a retired veteran or for your husband, wife or civil partner.",
+      "guidance": "Read about [military awards and commemorations](https://www.gov.uk/topic/defence-armed-forces/military-awards-commemorations)."
+    },
+
+    "serviceperson-is-alive": {
+      "_id": 5,
+      "pagetype": "question",
+      "heading": "Is the serviceperson alive and able to apply for themselves?",
+      "fields": ["servicepersonIsAlive"],
+      "next": [
+        { "page": "which-services-they", "if": "data['servicepersonIsAlive'] == 'no'" },
+        { "page": "serviceperson-must-apply" }
+      ]
+    },
+
+    "serviceperson-must-apply": {
+      "_id": 6,
+      "pagetype": "bounce",
+      "heading": "The serviceperson needs to make the application for themselves.",
+      "guidance": "If you are a retired veteran making the application for themselves [continue your application here](/apply-for-a-veterans-badge/)."
+    },
+
+    "which-services-they": {
+      "_id": 7,
+      "pagetype": "question",
+      "heading": "Which organisations did the serviceperson serve with?",
+      "fields": ["organisations"],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "next": "serviceperson-name-third-party"
+    },
+
+    "serviceperson-name-third-party": {
+      "_id": 8,
+      "pagetype": "question",
+      "heading": "What is the service person’s name?",
+      "fields": ["servicepersonName"],
+      "next": "has-alternative-names-third-party"
+    },
+
+    "has-alternative-names-third-party": {
+      "_id": 9,
+      "pagetype": "question",
+      "heading": "Has the service person ever been known by a different name?",
+      "guidance": "For example, their maiden name",
+      "fields": ["hasAlternativeNamesThirdParty"],
+      "next": [
+        { "page": "alternative-names-third-party", "if": "data['hasAlternativeNamesThirdParty'] == 'yes'" },
+        { "page": "applicant-name" }
+      ]
+    },
+
+    "alternative-names-third-party": {
+      "_id": 10,
+      "pagetype": "question",
+      "heading": "Other names the service person was known by",
+      "fields": ["alternativeNames"],
+      "next": "applicant-name"
+    },
+
+    "applicant-name": {
+      "_id": 11,
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": ["applicantName"],
+      "next": "contact-preference"
+    },
+
+    "active-service": {
+      "_id": 12,
+      "pagetype": "question",
+      "heading": "Are you retired from the armed forces?",
+      "fields": ["activeService"],
+      "next": [
+        { "page": "which-services-you", "if": "data['activeService'] == 'retired'" }
+      ]
+    },
+
+    "which-services-you": {
+      "_id": 14,
+      "pagetype": "question",
+      "heading": "Which organisations did you serve with?",
+      "fields": ["organisations"],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "next": "serviceperson-name"
+    },
+
+    "serviceperson-name": {
+      "_id": 15,
+      "pagetype": "question",
+      "heading": "What is your name?",
+      "fields": ["servicepersonName"],
+      "next": "has-alternative-names"
+    },
+
+    "has-alternative-names": {
+      "_id": 16,
+      "pagetype": "question",
+      "heading": "Have you ever been known by a different name?",
+      "guidance": "For example, your maiden name",
+      "fields": ["hasAlternativeNames"],
+      "next": [
+        { "page": "alternative-names", "if": "data['hasAlternativeNames'] == 'yes'" },
+        { "page": "contact-preference" }
+      ]
+    },
+
+    "alternative-names": {
+      "_id": 17,
+      "pagetype": "question",
+      "heading": "Other names you held during service",
+      "fields": ["alternativeNames"],
+      "next": "contact-preference"
+    },
+
+    "contact-preference": {
+      "_id": 18,
+      "pagetype": "question",
+      "heading": "How do you want to be contacted about your application?",
+      "fields": ["contactPreference"],
+      "fieldrefs": [ "email", "phone", "mobile" ],
+      "next": "postal-address"
+    },
+
+    "postal-address": {
+      "_id": 19,
+      "pagetype": "question",
+      "heading": "Where do you want the veterans badge posted?",
+      "guidance": "Veterns badge applications usually take 6 to 8 weeks to process. If you move house during this time, or want to change the address the veterans badge will be sent to please contact [dbs-medals@mod.uk](mailto:dbs-medals@mod.uk).\n\nThere is no charge for the postage. Someone will need to sign for the delivery.",
+      "fields": ["postalAddress"],
+      "next": "check-your-answers"
+    },
+
+    "check-your-answers": {
+      "_id": 20,
+      "pagetype": "check-your-answers",
+      "heading": "Check your answers",
+      "next": "confirmation"
+    },
+
+    "confirmation": {
+      "_id": 21,
+      "pagetype": "application-complete",
+      "heading": "Application complete",
+      "guidance": "We have sent a confirmation email to **{{ data.contactEmail }}**.",
+      "detail": "Your application will be processed within 28 days."
+    }
+  },
+
+  "fields": {
+
+    "marriedOrCivilPartner": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+
+    "servicepersonIsAlive": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+
+    "applicationPerson": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "myself" },
+        { "label": "No, I’m applying for a veterans badge earned by someone else", "value": "someoneElse" }
+      ]
+    },
+
+    "activeService": {
+      "inputtype": "radio",
+      "items": [
+        { "label": "Yes", "value": "retired" },
+        { "label": "No, I'm currently serving", "value": "currentlyServing" }
+      ]
+    },
+
+    "organisations": {
+      "inputtype": "checkboxes",
+      "items": [
+        { "label": "Army", "value": "army", "fieldref": "ArmyDetails" },
+        { "label": "Royal Air Force", "value": "raf", "fieldref": "RafDetails" },
+        { "label": "Royal Marines", "value": "marines", "fieldref": "RoyalMarinesDetails" },
+        { "label": "Royal Navy", "value": "navy", "fieldref": "RoyalNavyDetails" }
+      ]
+    },
+    "ArmyDetails": {
+      "inputtype": "fieldset",
+      "legend": "Army service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RafDetails": {
+      "inputtype": "fieldset",
+      "legend": "RAF service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RoyalNavyDetails": {
+      "inputtype": "fieldset",
+      "legend": "Royal Navy service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+    "RoyalMarinesDetails": {
+      "inputtype": "fieldset",
+      "legend": "Royal Navy service history",
+      "fields": [ "serviceNumber", "startDate", "endDate" ]
+    },
+
+    "hasAlternativeNames": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "hasAlternativeNamesThirdParty": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" },
+        { "value": "notsure", "label": "Not sure" }
+      ]
+    },
+    "alternativeNames": {
+      "description": "Serviceperson’s alternative names",
+      "label": "Full name",
+      "inputtype": "list",
+      "field": "name",
+      "min-length": 1,
+      "max-length": 5
+    },
+    "applicantName": {
+      "description": "Applicant’s full name",
+      "inputtype": "text",
+      "datatype": "text",
+      "label": "Full name"
+    },
+    "serviceNumber": {
+      "inputtype": "text",
+      "label": "Service number",
+      "hint": "For example, ‘RA16 989 587’"
+    },
+    "startDate": {
+      "inputtype": "text",
+      "datatype": "date",
+      "label": "Start date",
+      "hint": "For example, ‘December 1997’, or ‘1997’."
+    },
+    "endDate": {
+      "inputtype": "text",
+      "datatype": "date",
+      "label": "End date"
+    },
+    "servicepersonName": {
+      "description": "Service person’s full name",
+      "inputtype": "text",
+      "datatype": "text",
+      "label": "Full name"
+    },
+    "hasAlternativeNames": {
+      "inputtype": "radio",
+      "legend": "",
+      "items": [
+        { "value": "yes", "label": "Yes" },
+        { "value": "no", "label": "No" }
+      ]
+    },
+    "alternativeNames": {
+      "description": "Service person’s alternative names",
+      "label": "Full name",
+      "_todo": "add multiple names",
+      "inputtype": "text",
+      "field": "name",
+      "min-length": 1,
+      "max-length": 5
+    },
+    "email": {
+      "label": "Email address",
+      "inputtype": "text"
+    },
+    "phone": {
+      "label": "Phone number",
+      "inputtype": "text"
+    },
+    "mobile": {
+      "label": "Mobile phone number",
+      "inputtype": "text"
+    },
+    "contactPreference": {
+      "inputtype": "checkboxes",
+      "items": [
+        { "label": "Email", "value": "contact-email", "fieldref": "email" },
+        { "label": "Phone", "value": "contact-phone", "fieldref": "phone" },
+        { "label": "Text message", "value": "contact-text", "fieldref": "mobile" }
+      ]
+    },
+    "postalAddress": {
+      "inputtype": "textarea",
+      "label": "Full address"
+    },
+    "testField": {
+      "inputtype": "text"
+    }
+  }
+}
