@@ -46,6 +46,9 @@ PROTOTYPE_INDEX=prototype/app/views/index.html
 SRC_PROTOTYPE_DAGRE=lib/dagre-d3.js
 PROTOTYPE_DAGRE=prototype/app/assets/javascripts/dagre-d3.js
 
+SRC_PROTOTYPE_VALIDATOR=lib/validate-form-response.js
+PROTOTYPE_VALIDATOR=prototype/lib/validate-form-response.js
+
 PROTOTYPE=\
 	$(PROTOTYPE_MACROS)\
 	$(PROTOTYPE_ROUTER)\
@@ -54,6 +57,7 @@ PROTOTYPE=\
 	$(PROTOTYPE_APPLICATION_SCSS)\
 	$(PROTOTYPE_LAYOUT)\
 	$(PROTOTYPE_INDEX)\
+	$(PROTOTYPE_VALIDATOR)\
 	editoriframecontroller
 
 SRC_EDITOR_IFRAME_CONTROLLER_CLIENT=$(EDITOR_DIR)/lib/iframe-controller-client.js
@@ -115,6 +119,10 @@ $(PROTOTYPE_APPLICATION_SCSS):	$(SRC_PROTOTYPE_APPLICATION_SCSS) $(KIT_UNZIPPED)
 # copy in dagre
 $(PROTOTYPE_DAGRE):	$(SRC_PROTOTYPE_DAGRE) $(KIT_UNZIPPED)
 	cp $(SRC_PROTOTYPE_DAGRE) $(PROTOTYPE_DAGRE)
+
+# copy in validator
+$(PROTOTYPE_VALIDATOR):	$(SRC_PROTOTYPE_VALIDATOR) $(KIT_UNZIPPED)
+	cp $(SRC_PROTOTYPE_VALIDATOR) $(PROTOTYPE_VALIDATOR)
 
 # copy the js used by the editor to control its iframe'd prototype and add the HTML tag for it
 editoriframecontroller:
