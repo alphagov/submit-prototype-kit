@@ -262,7 +262,7 @@ class Page extends FormComponent {
   }
 
   get fieldrefs() {
-    return this._fieldrefs;
+    return this._fieldrefs || [];
   }
 
   get next() { return this._next; }
@@ -272,6 +272,8 @@ class Page extends FormComponent {
   get url() { return `/forms/${this.form.name}/pages/${this.page}`; }
 
   get uniqueFieldrefs() {
+    if (this.fieldrefs.length === 0) { return this.fieldrefs; }
+
     return utils.pruneFieldrefs(this._data, this.page, this.form._data);
   }
 

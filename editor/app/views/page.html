@@ -118,7 +118,7 @@
 
         {% set fieldrefs = page.uniqueFieldrefs %}
 
-        {% if fieldrefs %}
+        {% if fieldrefs | length > 0 %}
 
           {% set multiplefields = fieldrefs | length > 1 %}
 
