@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "uk.gov.gaap.submit.editor.organisations",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "organisation": { "type": "string" },
+    "website": { "type": "string" }
+  },
+  "required": ["name", "organisation", "website"]
+}
