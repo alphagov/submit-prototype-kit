@@ -584,7 +584,7 @@
     },
     "LPA": {
       "inputtype": "image",
-      "legend": "Please upload an image file"
+      "label": "Please upload an image file"
     },
     "hasDeathCertificate": {
       "inputtype": "radio",
@@ -596,7 +596,7 @@
     },
     "deathCertificate": {
       "inputtype": "image",
-      "legend": "Please upload an image file"
+      "label": "Please upload an image file"
     },
     "hasOtherEvidence": {
       "inputtype": "radio",
@@ -608,7 +608,7 @@
     },
     "otherEvidence": {
       "inputtype": "image",
-      "legend": "Please upload an image file"
+      "label": "Please upload an image file"
     },
     "otherEvidenceDescription": {
       "inputtype": "textarea",
