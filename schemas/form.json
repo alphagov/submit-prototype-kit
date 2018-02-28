@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "uk.gov.gaap.submit.editor.form",
+  "type": "object",
+  "properties": {
+    "name": { "type": "string" },
+    "heading": { "type": "string" },
+    "phase": {
+      "type": "string",
+      "enum": ["alpha", "beta", "live"]
+    },
+    "organisations": {
+      "type": "array",
+      "items": { "$ref": "file:schemas/organisations.json" },
+      "minItems": 0
+    },
+    "pages": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "anyOf": [
+            { "$ref": "file:schemas/pages/start-page.json" },
+            { "$ref": "file:schemas/pages/question.json" },
+            { "$ref": "file:schemas/pages/check-your-answers.json" },
+            { "$ref": "file:schemas/pages/bounce.json" },
+            { "$ref": "file:schemas/pages/application-complete.json"}
+          ]
+        }
+      }
+    },
+    "fields": {
+      "type": "object",
+      "patternProperties": {
+        "^.+$": {
+          "anyOf": [
+            { "$ref": "file:schemas/fields/checkboxes.json" },
+            { "$ref": "file:schemas/fields/fieldset.json" },
+            { "$ref": "file:schemas/fields/image.json" },
+            { "$ref": "file:schemas/fields/list.json" },
+            { "$ref": "file:schemas/fields/radio.json" },
+            { "$ref": "file:schemas/fields/text.json" },
+            { "$ref": "file:schemas/fields/textarea.json" }
+          ]
+        }
+      }
+    }
+  },
+  "required": ["name", "heading", "phase", "organisations", "pages", "fields"]
+}

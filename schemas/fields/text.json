@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "uk.gov.gaap.submit.editor.fields.text",
+  "type": "object",
+  "properties": {
+    "inputtype": {
+      "type": "string",
+      "enum": ["text"]
+    },
+    "label": { "type": "string" },
+    "hint": { "type": "string" },
+    "datatype": {
+      "type": "string",
+      "enum": ["date", "text"]
+    },
+    "description": {
+      "type": "string"
+    }
+  },
+  "required": ["inputtype", "label"]
+}

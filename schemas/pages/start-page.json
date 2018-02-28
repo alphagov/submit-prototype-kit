@@ -1,0 +1,37 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "uk.gov.gaap.submit.editor.page.start-page",
+  "type": "object",
+  "properties": {
+    "pagetype": {
+      "type": "string",
+      "enum": ["start-page"]
+    },
+    "heading": {
+      "type": "string"
+    },
+    "guidance": {
+      "type": "string"
+    },
+    "detail": {
+      "type": "string"
+    },
+    "next": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "page": { "type": "string" },
+              "if": { "type": "string" }
+            },
+            "required": ["page"]
+          }
+        }
+      ]
+    }
+  },
+  "required": ["pagetype", "heading", "guidance", "next"]
+}
