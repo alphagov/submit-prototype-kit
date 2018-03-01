@@ -113,7 +113,7 @@
 {% endmacro %}
 
 
-{%- macro field( field, page ) -%}
+{%- macro field( field, page, errors ) -%}
 
 {%- if field.inputtype == 'text' -%}
 
@@ -125,7 +125,8 @@
   {% endif %}
     "id": {{ text_param(field.field) }},
     "name": {{ text_param(field.field) }},
-    "hintHtml": {{ markdown_param(field.hint) }}
+    "hintHtml": {{ markdown_param(field.hint) }},
+    "errorMessage": errors["{{ field.field }}"]
 {{ frontend_endmacro() }}
 
 {%- elif field.inputtype == 'radio' or field.inputtype == 'checkboxes' -%}

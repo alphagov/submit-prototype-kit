@@ -54,10 +54,17 @@
   },
   "fields": {
     "name": {
-      "inputtype": "text"
+      "inputtype": "text",
+      "validations": [
+        "required",
+        "minLength10"
+      ]
     },
     "email": {
-      "inputtype": "text"
+      "inputtype": "text",
+      "validations": [
+        "required"
+      ]
     },
     "adult": {
       "field": "adult",

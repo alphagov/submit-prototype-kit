@@ -22,7 +22,7 @@
           {% endfor %}
 
           {% for fieldname in page.fields -%}
-            {{ submit.field(form.fields[fieldname], page)  }}
+            {{ submit.field(form.fields[fieldname], page, errors)  }}
           {% endfor %}
 
           {{ submit.details(page.details) }}

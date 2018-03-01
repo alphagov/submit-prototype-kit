@@ -37,7 +37,8 @@
 <div class="form-group">
   {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label.text }}</label>{% endif %}
   {% if params.hintHtml %}<span class="form-hint">{{ params.hintHtml | safe }}</span>{% endif %}
-  <input type="text" class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}" value="{{ params.value }}">
+  {% if params.errorMessage %}<span class="error-message">{{ params.errorMessage | safe }}</span>{% endif %}
+  <input type="text" class="form-control form-control-2-3 {% if params.errorMessage %}form-control-error{% endif %}" id="{{ params.id }}" name="{{ params.name }}" value="{{ params.value }}">
 </div>
 {% endmacro %}
 
