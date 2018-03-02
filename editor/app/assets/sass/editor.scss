@@ -53,6 +53,17 @@
   transition: visibility 0s 1s, opacity 1s linear;
 }
 
+.status-error {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 5s, opacity 5s linear;
+}
+
+.button-group a {
+  display: block;
+  margin-top: 30px;
+}
+
 /* GOVUK Elements overrides */
 
 .column-one-half .form-control-2-3 {

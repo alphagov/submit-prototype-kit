@@ -1,7 +1,7 @@
 (function (window, document) {
   var Editor = document.Editor;
 
-  var postFormData = function (url, data, cb) {
+  var postFormData = function (url, data, onSuccess, onError) {
     var httpRequest = new XMLHttpRequest();
     var qStr = Editor.getDataAsQueryString(data)
     var sendRequest;
@@ -21,7 +21,12 @@
 
     handleResponse = function () {
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        cb(httpRequest.responseText);
+        if (httpRequest.status === 200) {
+          onSuccess(httpRequest.responseText);
+        }
+        if (httpRequest.status === 400) {
+          onError(httpRequest.responseText);
+        }
         complete = true;
       }
     };

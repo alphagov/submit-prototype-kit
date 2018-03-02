@@ -8,10 +8,14 @@
 
 			return this;
 		},
-		hide: function () {
+		hide: function (error) {
 			var classes = this.elm.className.split(' ');
 			
-			classes.push('status-hidden');
+      if (error) {
+        classes.push('status-error');
+      } else {
+        classes.push('status-hidden');
+      }
 			this.elm.className = classes.join(' ');
 
 			return this;
