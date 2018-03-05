@@ -70,6 +70,7 @@ SRC_EDITOR_JS=\
 	$(EDITOR_JS_DIR)/editor/utils.js\
 	$(EDITOR_JS_DIR)/editor/status.js\
 	$(EDITOR_JS_DIR)/editor/iframe-controller.js\
+	$(EDITOR_JS_DIR)/editor/create.js\
 	$(EDITOR_JS_DIR)/editor/onready.js
 
 HEROKU_APP_NAME=submit-prototype-kit

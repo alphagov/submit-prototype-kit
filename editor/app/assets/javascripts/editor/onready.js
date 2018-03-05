@@ -14,6 +14,10 @@
     var data = Editor.getFormData(form);
     var url = window.location.href;
 
+    var redirect = function (url) {
+      window.location = url;
+    };
+
     var onError = function (response) {
       var response = JSON.parse(response);
       console.log("Error: '" + response.error + "'");
@@ -31,7 +35,7 @@
         .hide();
     };
 
-    Editor.postFormData(url, data, onSuccess, onError)
+    Editor.postFormData(url, data, onSuccess, onError, redirect)
     Editor.status
       .show()
       .set(startMessage);

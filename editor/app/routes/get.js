@@ -31,6 +31,14 @@ const gets = {
 			res.redirect(`/forms/${formname}`);
 		});
 
+		router.get('/forms/:formname/pages/create', function (req, res) {
+      let form = formsData.getForm(req.params.formname);
+
+			res.render('create-page', {
+        'form': form
+			})
+		});
+
 		router.get('/forms/:formname/pages/:pagename', function (req, res) {
       let form = formsData.getForm(req.params.formname);
       let page = form.page(req.params.pagename);

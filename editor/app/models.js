@@ -298,7 +298,7 @@ class Page extends FormComponent {
 
 
 class Organisation extends FormComponent {
-  get name() { return this._data.name; }
+  get name() { return this._data.page; }
 
   get organisation() { return this._data.organisation; }
 
@@ -395,6 +395,55 @@ class Form {
       if (this.hasOwnProperty(prop)) { this[prop] = newData[prop]; }
     }
   } 
+
+  addPage(data) {
+    let pageData = {};
+    let result = {};
+    let page;
+
+    if (!data.heading) { // empty string or undefined coerced to false
+      result.status = 'error';
+      result.error = {
+        message: "Page needs a heading"
+      };
+      return result;
+    }
+
+    if (data.page in this._data.pages) {
+      result.status = 'error';
+      result.error = {
+        message: `${data.page} already taken, please choose another`
+      };
+      return result;
+    }
+
+    Object.assign(pageData, data);
+
+    // remove name prop from data entry
+    delete pageData.page;
+
+    if ((data.pagetype !== 'application-complete') && (data.pagetype !== 'bounce')) {
+      pageData.next = "";
+    }
+
+    if (data.pagetype === 'question') {
+      pageData.fields = [];
+    }
+
+    // add page entry to data
+    this._data.pages[data.page] = pageData;
+
+    // create a new model for the page
+    page = new Page(this._data.pages[data.page], this);
+
+    page.page = data.page;
+    this._pages[data.page] = page;
+
+    result.page = data.page;
+    result.status = "success";
+
+    return result;
+  }
 }
 
 

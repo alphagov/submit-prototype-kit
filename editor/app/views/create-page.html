@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
+{% import "macros/fields.ntk" as fields with context %}
+
+{% block page_title %}
+  Create page - Forms editor
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-one-half" id="editor-wrapper">
+    {{ frontend.govukBackLink({
+      "href": "/forms/" + form.name,
+      "text": "Back to pages in this form"
+    }) }}
+
+      <form action="/forms/{{ form.name }}/pages/create" method="post" id="form">
+        <h1 class="heading-xlarge">
+          Create new page
+        </h1>
+          <div id="specific-fields">
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page heading"
+            },
+            "name": "heading",
+            "id": "heading",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page name (used in URLs)"
+            },
+            "name": "page",
+            "id": "page",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukTextarea({
+            "label": {
+              "text": "Page guidance"
+            },
+            "name": "guidance",
+            "id": "guidance",
+            "value": ""
+          }) }}
+          </div>
+
+          {{ frontend.govukSelectboxes({
+            "label": "Page template",
+            "name": "pagetype",
+            "id": "pagetype",
+            "items": [
+              {
+                "text": "Start page",
+                "value": "start-page"
+              },
+              {
+                "text": "Question page",
+                "value": "question"
+              },
+              {
+                "text": "Check your answers page",
+                "value": "check-your-answers"
+              },
+              {
+                "text": "Application complete page",
+                "value": "application-complete"
+              },
+              {
+                "text": "Bounce page",
+                "value": "bounce"
+              }
+            ]
+          }) }}
+
+        <div class="button-group">
+          {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+          <a href="/forms/{{ form.name }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+    <div class="column-one-half">
+      <div id="prototype-wrapper" class="prototype-wrapper">
+        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px"></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+

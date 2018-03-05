@@ -4,12 +4,17 @@
 (function (window, document) {
   var Editor = document.Editor;
 
-  var postFormData = function (url, data, cb) {
+  var postFormData = function (url, data, onSuccess, onError) {
     var httpRequest = new XMLHttpRequest();
     var qStr = Editor.getDataAsQueryString(data)
     var sendRequest;
     var handleResponse;
+    var redirect;
 
+
+    redirect = function (url) {
+      window.location = url;
+    };
 
     sendRequest = function () {
       // configure request
@@ -23,8 +28,20 @@
     };
 
     handleResponse = function () {
+      var newPageURL = url.replace(/create$/, data.page);
+
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        cb(httpRequest.responseText);
+        if (httpRequest.status === 200) {
+          // create page POSTs return a redirect which the browser turns into a GET for the new HTML page so redirect to it
+          if (httpRequest.getResponseHeader('content-type').split('; ')[0] === 'text/html') {
+            redirect(newPageURL);
+          } else {
+            onSuccess(httpRequest.responseText);
+          }
+        }
+        if (httpRequest.status === 400) {
+          onError(httpRequest.responseText);
+        }
         complete = true;
       }
     };
@@ -59,6 +76,14 @@
       if (fieldValue) {
         values[fields[idx].name] = fieldValue;
       }
+      else { // field value is empty
+
+        // if page name is empty, use suggested value in placeholder
+        var placeholder = fields[idx].getAttribute('placeholder');
+        if ((fields[idx].name === 'page') && placeholder) {
+          values[fields[idx].name] = placeholder;
+        }
+      }
     }
 
     return values;
@@ -89,10 +114,14 @@
 
 			return this;
 		},
-		hide: function () {
+		hide: function (error) {
 			var classes = this.elm.className.split(' ');
 			
-			classes.push('status-hidden');
+      if (error) {
+        classes.push('status-error');
+      } else {
+        classes.push('status-hidden');
+      }
 			this.elm.className = classes.join(' ');
 
 			return this;
@@ -144,6 +173,19 @@
 
   Editor.iFrameController = iFrameController;
 })(window, document);
+(function (window, document) {
+  var form = document.getElementById('form');
+  var heading = document.getElementById('heading');
+  var pageName = document.getElementById('page');
+
+  if (heading && pageName) {
+    heading.addEventListener('keyup', function (evt) {
+      if ((heading.value !== '') && (pageName.value === '')) {
+        pageName.setAttribute('placeholder', heading.value.toLowerCase().replace(/\s/g, '-'));
+      }
+    }, false);
+  }
+})(window, document);
 (function(document, window) {
   var editorOrigin = window.location.origin
   var prototypeOrigin = editorOrigin.replace(/:\d+$/, ':3000');
@@ -156,22 +198,35 @@
     iframe.src = iframe.src;
   };
 
-  var sendUpdates = function (form, cb) {
+  var sendFormData = function (form, startMessage, cb) {
     var data = Editor.getFormData(form);
     var url = window.location.href;
 
-    var onResponse = function (message) {
-      console.log(message);
-      cb();
+    var redirect = function (url) {
+      window.location = url;
+    };
+
+    var onError = function (response) {
+      var response = JSON.parse(response);
+      console.log("Error: '" + response.error + "'");
       Editor.status
-        .set('Done')
+        .set(response.error)
+        .hide(true);
+    };
+
+    var onSuccess = function(response) {
+      var response = JSON.parse(response);
+      console.log(response);
+      cb(response);
+      Editor.status
+        .set(response.message)
         .hide();
     };
 
-    Editor.postFormData(url, data, onResponse)
+    Editor.postFormData(url, data, onSuccess, onError, redirect)
     Editor.status
       .show()
-      .set('Updating JSON');
+      .set(startMessage);
   };
 
   Editor.status.init();
@@ -186,7 +241,7 @@
       form.addEventListener('submit', function (evt) {
         evt.stopPropagation();
         evt.preventDefault();
-        sendUpdates(this, reloadIframe);
+        sendFormData(this, 'Updating JSON', reloadIframe);
       }, false);
     }
 
