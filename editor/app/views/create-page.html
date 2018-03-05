@@ -49,6 +49,7 @@
           }) }}
           </div>
 
+          <div id="page-selector" class="page-selector">
           {{ frontend.govukSelectboxes({
             "label": "Page template",
             "name": "pagetype",
@@ -76,9 +77,11 @@
               }
             ]
           }) }}
+          <button class="button button-secondary" type="submit">Update</button>
+          </div>
 
         <div class="button-group">
-          {{ frontend.govukButton({ "text": "Update", "classes": [] }) }}
+          {{ frontend.govukButton({ "text": "Create", "classes": [] }) }}
           <a href="/forms/{{ form.name }}">Cancel</a>
         </div>
       </form>
@@ -94,5 +97,7 @@
 {% endblock %}
 
 {% block page_scripts %}
+<script type="text/javascript" src="/public/javascripts/nunjucks.js"></script>
+<script type="text/javascript" src="/public/javascripts/templates.js"></script>
 <script type="text/javascript" src="/public/javascripts/editor/create.js"></script>
 {% endblock %}

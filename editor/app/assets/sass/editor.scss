@@ -1,4 +1,9 @@
 @import "_conditionals";
+@import "design-patterns/_buttons";
+
+.button-secondary{
+  @include button($grey-3);
+}
 
 #global-header .header-wrapper,
 #global-header-bar,
@@ -57,6 +62,24 @@
   visibility: hidden;
   opacity: 0;
   transition: visibility 0s 5s, opacity 5s linear;
+}
+
+.page-selector {
+  margin-bottom: 30px;
+}
+
+.page-selector .form-group {
+  margin-bottom: 0;
+  display: inline-block;
+}
+
+.page-selector .form-control {
+  width: 100%;
+}
+
+.page-selector .button {
+  display: inline-block;
+  margin: 1.25em 0 0 1em;
 }
 
 .button-group a {
