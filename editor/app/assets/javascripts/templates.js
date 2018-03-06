@@ -63,11 +63,22 @@ var govukCheckboxes =
 </fieldset>
 </div>`;
 
+var govukSelectboxes =
+`<div class="form-group">
+  <label class="form-label" for="{{ params.name }}">{{ params.label }}</label>
+  <select class="form-control" id="{{ params.id }}" name="{{ params.name }}">
+{% for item in params.items %}
+    <option value={{ item.value }}>{{ item.text }}</option>
+{% endfor %}
+  </select>
+</div>`;
+
 document.Editor.templates = {
 	'govukInput': govukInput,
   'govukTextarea': govukTextarea,
 	'govukRadios': govukRadios,
-	'govukCheckboxes': govukCheckboxes
+	'govukCheckboxes': govukCheckboxes,
+  'govukSelectboxes': govukSelectboxes
 };
 
 })(window, document);

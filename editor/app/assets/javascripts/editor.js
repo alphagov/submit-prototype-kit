@@ -28,7 +28,7 @@
     };
 
     handleResponse = function () {
-      var newPageURL = url.replace(/create$/, data.page);
+      var newPageURL = url.replace(/create$/, data.name);
 
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
         if (httpRequest.status === 200) {
@@ -80,7 +80,7 @@
 
         // if page name is empty, use suggested value in placeholder
         var placeholder = fields[idx].getAttribute('placeholder');
-        if ((fields[idx].name === 'page') && placeholder) {
+        if ((fields[idx].name === 'name') && placeholder) {
           values[fields[idx].name] = placeholder;
         }
       }

@@ -1,8 +1,45 @@
 (function (window, document) {
-  var heading = document.getElementById('heading');
-  var pageName = document.getElementById('page');
-  var fields = document.getElementById('specific-fields');
-  var pageSelector = document.getElementById('page-selector');
+  var specificFields = document.getElementById('specific-fields');
+
+  var FieldSelector = function (fields) {
+    var items = this.transformFields(fields);
+    this.template = document.Editor.templates['govukSelectboxes'];
+    this.data = {
+      'params': {
+        'items': items
+      }
+    };
+    this.counter = 0;
+  };
+  FieldSelector.prototype.render = function () {
+    var name = 'fields[' + this.counter + ']';
+
+    this.data.params.label = 'Field';
+    this.data.params.name = name;
+    this.data.params.id = name;
+    this.counter++;
+
+    return nunjucks.renderString(this.template, this.data);
+  };
+  FieldSelector.prototype.transformFields = function (fields) {
+    var order = ['radio', 'checkboxes', 'text', 'textarea', 'image', 'list', 'fieldset'];
+    var result = fields.map(field => {
+      return {
+        'text': field.inputtype + ' | ' + field.name,
+        'value': field.name
+      };
+    });
+
+    result.sort((a, b) => {
+      var indexA = order.indexOf(a.text.split(' | ')[0]);
+      var indexB = order.indexOf(b.text.split(' | ')[0]);
+
+      if (indexA < indexB) { return -1; }
+      else if (indexA > indexB) { return 1; }
+      else { return 0; }
+    });
+    return result;
+  };
 
   var updateFields = function () {
     var pageType = document.getElementById('pagetype').value;
@@ -32,8 +69,9 @@
       'bounce': ['heading', 'name', 'guidance']
     };
     var fieldsForPage = pageFields[pageType];
+    var fieldSelector = new FieldSelector(document.Editor.availableFields);
 
-    fields.innerHTML = '';
+    specificFields.innerHTML = '';
 
     fieldsForPage.forEach(field => {
       var template = document.Editor.templates[fieldProps[field].template];
@@ -46,20 +84,27 @@
       };
       var result = nunjucks.renderString(template, data);
 
-      fields.innerHTML += result;
+      specificFields.innerHTML += result;
     });
+
+    if (pageType === 'question') {
+      specificFields.innerHTML += fieldSelector.render();
+    }
   };
 
   // Make page name placeholder from heading field
-  if (heading && pageName) {
-    heading.addEventListener('keyup', function (evt) {
+  specificFields.addEventListener('keyup', function (evt) {
+    if (evt.srcElement.id === 'heading') {
+      var heading = evt.srcElement;
+      var pageName = document.getElementById('name');
+
       if ((heading.value !== '') && (pageName.value === '')) {
         pageName.setAttribute('placeholder', heading.value.toLowerCase().replace(/\s/g, '-'));
       }
-    }, false);
-  }
+    }
+  }, false);
 
-  pageSelector.querySelectorAll('button')[0].addEventListener('click', function (evt) {
+  document.querySelectorAll('.page-type-update')[0].addEventListener('click', function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
 

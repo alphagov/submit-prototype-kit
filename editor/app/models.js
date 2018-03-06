@@ -154,6 +154,8 @@ class Fieldset {
 
   get fields() { return this._fields || []; }
 
+  get type() { return 'fieldset'; }
+
   // Read/write properties
 
   get legend() { return this._data.legend || undefined; }
@@ -411,10 +413,14 @@ class Form {
       return result;
     }
 
-    if (data.page in this._data.pages) {
+    if (!data.name) { // empty string or undefined coerced to false
+      data.name = data.heading.toLowerCase().replace(/\s/g, '-');
+    }
+
+    if (data.name in this._data.pages) {
       result.status = 'error';
       result.error = {
-        message: `${data.page} already taken, please choose another`
+        message: `${data.name} already taken, please choose another`
       };
       return result;
     }
@@ -422,26 +428,23 @@ class Form {
     Object.assign(pageData, data);
 
     // remove name prop from data entry
-    delete pageData.page;
+    delete pageData.name;
 
-    if ((data.pagetype !== 'application-complete') && (data.pagetype !== 'bounce')) {
+    if ((data.nametype !== 'application-complete') && (data.nametype !== 'bounce')) {
       pageData.next = "";
     }
 
-    if (data.pagetype === 'question') {
-      pageData.fields = [];
-    }
-
     // add page entry to data
-    this._data.pages[data.page] = pageData;
+    this._data.pages[data.name] = pageData;
 
     // create a new model for the page
-    page = new Page(this._data.pages[data.page], this);
+    page = new Page(this._data.pages[data.name], this);
 
-    page.page = data.page;
-    this._pages[data.page] = page;
+    page.page = data.name;
+    this._pages[data.name] = page;
 
-    result.page = data.page;
+    // return the new page name with some meta about this action
+    result.page = page.page;
     result.status = "success";
 
     return result;

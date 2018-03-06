@@ -1,6 +1,23 @@
 var formsData = require('../../lib/forms_data.js')
 
 
+var processArrayParams = function (data, keyPrefix) {
+  var arrayForKey = [];
+  var regExp = new RegExp(`^${keyPrefix}\\[(\\d+)\\]`);
+
+  for (let param in data) {
+    let match = param.match(regExp);
+
+    if (match) {
+      arrayForKey[match[1]] = data[param];
+      delete data[match[0]];
+    }
+  }
+
+  data[keyPrefix] = arrayForKey;
+};
+
+
 const posts = {
 
 	bind: function (router) {
@@ -66,10 +83,9 @@ const posts = {
         }
       };
 
-      // if not XHR request, generate the page name normally done by the client-side JS
-      if (req.get('Accept') !== 'application/json') {
-        req.body.page = req.body.heading.toLowerCase().replace(/\s/g, '-');
-      }
+      // merge fields params into a single array param
+      processArrayParams(req.body, 'fields');
+      
       let result = form.addPage(req.body);
       page = form.page(result.page);
 
