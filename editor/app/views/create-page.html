@@ -99,5 +99,18 @@
 {% block page_scripts %}
 <script type="text/javascript" src="/public/javascripts/nunjucks.js"></script>
 <script type="text/javascript" src="/public/javascripts/templates.js"></script>
+
+<script type="text/javascript">
+  (function (window, document) {
+    document.Editor.availableFields = [
+    {% for name, field in form.fields %}
+      {
+        'name': '{{ name }}',
+        'inputtype': '{{ field.type }}'
+      }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+  })(window, document);
+</script>
 <script type="text/javascript" src="/public/javascripts/editor/create.js"></script>
 {% endblock %}

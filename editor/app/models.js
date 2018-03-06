@@ -104,6 +104,8 @@ class Field {
 
   // Read-only properties
 
+  get type() { return this._data.inputtype || undefined; }
+
   get items() { return this._items || []; }
 
   get id() {
