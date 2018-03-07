@@ -11,7 +11,7 @@
     },
     "organisations": {
       "type": "array",
-      "items": { "$ref": "#organisations" },
+      "items": { "$ref": "#/definitions/organisations" },
       "minItems": 0
     },
     "pages": {
@@ -19,11 +19,11 @@
       "patternProperties": {
         "^.+$": {
           "anyOf": [
-            { "$ref": "#pages/start-page" },
-            { "$ref": "#pages/question" },
-            { "$ref": "#pages/check-your-answers" },
-            { "$ref": "#pages/bounce" },
-            { "$ref": "#pages/application-complete"}
+            { "$ref": "#/definitions/pages/start-page" },
+            { "$ref": "#/definitions/pages/question" },
+            { "$ref": "#/definitions/pages/check-your-answers" },
+            { "$ref": "#/definitions/pages/bounce" },
+            { "$ref": "#/definitions/pages/application-complete"}
           ]
         }
       }
@@ -33,13 +33,13 @@
       "patternProperties": {
         "^.+$": {
           "anyOf": [
-            { "$ref": "#fields/checkboxes" },
-            { "$ref": "#fields/fieldset" },
-            { "$ref": "#fields/image" },
-            { "$ref": "#fields/list" },
-            { "$ref": "#fields/radio" },
-            { "$ref": "#fields/text" },
-            { "$ref": "#fields/textarea" }
+            { "$ref": "#/definitions/fields/checkboxes" },
+            { "$ref": "#/definitions/fields/fieldset" },
+            { "$ref": "#/definitions/fields/image" },
+            { "$ref": "#/definitions/fields/list" },
+            { "$ref": "#/definitions/fields/radio" },
+            { "$ref": "#/definitions/fields/text" },
+            { "$ref": "#/definitions/fields/textarea" }
           ]
         }
       }
@@ -91,242 +91,242 @@
           }
         },
         "required": ["pagetype", "heading", "guidance", "next"]
+      },
+      "question": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["question"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "fieldrefs": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "next": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "string" },
+                    "if": { "type": "string" }
+                  },
+                  "required": ["page"]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["pagetype", "heading", "fields", "next"]
+      },
+      "bounce": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["bounce"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          }
+        },
+        "required": ["pagetype", "heading", "guidance"]
+      },
+      "check-your-answers": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["check-your-answers"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "next": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "string" },
+                    "if": { "type": "string" }
+                  },
+                  "required": ["page"]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["pagetype", "heading", "next"]
+      },
+      "application-complete": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["application-complete"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": ["pagetype", "heading", "guidance", "detail"]
       }
     },
-    "question": {
-      "type": "object",
-      "properties": {
-        "pagetype": {
-          "type": "string",
-          "enum": ["question"]
-        },
-        "heading": {
-          "type": "string"
-        },
-        "guidance": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        },
-        "fields": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "fieldrefs": {
-          "type": "array",
-          "items": { "type": "string" }
-        },
-        "next": {
-          "oneOf": [
-            { "type": "string" },
-            {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "page": { "type": "string" },
-                  "if": { "type": "string" }
-                },
-                "required": ["page"]
-              }
-            }
-          ]
-        }
-      },
-      "required": ["pagetype", "heading", "fields", "next"]
-    },
-    "bounce": {
-      "type": "object",
-      "properties": {
-        "pagetype": {
-          "type": "string",
-          "enum": ["bounce"]
-        },
-        "heading": {
-          "type": "string"
-        },
-        "guidance": {
-          "type": "string"
-        }
-      },
-      "required": ["pagetype", "heading", "guidance"]
-    },
-    "check-your-answers": {
-      "type": "object",
-      "properties": {
-        "pagetype": {
-          "type": "string",
-          "enum": ["check-your-answers"]
-        },
-        "heading": {
-          "type": "string"
-        },
-        "next": {
-          "oneOf": [
-            { "type": "string" },
-            {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "page": { "type": "string" },
-                  "if": { "type": "string" }
-                },
-                "required": ["page"]
-              }
-            }
-          ]
-        }
-      },
-      "required": ["pagetype", "heading", "next"]
-    },
-    "application-complete": {
-      "type": "object",
-      "properties": {
-        "pagetype": {
-          "type": "string",
-          "enum": ["application-complete"]
-        },
-        "heading": {
-          "type": "string"
-        },
-        "guidance": {
-          "type": "string"
-        },
-        "detail": {
-          "type": "string"
-        }
-      },
-      "required": ["pagetype", "heading", "guidance", "detail"]
-    }
-  },
-  "fields": {
-    "checkboxes": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["checkboxes"]
-        },
-        "items": {
-          "type": "array",
+    "fields": {
+      "checkboxes": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["checkboxes"]
+          },
           "items": {
-            "properties": {
-              "label": { "type": "string" },
-              "value": { "type": "string" },
-              "hint": { "type": "string" },
-              "fieldref": { "type": "string" }
-            },
-            "required": ["label", "value"]
+            "type": "array",
+            "items": {
+              "properties": {
+                "label": { "type": "string" },
+                "value": { "type": "string" },
+                "hint": { "type": "string" },
+                "fieldref": { "type": "string" }
+              },
+              "required": ["label", "value"]
+            }
+          },
+          "legend": { "type": "string" },
+          "hint": { "type": "string" }
+        },
+        "required": ["inputtype", "items"]
+      },
+      "fieldset": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["fieldset"]
+          },
+          "legend": { "type": "string" },
+          "fields": {
+            "type": "array",
+            "items": { "type": "string" }
           }
         },
-        "legend": { "type": "string" },
-        "hint": { "type": "string" }
+        "required": ["inputtype", "legend", "fields"]
       },
-      "required": ["inputtype", "items"]
-    },
-    "fieldset": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["fieldset"]
+      "image": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["image"]
+          },
+          "label": { "type": "string" }
         },
-        "legend": { "type": "string" },
-        "fields": {
-          "type": "array",
-          "items": { "type": "string" }
-        }
+        "required": ["inputtype", "label"]
       },
-      "required": ["inputtype", "legend", "fields"]
-    },
-    "image": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["image"]
-        },
-        "label": { "type": "string" }
-      },
-      "required": ["inputtype", "label"]
-    },
-    "list": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["list"]
-        },
-        "label": { "type": "string" },
-        "description": {
-          "type": "string"
-        },
-        "field": { "type": "string" },
-        "min-length": {
-          "type": "integer",
-          "minimum": 0
-        },
-        "max-length": {
-          "type": "integer",
-          "minimum": 0
-        }
-      },
-      "required": ["inputtype", "label", "description", "field", "min-length", "max-length"]
-    },
-    "radio": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["radio"]
-        },
-        "items": {
-          "type": "array",
-          "items": {
-            "properties": {
-              "label": { "type": "string" },
-              "value": { "type": "string" },
-              "fieldref": { "type": "string" }
-            },
-            "required": ["label", "value"]
+      "list": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "label": { "type": "string" },
+          "description": {
+            "type": "string"
+          },
+          "field": { "type": "string" },
+          "min-length": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max-length": {
+            "type": "integer",
+            "minimum": 0
           }
         },
-        "legend": { "type": "string" },
-        "hint": { "type": "string" }
+        "required": ["inputtype", "label", "description", "field", "min-length", "max-length"]
       },
-      "required": ["inputtype", "items"]
-    },
-    "text": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["text"]
+      "radio": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["radio"]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "label": { "type": "string" },
+                "value": { "type": "string" },
+                "fieldref": { "type": "string" }
+              },
+              "required": ["label", "value"]
+            }
+          },
+          "legend": { "type": "string" },
+          "hint": { "type": "string" }
         },
-        "label": { "type": "string" },
-        "hint": { "type": "string" },
-        "datatype": {
-          "type": "string",
-          "enum": ["date", "text"]
-        },
-        "description": {
-          "type": "string"
-        }
+        "required": ["inputtype", "items"]
       },
-      "required": ["inputtype", "label"]
-    },
-    "textarea": {
-      "type": "object",
-      "properties": {
-        "inputtype": {
-          "type": "string",
-          "enum": ["textarea"]
+      "text": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["text"]
+          },
+          "label": { "type": "string" },
+          "hint": { "type": "string" },
+          "datatype": {
+            "type": "string",
+            "enum": ["date", "text"]
+          },
+          "description": {
+            "type": "string"
+          }
         },
-        "label": { "type": "string" }
+        "required": ["inputtype", "label"]
       },
-      "required": ["inputtype", "label"]
+      "textarea": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["textarea"]
+          },
+          "label": { "type": "string" }
+        },
+        "required": ["inputtype", "label"]
+      }
     }
   }
 }
