@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "id": "uk.gov.gaap.submit.editor.form",
+  "id": "https://raw.githubusercontent.com/alphagov/submit-prototype-kit/master/schemas/form.json",
   "type": "object",
   "properties": {
     "name": { "type": "string" },
@@ -11,7 +11,7 @@
     },
     "organisations": {
       "type": "array",
-      "items": { "$ref": "file:schemas/organisations.json" },
+      "items": { "$ref": "#/definitions/organisations" },
       "minItems": 0
     },
     "pages": {
@@ -19,11 +19,11 @@
       "patternProperties": {
         "^.+$": {
           "anyOf": [
-            { "$ref": "file:schemas/pages/start-page.json" },
-            { "$ref": "file:schemas/pages/question.json" },
-            { "$ref": "file:schemas/pages/check-your-answers.json" },
-            { "$ref": "file:schemas/pages/bounce.json" },
-            { "$ref": "file:schemas/pages/application-complete.json"}
+            { "$ref": "#/definitions/pages/start-page" },
+            { "$ref": "#/definitions/pages/question" },
+            { "$ref": "#/definitions/pages/check-your-answers" },
+            { "$ref": "#/definitions/pages/bounce" },
+            { "$ref": "#/definitions/pages/application-complete"}
           ]
         }
       }
@@ -33,17 +33,300 @@
       "patternProperties": {
         "^.+$": {
           "anyOf": [
-            { "$ref": "file:schemas/fields/checkboxes.json" },
-            { "$ref": "file:schemas/fields/fieldset.json" },
-            { "$ref": "file:schemas/fields/image.json" },
-            { "$ref": "file:schemas/fields/list.json" },
-            { "$ref": "file:schemas/fields/radio.json" },
-            { "$ref": "file:schemas/fields/text.json" },
-            { "$ref": "file:schemas/fields/textarea.json" }
+            { "$ref": "#/definitions/fields/checkboxes" },
+            { "$ref": "#/definitions/fields/fieldset" },
+            { "$ref": "#/definitions/fields/image" },
+            { "$ref": "#/definitions/fields/list" },
+            { "$ref": "#/definitions/fields/radio" },
+            { "$ref": "#/definitions/fields/text" },
+            { "$ref": "#/definitions/fields/textarea" }
           ]
         }
       }
     }
   },
-  "required": ["name", "heading", "phase", "organisations", "pages", "fields"]
+  "required": ["name", "heading", "phase", "organisations", "pages", "fields"],
+  "definitions": {
+    "organisations": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "organisation": { "type": "string" },
+        "website": { "type": "string" }
+      },
+      "required": ["name", "organisation", "website"]
+    },
+    "pages": {
+      "start-page": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["start-page"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "next": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "string" },
+                    "if": { "type": "string" }
+                  },
+                  "required": ["page"]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["pagetype", "heading", "guidance", "next"]
+      },
+      "question": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["question"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "fieldrefs": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "next": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "string" },
+                    "if": { "type": "string" }
+                  },
+                  "required": ["page"]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["pagetype", "heading", "fields", "next"]
+      },
+      "bounce": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["bounce"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          }
+        },
+        "required": ["pagetype", "heading", "guidance"]
+      },
+      "check-your-answers": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["check-your-answers"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "next": {
+            "oneOf": [
+              { "type": "string" },
+              {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "page": { "type": "string" },
+                    "if": { "type": "string" }
+                  },
+                  "required": ["page"]
+                }
+              }
+            ]
+          }
+        },
+        "required": ["pagetype", "heading", "next"]
+      },
+      "application-complete": {
+        "type": "object",
+        "properties": {
+          "pagetype": {
+            "type": "string",
+            "enum": ["application-complete"]
+          },
+          "heading": {
+            "type": "string"
+          },
+          "guidance": {
+            "type": "string"
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "required": ["pagetype", "heading", "guidance", "detail"]
+      }
+    },
+    "fields": {
+      "checkboxes": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["checkboxes"]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "label": { "type": "string" },
+                "value": { "type": "string" },
+                "hint": { "type": "string" },
+                "fieldref": { "type": "string" }
+              },
+              "required": ["label", "value"]
+            }
+          },
+          "legend": { "type": "string" },
+          "hint": { "type": "string" }
+        },
+        "required": ["inputtype", "items"]
+      },
+      "fieldset": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["fieldset"]
+          },
+          "legend": { "type": "string" },
+          "fields": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["inputtype", "legend", "fields"]
+      },
+      "image": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["image"]
+          },
+          "label": { "type": "string" }
+        },
+        "required": ["inputtype", "label"]
+      },
+      "list": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["list"]
+          },
+          "label": { "type": "string" },
+          "description": {
+            "type": "string"
+          },
+          "field": { "type": "string" },
+          "min-length": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "max-length": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": ["inputtype", "label", "description", "field", "min-length", "max-length"]
+      },
+      "radio": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["radio"]
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "label": { "type": "string" },
+                "value": { "type": "string" },
+                "fieldref": { "type": "string" }
+              },
+              "required": ["label", "value"]
+            }
+          },
+          "legend": { "type": "string" },
+          "hint": { "type": "string" }
+        },
+        "required": ["inputtype", "items"]
+      },
+      "text": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["text"]
+          },
+          "label": { "type": "string" },
+          "hint": { "type": "string" },
+          "datatype": {
+            "type": "string",
+            "enum": ["date", "text"]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "required": ["inputtype", "label"]
+      },
+      "textarea": {
+        "type": "object",
+        "properties": {
+          "inputtype": {
+            "type": "string",
+            "enum": ["textarea"]
+          },
+          "label": { "type": "string" }
+        },
+        "required": ["inputtype", "label"]
+      }
+    }
+  }
 }
