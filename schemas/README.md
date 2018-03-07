@@ -13,9 +13,9 @@ A Form contains Fields, Pages and its own attributes.
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -88,9 +88,9 @@ The mapping is:
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -122,9 +122,9 @@ Name of the [Government organisations register](https://registers.cloudapps.digi
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -195,9 +195,9 @@ List of items used in multiple-choice fields, for example `yes` and `no` options
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -232,9 +232,9 @@ This field will only be shown if the item above it is selected.</td>
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -289,8 +289,9 @@ String or Array of [Next pages](#nexts)
 </td>
   <td>
 
-A list of `next` objects or the name of the next page. The first next object with a condition which evaluates to true will be linked to.
+If there is only one `next` page then a string should be used.
 
+When there are optional next pages they are evaluated in order, and the first match is linked to.
 </td>
 </tr>
 </table>
@@ -303,9 +304,9 @@ Fields have the following metadata:
 <table>
 <thead>
 <tr>
-  <th>attribute</th>
-  <th>type</th>
-  <th>description</th>
+<th width="15%">attribute</th>
+<th width="30%">type</th>
+<th width="50%">description</th>
 </tr>
 </thead>
 <tr>
@@ -317,11 +318,13 @@ The name of the [page](#pages) to link to</td>
 </tr>
 <tr>
   <td>if</td>
-  <td>String</td>
+  <td>String (optional)</td>
   <td>
 
 The conditions which must be correct before the page is linked to. eg
 `"if": "data['age'] == 16"`
+
+When `if` isn't present then the first page in the array will be linked to.
 </td>
 </tr>
 </table>
