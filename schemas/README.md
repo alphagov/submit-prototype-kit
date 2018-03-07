@@ -2,8 +2,6 @@
 
 A JSON Schema spec, [form.json](form.json) is the base document.
 
-## Commands
-
 ## Data Model
 
 A Form contains Fields, Pages and its own attributes.
