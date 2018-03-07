@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "id": "uk.gov.gaap.submit.editor.form",
+  "id": "https://raw.githubusercontent.com/alphagov/submit-prototype-kit/master/schemas/form.json",
   "type": "object",
   "properties": {
     "name": { "type": "string" },
