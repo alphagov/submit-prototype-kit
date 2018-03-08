@@ -2,8 +2,6 @@
 
 A JSON Schema spec, [form.json](form.json) is the base document.
 
-## Commands
-
 ## Data Model
 
 A Form contains Fields, Pages and its own attributes.
@@ -332,9 +330,10 @@ When `if` isn't present then the first page in the array will be linked to.
 
 ## Todo
 
-* More types of validation, beyond required
+* More validation types, lots can be learnt from [JSON Schema Validation](http://json-schema.org/latest/json-schema-validation.html) and [Digital Marketplace Frameworks](https://github.com/alphagov/digitalmarketplace-frameworks)
 * File upload field
+* Time field
 * Link to page from Markdown
 * Right column content, additional guidance or content.
 * Allow next to be a URL rather than a page to allow users to go directly to another service
-* Variable substitution, repeat answer back to user as part of another question or statement or interpolation on label/variable name
+* Variable substitution, functionality to repeat answer back to user as part of another question or statement
