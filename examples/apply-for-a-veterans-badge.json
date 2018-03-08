@@ -71,7 +71,7 @@
       "pagetype": "question",
       "heading": "Which organisations did the serviceperson serve with?",
       "fields": ["organisations"],
-      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails" ],
       "next": "serviceperson-name-third-party"
     },
 
@@ -126,7 +126,7 @@
       "pagetype": "question",
       "heading": "Which organisations did you serve with?",
       "fields": ["organisations"],
-      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "HomeGuardDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails", "ReserveForcesDetails" ],
+      "fieldrefs": [ "serviceNumber", "startDate", "endDate", "ArmyDetails", "RafDetails", "RoyalNavyDetails", "RoyalMarinesDetails" ],
       "next": "serviceperson-name"
     },
 
