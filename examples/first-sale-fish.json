@@ -339,14 +339,6 @@
       "next": [ { "page": "check-your-answers" } ]
     },
 
-    "blah": {
-      "_id": 0,
-      "pagetype": "question",
-      "heading": "heading",
-      "fields": [ "field1" ],
-      "next": [ { "page": "blah" } ]
-    },
-
     "check-your-answers": {
       "_id": 35,
       "pagetype": "check-your-answers",
@@ -408,8 +400,7 @@
       "inputtype": "textarea"
     },
 
-    "recordsAddress": {
-      "_todo": "Address lookup",
+    "registeredAddress": {
       "label": "Address including postcode",
       "inputtype": "textarea"
     },
@@ -496,7 +487,16 @@
     },
 
     "companyAddress": {
-      "_todo": "Address lookup",
+      "label": "Address including postcode",
+      "inputtype": "textarea"
+    },
+
+    "recordKeepingAddress": {
+      "label": "Address including postcode",
+      "inputtype": "textarea"
+    },
+
+    "contactAddress": {
       "label": "Address including postcode",
       "inputtype": "textarea"
     },
