@@ -1,4 +1,4 @@
-.PHONY:	clean prune prototype build start editor editorstart editorclean editoriframecontroller
+.PHONY: clean prune prototype build start editor editorstart editorclean editoriframecontroller prototypegitinit prototypedeploy
 
 KIT_VERSION=6.3.0
 KIT_NAME=govuk_prototype_kit
@@ -58,8 +58,7 @@ PROTOTYPE=\
 	$(PROTOTYPE_LAYOUT)\
 	$(PROTOTYPE_INDEX)\
 	$(PROTOTYPE_VALIDATOR)\
-	editoriframecontroller\
-	prototypegitinit
+	editoriframecontroller
 
 SRC_EDITOR_IFRAME_CONTROLLER_CLIENT=$(EDITOR_DIR)/lib/iframe-controller-client.js
 EDITOR_IFRAME_CONTROLLER_CLIENT_HTML=$(EDITOR_DIR)/lib/iframe-controller-client-script-tag.html
