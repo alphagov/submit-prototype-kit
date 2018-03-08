@@ -336,4 +336,4 @@ When `if` isn't present then the first page in the array will be linked to.
 * Link to page from Markdown
 * Right column content, additional guidance or content.
 * Allow next to be a URL rather than a page to allow users to go directly to another service
-* Variable substitution, ability to repeat answer back to user as part of another question or statement, and interpolation on label/variable name
+* Variable substitution, functionality to repeat answer back to user as part of another question or statement
