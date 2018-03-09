@@ -20,35 +20,6 @@
         <h1 class="heading-xlarge">
           Create new page
         </h1>
-          <div id="specific-fields">
-          {{ frontend.govukInput({
-            "label": {
-              "text": "Page heading"
-            },
-            "name": "heading",
-            "id": "heading",
-            "value": ""
-          }) }}
-
-          {{ frontend.govukInput({
-            "label": {
-              "text": "Page name (used in URLs)"
-            },
-            "name": "name",
-            "id": "name",
-            "value": ""
-          }) }}
-
-          {{ frontend.govukTextarea({
-            "label": {
-              "text": "Page guidance"
-            },
-            "name": "guidance",
-            "id": "guidance",
-            "value": ""
-          }) }}
-          </div>
-
           <div id="page-selector" class="page-selector">
           {{ frontend.govukSelectboxes({
             "label": "Page template",
@@ -78,6 +49,35 @@
             ]
           }) }}
           <button class="button button-secondary page-type-update" type="button">Update</button>
+          </div>
+
+          <div id="specific-fields">
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page heading"
+            },
+            "name": "heading",
+            "id": "heading",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page name (used in URLs)"
+            },
+            "name": "name",
+            "id": "name",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukTextarea({
+            "label": {
+              "text": "Page guidance"
+            },
+            "name": "guidance",
+            "id": "guidance",
+            "value": ""
+          }) }}
           </div>
 
         <div class="button-group">
