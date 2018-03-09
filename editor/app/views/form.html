@@ -22,6 +22,7 @@
       <h2 class="heading-large">
         Pages in this form
       </h2>
+      <a class="create-new-page" href="/forms/{{ form.name }}/pages/create">Create new page</a>
       <ul class="list-navigation">
       {% for page in form.getPagesList() %}
         <li>
