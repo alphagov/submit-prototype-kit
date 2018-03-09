@@ -396,7 +396,7 @@ class Form {
   update(newData) {
     for (let prop in newData) {
       // update any page properties
-      if (this.hasOwnProperty(prop)) { this[prop] = newData[prop]; }
+      if (prop in this) { this[prop] = newData[prop]; }
     }
   } 
 

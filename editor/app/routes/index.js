@@ -1,19 +1,16 @@
-var express = require('express')
-var router = express.Router()
-var fs = require('fs')
+const index = {
 
-var graphRoutes = require('./graphs.js')
-var getRoutes = require('./get.js');
-var postRoutes = require('./post.js');
+	bind: function (router, formsData) {
 
+    router.get('/', function (req, res) {
+      res.render('index', {
+        'forms': formsData.getAll(),
+        'currentFormPage': '/'
+      })
+    })
 
-// routes for GET requests
-getRoutes.bind(router);
+ }
 
-// routes for POST requests
-postRoutes.bind(router);
+};
 
-// routes for graph views/endpoints
-graphRoutes.bind(router);
-
-module.exports = router
+module.exports = index;
