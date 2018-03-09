@@ -104,6 +104,8 @@ class Field {
 
   // Read-only properties
 
+  get type() { return this._data.inputtype || undefined; }
+
   get items() { return this._items || []; }
 
   get id() {
@@ -144,13 +146,15 @@ class Fieldset {
     this.form = form;
 
     this._fields = this._data.fields.map(name => {
-      return form.createField(name)
+      return form.createFieldReference(name)
     });
   }
 
   // Read-only properties
 
   get fields() { return this._fields || []; }
+
+  get type() { return 'fieldset'; }
 
   // Read/write properties
 
@@ -298,7 +302,7 @@ class Page extends FormComponent {
 
 
 class Organisation extends FormComponent {
-  get name() { return this._data.name; }
+  get name() { return this._data.page; }
 
   get organisation() { return this._data.organisation; }
 
@@ -318,7 +322,7 @@ class Form {
     this._fields = {};
     
     for (let fieldName in fields) {
-      this._fields[fieldName] = this.createField(fieldName);
+      this._fields[fieldName] = this.createFieldReference(fieldName);
     }
     
     for (let key in pages) {
@@ -371,7 +375,7 @@ class Form {
     return JSON.stringify(this._data, null, 2);
   }
 
-  createField(name) {
+  createFieldReference(name) {
     let fieldData;
     let fieldClass;
     let result;
@@ -395,6 +399,56 @@ class Form {
       if (this.hasOwnProperty(prop)) { this[prop] = newData[prop]; }
     }
   } 
+
+  addPage(data) {
+    let pageData = {};
+    let result = {};
+    let page;
+
+    if (!data.heading) { // empty string or undefined coerced to false
+      result.status = 'error';
+      result.error = {
+        message: "Page needs a heading"
+      };
+      return result;
+    }
+
+    if (!data.name) { // empty string or undefined coerced to false
+      data.name = data.heading.toLowerCase().replace(/\s/g, '-');
+    }
+
+    if (data.name in this._data.pages) {
+      result.status = 'error';
+      result.error = {
+        message: `${data.name} already taken, please choose another`
+      };
+      return result;
+    }
+
+    Object.assign(pageData, data);
+
+    // remove name prop from data entry
+    delete pageData.name;
+
+    if ((data.nametype !== 'application-complete') && (data.nametype !== 'bounce')) {
+      pageData.next = "";
+    }
+
+    // add page entry to data
+    this._data.pages[data.name] = pageData;
+
+    // create a new model for the page
+    page = new Page(this._data.pages[data.name], this);
+
+    page.page = data.name;
+    this._pages[data.name] = page;
+
+    // return the new page name with some meta about this action
+    result.page = page.page;
+    result.status = "success";
+
+    return result;
+  }
 }
 
 

@@ -44,6 +44,9 @@ const formsData = {
   init: function() {
     let jsonFile = RegExp('.+\.json$');
 
+    // if init has been called already, quit
+    if (dataFiles.length && forms.length) { return; }
+
     // get files
     fs.readdirSync(dataDir).forEach(file => dataFiles.push(file));
 

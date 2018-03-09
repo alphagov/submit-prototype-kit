@@ -1,12 +1,17 @@
 (function (window, document) {
   var Editor = document.Editor;
 
-  var postFormData = function (url, data, cb) {
+  var postFormData = function (url, data, onSuccess, onError) {
     var httpRequest = new XMLHttpRequest();
     var qStr = Editor.getDataAsQueryString(data)
     var sendRequest;
     var handleResponse;
+    var redirect;
 
+
+    redirect = function (url) {
+      window.location = url;
+    };
 
     sendRequest = function () {
       // configure request
@@ -20,8 +25,20 @@
     };
 
     handleResponse = function () {
+      var newPageURL = url.replace(/create$/, data.name);
+
       if (httpRequest.readyState === XMLHttpRequest.DONE) {
-        cb(httpRequest.responseText);
+        if (httpRequest.status === 200) {
+          // create page POSTs return a redirect which the browser turns into a GET for the new HTML page so redirect to it
+          if (httpRequest.getResponseHeader('content-type').split('; ')[0] === 'text/html') {
+            redirect(newPageURL);
+          } else {
+            onSuccess(httpRequest.responseText);
+          }
+        }
+        if (httpRequest.status === 400) {
+          onError(httpRequest.responseText);
+        }
         complete = true;
       }
     };
@@ -55,6 +72,14 @@
 
       if (fieldValue) {
         values[fields[idx].name] = fieldValue;
+      }
+      else { // field value is empty
+
+        // if page name is empty, use suggested value in placeholder
+        var placeholder = fields[idx].getAttribute('placeholder');
+        if ((fields[idx].name === 'name') && placeholder) {
+          values[fields[idx].name] = placeholder;
+        }
       }
     }
 

@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+{% import "frontend_macros.ntk" as frontend with context %}
+{% import "macros/fields.ntk" as fields with context %}
+
+{% block page_title %}
+  Create page - Forms editor
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-one-half" id="editor-wrapper">
+    {{ frontend.govukBackLink({
+      "href": "/forms/" + form.name,
+      "text": "Back to pages in this form"
+    }) }}
+
+      <form action="/forms/{{ form.name }}/pages/create" method="post" id="form">
+        <h1 class="heading-xlarge">
+          Create new page
+        </h1>
+          <div id="page-selector" class="page-selector">
+          {{ frontend.govukSelectboxes({
+            "label": "Page template",
+            "name": "pagetype",
+            "id": "pagetype",
+            "items": [
+              {
+                "text": "Start page",
+                "value": "start-page"
+              },
+              {
+                "text": "Question page",
+                "value": "question"
+              },
+              {
+                "text": "Check your answers page",
+                "value": "check-your-answers"
+              },
+              {
+                "text": "Application complete page",
+                "value": "application-complete"
+              },
+              {
+                "text": "Bounce page",
+                "value": "bounce"
+              }
+            ]
+          }) }}
+          <button class="button button-secondary page-type-update" type="button">Update</button>
+          </div>
+
+          <div id="specific-fields">
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page heading"
+            },
+            "name": "heading",
+            "id": "heading",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukInput({
+            "label": {
+              "text": "Page name (used in URLs)"
+            },
+            "name": "name",
+            "id": "name",
+            "value": ""
+          }) }}
+
+          {{ frontend.govukTextarea({
+            "label": {
+              "text": "Page guidance"
+            },
+            "name": "guidance",
+            "id": "guidance",
+            "value": ""
+          }) }}
+          </div>
+
+        <div class="button-group">
+          {{ frontend.govukButton({ "text": "Create", "classes": [] }) }}
+          <a href="/forms/{{ form.name }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+    <div class="column-one-half">
+      <div id="prototype-wrapper" class="prototype-wrapper">
+        <iframe name="prototype" id="prototype" class="prototype" src="http://localhost:3000/{{ currentFormPage }}" height="800px"></iframe>
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+{% block page_scripts %}
+<script type="text/javascript" src="/public/javascripts/nunjucks.js"></script>
+<script type="text/javascript" src="/public/javascripts/templates.js"></script>
+
+<script type="text/javascript">
+  (function (window, document) {
+    document.Editor.availableFields = [
+    {% for name, field in form.fields %}
+      {
+        'name': '{{ name }}',
+        'inputtype': '{{ field.type }}'
+      }{% if not loop.last %},{% endif %}
+    {% endfor %}
+    ]
+  })(window, document);
+</script>
+<script type="text/javascript" src="/public/javascripts/editor/create.js"></script>
+{% endblock %}

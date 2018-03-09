@@ -10,22 +10,35 @@
     iframe.src = iframe.src;
   };
 
-  var sendUpdates = function (form, cb) {
+  var sendFormData = function (form, startMessage, cb) {
     var data = Editor.getFormData(form);
     var url = window.location.href;
 
-    var onResponse = function (message) {
-      console.log(message);
-      cb();
+    var redirect = function (url) {
+      window.location = url;
+    };
+
+    var onError = function (response) {
+      var response = JSON.parse(response);
+      console.log("Error: '" + response.error + "'");
       Editor.status
-        .set('Done')
+        .set(response.error)
+        .hide(true);
+    };
+
+    var onSuccess = function(response) {
+      var response = JSON.parse(response);
+      console.log(response);
+      cb(response);
+      Editor.status
+        .set(response.message)
         .hide();
     };
 
-    Editor.postFormData(url, data, onResponse)
+    Editor.postFormData(url, data, onSuccess, onError, redirect)
     Editor.status
       .show()
-      .set('Updating JSON');
+      .set(startMessage);
   };
 
   Editor.status.init();
@@ -40,7 +53,7 @@
       form.addEventListener('submit', function (evt) {
         evt.stopPropagation();
         evt.preventDefault();
-        sendUpdates(this, reloadIframe);
+        sendFormData(this, 'Updating JSON', reloadIframe);
       }, false);
     }
 
