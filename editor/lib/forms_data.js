@@ -3,11 +3,11 @@ const path = require('path');
 const childProcess = require('child_process');
 const request = require('request');
 
-// set up constants for models
-var Form, Page, Organisation, Field;
+// set up constants for form model
+var Form;
 
 // import the classes for the models
-({ Field, Page, Organisation, Form } = require(path.resolve(process.cwd(), 'app/models')));
+({ Form } = require(path.resolve(process.cwd(), 'app/models')));
 
 const dataDir = path.resolve(process.cwd(), '../examples');  
 const encoding = 'utf8';
