@@ -76,7 +76,11 @@ start:
 prototype:	$(PROTOTYPE)
 
 editorstart:
+ifeq ($(DEBUG), true)
+	cd editor; npm start -- --inspect
+else
 	cd editor; npm start
+endif
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)

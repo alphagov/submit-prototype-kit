@@ -21,9 +21,14 @@ if (!envExists) {
 // run gulp
 
 var spawn = require('cross-spawn')
+var args = process.argv
+var gulpArgs = ['gulp']
 
 process.env['FORCE_COLOR'] = 1
-var gulp = spawn('gulp')
+if (args.length > 2) {
+  gulpArgs.push(args.slice(2))
+}
+var gulp = spawn(...gulpArgs)
 gulp.stdout.pipe(process.stdout)
 gulp.stderr.pipe(process.stderr)
 process.stdin.pipe(gulp.stdin)
