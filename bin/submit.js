@@ -103,6 +103,11 @@ function renderForm(form) {
          namePath(controllersDir, form.name, '.js'),
         { form: form, })
 
+  // controller
+  render(namePath(opts.templatesDir, 'diagram', '.html'),
+         namePath(viewsDir, 'diagram', '.html'),
+        { form: form, })
+
   // page view
   for (let p in form.pages) {
     page = form.pages[p]
