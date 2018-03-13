@@ -32,7 +32,7 @@
       {% endfor %}
       </ul>
 
-      <form method="post" action="{{ form.url }}">
+      <form method="post" action="{{ form.url }}" id="form">
       {% if form.heading %}
         {{ frontend.govukInput({
           "label": {
