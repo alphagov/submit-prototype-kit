@@ -24,26 +24,11 @@ This boots the prototype and is viewable on [http://localhost:3000](http://local
 
 ### Directory structure
 
-`./bin/submit.js`
-Command line tool to generate runner app, called with path to the form definition.
-
-`./templates/routes.js`
-Express routes template, one POST route is generated for each step in the form.
-
-`./templates/application-complete.html`
-`./templates/bounce.html`
-`./templates/check-your-answers.html`
-`./templates/interruption.html`
-`./templates/start-page.html`
-`./templates/question.html`
-Nunjucks template files, each file maps to a page type.
-
-`./templates/diagram.html`
-Nunjucks template for diagram page.
-
-`./templates/submit_layout.html`
-Layout file for template pages
-
-`./templates/submit_macros.ntk`
-`./templates/frontend_macros.ntk`
-Library of Nunjucks macros used in template pages.
+| File | Description |
+| ---- | ----------- |
+| `./bin/submit.js` | Command line tool to generate runner app, called with path to the form definition. |
+| `./templates/routes.js` | Express routes template, one POST route is generated for each step in the form. |
+| `./templates/application-complete.html` <br> `./templates/bounce.html` <br> `./templates/check-your-answers.html` <br> `./templates/interruption.html` <br> `./templates/start-page.html` <br> `./templates/question.html` | Nunjucks template files, each file maps to a page type. |
+| `./templates/diagram.html` | Nunjucks template for diagram page. |
+| `./templates/submit_layout.html` | Layout file for template pages |
+| `./templates/submit_macros.ntk` <br> `./templates/frontend_macros.ntk` | Library of Nunjucks macros used in template pages. |
