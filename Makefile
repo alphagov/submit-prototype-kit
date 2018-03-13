@@ -1,4 +1,4 @@
-.PHONY: clean prune prototype build start editor editorstart editorclean editoriframecontroller prototypegitinit prototypedeploy
+.PHONY: clean prune prototype build start editorstart editoriframecontroller prototypegitinit prototypedeploy
 
 KIT_VERSION=6.3.0
 KIT_NAME=govuk_prototype_kit
@@ -63,15 +63,6 @@ PROTOTYPE=\
 SRC_EDITOR_IFRAME_CONTROLLER_CLIENT=$(EDITOR_DIR)/lib/iframe-controller-client.js
 EDITOR_IFRAME_CONTROLLER_CLIENT_HTML=$(EDITOR_DIR)/lib/iframe-controller-client-script-tag.html
 
-EDITOR_JS_DIR=$(EDITOR_DIR)/app/assets/javascripts
-EDITOR_JS=$(EDITOR_JS_DIR)/editor.js
-SRC_EDITOR_JS=\
-	$(EDITOR_JS_DIR)/editor/head.js\
-	$(EDITOR_JS_DIR)/editor/utils.js\
-	$(EDITOR_JS_DIR)/editor/status.js\
-	$(EDITOR_JS_DIR)/editor/iframe-controller.js\
-	$(EDITOR_JS_DIR)/editor/onready.js
-
 HEROKU_APP_NAME=submit-prototype-kit
 
 all:	$(EXAMPLES)
@@ -84,16 +75,8 @@ start:
 
 prototype:	$(PROTOTYPE)
 
-editor:  $(EDITOR_JS)
-
 editorstart:
 	cd editor; npm start
-
-editorclean:
-	rm $(EDITOR_JS)
-
-$(EDITOR_JS):
-	cat $(SRC_EDITOR_JS)  >> $(EDITOR_JS)
 
 # copy in the macros used by the generated templates
 $(PROTOTYPE_MACROS):	$(SRC_PROTOTYPE_MACROS) $(KIT_UNZIPPED)
