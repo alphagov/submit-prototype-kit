@@ -396,7 +396,7 @@ class Form {
   update(newData) {
     for (let prop in newData) {
       // update any page properties
-      if (this.hasOwnProperty(prop)) { this[prop] = newData[prop]; }
+      if (prop in this) { this[prop] = newData[prop]; }
     }
   } 
 
@@ -405,24 +405,30 @@ class Form {
     let result = {};
     let page;
 
-    if (!data.heading) { // empty string or undefined coerced to false
+    let failedResult = function (message) {
       result.status = 'error';
       result.error = {
-        message: "Page needs a heading"
+        'message': message 
       };
-      return result;
+    };
+
+    let pageModel = function (data) {
+      page = new Page(this._data.pages[data.name], this);
+
+      page.page = data.name;
+      return page;
+    };
+
+    if (!data.heading) { // empty string or undefined coerced to false
+      return failedResult("Page needs a heading");
+    }
+
+    if (data.name in this._data.pages) {
+      return failedResult(`${data.name} already taken, please choose another`);
     }
 
     if (!data.name) { // empty string or undefined coerced to false
       data.name = data.heading.toLowerCase().replace(/\s/g, '-');
-    }
-
-    if (data.name in this._data.pages) {
-      result.status = 'error';
-      result.error = {
-        message: `${data.name} already taken, please choose another`
-      };
-      return result;
     }
 
     Object.assign(pageData, data);
@@ -437,11 +443,8 @@ class Form {
     // add page entry to data
     this._data.pages[data.name] = pageData;
 
-    // create a new model for the page
-    page = new Page(this._data.pages[data.name], this);
-
-    page.page = data.name;
-    this._pages[data.name] = page;
+    // add page model to form
+    this._pages[data.name] = addPageModel(data);
 
     // return the new page name with some meta about this action
     result.page = page.page;
