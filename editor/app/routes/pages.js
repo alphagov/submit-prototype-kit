@@ -1,6 +1,5 @@
-var htmlResponse;
 var jsonResponse;
-({ jsonResponse, htmlResponse } = require('./responses.js'));
+({ jsonResponse } = require('./responses.js'));
 
 
 const processArrayParams = function (data, keyPrefix) {
@@ -77,11 +76,7 @@ const pages = {
 			let form = formsData.getForm(req.params.formname)
 			let page = form.page(req.params.pagename);
 
-			if (req.get('Accept') === 'application/json') {
-				jsonResponse(res, req, form, formsData, page);
-			} else {
-				htmlResponse(res, req, form, formsData, page);
-			}
+      jsonResponse(res, req, form, formsData, page);
 		});
 
 	}
