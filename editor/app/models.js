@@ -403,6 +403,7 @@ class Form {
   addPage(data) {
     let pageData = {};
     let result = {};
+    let form = this;
     let page;
 
     let failedResult = function (message) {
@@ -413,7 +414,7 @@ class Form {
     };
 
     let pageModel = function (data) {
-      page = new Page(this._data.pages[data.name], this);
+      page = new Page(form._data.pages[data.name], form);
 
       page.page = data.name;
       return page;
@@ -444,7 +445,7 @@ class Form {
     this._data.pages[data.name] = pageData;
 
     // add page model to form
-    this._pages[data.name] = addPageModel(data);
+    this._pages[data.name] = pageModel(data);
 
     // return the new page name with some meta about this action
     result.page = page.page;
