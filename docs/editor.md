@@ -60,7 +60,7 @@ kept in `app/assets/javascripts/editor`.
 ## Sass/SCSS
 
 The editor uses bits of GOVUK Elements and the GOVUK Prototype kit Sass. Sass specific to the editor
-is in editor.scss.
+is in `editor.scss`.
 
 ## Templating 
 
