@@ -1,6 +1,5 @@
-var htmlResponse;
 var jsonResponse;
-({ jsonResponse, htmlResponse } = require('./responses.js'));
+({ jsonResponse } = require('./responses.js'));
 
 
 const forms = {
@@ -23,11 +22,7 @@ const forms = {
     router.post('/forms/:formname', function (req, res) {
       let form = formsData.getForm(req.params.formname)
 
-      if (req.get('Accept') === 'application/json') {
-        jsonResponse(res, req, form, formsData);
-      } else {
-        htmlResponse(res, req, form, formsData);
-      }
+      jsonResponse(res, req, form, formsData);
     });
 
     router.get('/forms/:formname/pages', function (req, res) {
