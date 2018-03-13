@@ -1,23 +1,6 @@
-# GOV.UK Submit Prototype Kit
+# GaaP Submit Prototype Kit
 
-An alpha toolkit for prototyping services.
+An alpha toolkit for prototyping services. This repo contains the [editor](docs/editor.md), [runner](docs/runner.md) and [schema definition](schema), in addition there is more documentation on the [GDS Google Drive](https://drive.google.com/drive/folders/0B0mwth_3Pc2YTkItRlc2Z2d4eHc).
 
-This version uses a JSON version of the [Submit data model](https://github.com/alphagov/submit-forms) to generate pages for the [GOV.UK Prototype Kit](https://govuk-prototype-kit.herokuapp.com/).
+The code in this repositary was created as part of our Alpha and is released under the [MIT license](LICENSE).
 
-# Building the kit
-
-    $ make init
-
-# Building the prototype
-
-Run make to build the forms in the example directory:
-
-    $ make
-
-Add your own forms to the prototype by editing the Makefile, or by compiling a form manually:
-
-    $ bin/submit.js myform.json
-
-# Running the prototype
-
-    $ make start
