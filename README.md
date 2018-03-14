@@ -8,4 +8,4 @@ The code in this repository was created as part of our Alpha and is released und
 
 A high level overview of the Submit architecture, the elements in green are prototyped in this repository.
 
-![Architecture](https://github.com/alphagov/submit-prototype-kit/raw/master/docs/submit-architecture.png)
+![Architecture](https://github.com/alphagov/submit-prototype-kit/raw/master/docs/submit-architecture.svg?sanitize=true)
