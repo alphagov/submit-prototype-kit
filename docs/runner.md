@@ -40,4 +40,4 @@ Each form in the app has a page showing the form as a flowchart.
 The URL for the flowchart page follows this format:
 
 `http://localhost:3000/{name of form}/diagram`, for example:
-`http://localhost:3000/apply-for-a-medal/diagram`.
+[http://localhost:3000/apply-for-a-medal/diagram](http://localhost:3000/apply-for-a-medal/flowchart).
