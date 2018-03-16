@@ -14,6 +14,30 @@ so gives you these features out-of-the-box:
   included
 - app is reloaded and assets re-compiled automatically when files change
 
+## Run the app
+
+### Install
+
+Use this command to install all dependencies:
+
+`$ npm install`
+
+Use this make command to run the editor app:
+
+`$ make editorstart`
+
+To run the editor app with the debugger on:
+
+`$ make editorstart DEBUG=true`
+
+### Run the prototype app
+
+The editor app has the prototype app in an iframe so you'll also need to have it running.
+
+Use this make command to run the prototype app:
+
+`$ make start`
+
 ## App structure
 
 The overall app structure follows the GOVUK Prototype kit. This section deals with code specific to
