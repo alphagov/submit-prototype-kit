@@ -117,3 +117,38 @@ control over it. It works by responding to postMessage calls from the editor Jav
 - `iframe-controller.js` creates `document.Editor.iframe-controller` for sending messages to the
 client.
 
+## Features
+
+The editor is a work-in-progress and is still missing some important features.
+
+### Completed
+
+- view all forms in the prototype
+- view all pages in a form
+- edit the form properties
+- edit page properties
+- edit field properties
+- create a new page (incomplete)
+
+### Still needed
+
+- flowchart view
+- edit a organisations data for a form
+- add/remove a field
+- add new properties and fields to a page
+- add/remove a form
+- add/remove a page in the flowchart view
+- reorder options in a field
+- reorder fields in a page
+- UI for adding/removing conditional fields
+- edit raw JSON in the GUI
+- UI that displays advanced attributes for fields (which are not available in the standard view)
+- create fields and pages from existing templates
+- ability to make templates
+- ability to see when the values you're working with are inherited or explicit
+- using user data in content
+- conditional content
+- form validation
+- normalisation of information (input/output formats and any transformations that need to happen)
+- derived data (ie age by knowing a user's date of birth)
+- short names for fields
