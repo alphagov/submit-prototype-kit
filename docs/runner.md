@@ -32,3 +32,12 @@ This boots the prototype and is viewable on [http://localhost:3000](http://local
 | `./templates/diagram.html` | Nunjucks template for diagram page. |
 | `./templates/submit_layout.html` | Layout file for template pages |
 | `./templates/submit_macros.ntk` <br> `./templates/frontend_macros.ntk` | Library of Nunjucks macros used in template pages. |
+
+### Flowchart
+
+Each form in the app has a page showing the form as a flowchart.
+
+The URL for the flowchart page follows this format:
+
+`http://localhost:3000/{name of form}/diagram`, for example:
+`http://localhost:3000/apply-for-a-medal/diagram`.
