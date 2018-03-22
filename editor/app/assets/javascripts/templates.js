@@ -11,7 +11,7 @@ var govukTextarea =
 `<div class="form-group">
   {% if params.label %}<label class="form-label" for="{{ params.name }}">{{ params.label.text }}</label>{% endif %}
   {% if params.hintHtml %}<span class="form-hint">{{ params.hintHtml | safe }}</span>{% endif %}
-  <textarea class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}" rows=5></textarea>
+  <textarea class="form-control form-control-2-3" id="{{ params.id }}" name="{{ params.name }}" rows=5>{{ params.value }}Boo</textarea>
 </div>`;
 
 var govukRadios =
