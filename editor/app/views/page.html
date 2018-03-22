@@ -30,7 +30,16 @@
             'detail': 'Page detail'
         } %}
 
-          {% if page[prop] %}
+          {% if prop == 'guidance' %}
+            {{ frontend.govukTextarea({
+              "label": {
+                "text": txt
+              },
+              "name": page.id + "." + prop,
+              "id": page.id + "." + prop,
+              "value": page[prop]
+            }) }}
+          {% elif page[prop] %}
             {{ frontend.govukInput({
               "label": {
                 "text": txt
