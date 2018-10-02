@@ -1,7 +1,7 @@
 .PHONY: clean prune prototype build start editorstart editoriframecontroller prototypegitinit prototypedeploy
 
 KIT_VERSION=6.3.0
-KIT_NAME=govuk_prototype_kit
+KIT_NAME=govuk-prototype-kit
 KIT_ZIP=cache/$(KIT_NAME).zip
 KIT_URL='https://github.com/alphagov/$(KIT_NAME)/archive/v$(KIT_VERSION).zip'
 KIT_UNZIPPED=prototype/node_modules
